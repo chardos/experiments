@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Arcs</title>
+		<script src="extra/jquery.js"></script>
+		<link rel="stylesheet" type="text/css" href="extra/reset.css">
+
+		<script>
+			window.onload = function() {
+				
+				$("#button")
+					.css("position", "absolute")
+					.css("top", "0px")
+					.css("left", "0px")
+					.css("width", "3000px")
+					.css("height", "3000px")
+					.click(function() {
+					  spin();
+					});
+				
+				//remove scrollbars
+				$("body").css("overflow", "hidden");
+				
+				spin();
+			}
+		
+			function spin() {
+				var theCanvas = document.getElementById('Canvas1');
+				if (theCanvas && theCanvas.getContext) {
+					window.ctx = theCanvas.getContext("2d");
+					if (ctx) {
+						
+						
+						//FIND BROWSER WIDTH AND HEIGHT and height and set longest dimension
+						
+						windowWidth = $(window).width();
+						windowHeight = $(window).height();
+						if (windowWidth > windowHeight){
+							longestDimension = windowWidth;
+						} else {
+							longestDimension = windowHeight;
+						}
+						ldMultiplier = longestDimension / 20;
+						
+						
+						//SET CANVAS ELEMENT  WIDTH & HEIGHT
+						$("canvas").attr("width", windowWidth);
+						$("canvas").attr("height", windowHeight);
+						
+						
+						
+						//SET MIDPOINTS						
+						x = windowWidth/2;
+						y = windowHeight/2;;
+						
+						
+						
+						//SET COLORS
+						
+						//randomize to either red green or blue color sets						
+						colorChoose = Math.ceil((Math.random()*3));	
+						if (colorChoose == 1){
+							// red set
+							window.colorArray = ["#d30303","#f82727", "#ae0606", "#ff0000","#ff5353","#ff7d8c","#ff7391","#ffa4b8","#ee5b7b","#ffb4da","#ffdaed","#f086bc"];
+						} else if (colorChoose == 2){
+							//green set
+							window.colorArray = ["#438711","#509a19", "#5eaf22", "#509a19","#7fb557","#7fb557","#d6ee76","#c6dd6b","#adc54c","#e8eb7f","#f7f9a7","#ffffd9"];
+						} else if (colorChoose == 3){
+							//blue set
+							window.colorArray = ["#2f1bed","#5241f7", "#1c0bc0", "#2b63e2","#5282ee","#1b4ec2","#5aa1f1","#7bb5f5","#3f8be1","#acdef7","#d7effa","#89cbec"];
+						}
+						
+						
+						function randomize(colorA, colorB, colorC){
+							
+							
+							
+							// attaching variables to window to make them global
+							window.startAngle = Math.floor((Math.random()*300) + 60) * Math.PI/180;
+							window.endAngle = Math.floor((Math.random()*360)) * Math.PI/180;
+							
+							//randomize clockwise or anti-clockwise
+							preAC = Math.floor((Math.random()*2)+1);							
+							if (preAC == 1){
+								window.aC = true;
+							} else {
+								window.aC = false;
+							}
+							
+							//set colors
+							preColor = Math.ceil((Math.random()*3));
+							if (preColor == 1){
+								ctx.strokeStyle = colorA;
+							} else if (preColor == 2){
+								ctx.strokeStyle = colorB;
+							} else if (preColor == 3){
+								ctx.strokeStyle = colorC;
+							} 
+						}
+						
+						
+						
+						// layer 4
+						
+						var layer4 = setInterval(function(){ //(Math.random()*radius) + offset);
+							
+							//set random stroke width range
+							ctx.lineWidth = Math.floor((Math.random()*longestDimension/60 + 4));
+							
+							window.radius = Math.floor((Math.random()*ldMultiplier*4.3) + ldMultiplier*9.8);
+							//randomize color
+							randomize(colorArray[0], colorArray[1], colorArray[2]);
+							ctx.beginPath();
+							ctx.arc(window.x,window.y,window.radius, window.startAngle, window.endAngle, window.aC);
+							ctx.stroke();	
+						},1); //50 iterations
+						
+						setTimeout(function(){						
+							window.clearInterval(layer4)
+						},3500); 
+						
+						
+						
+						// layer 3
+						setTimeout(function(){
+							
+							var layer3 = setInterval(function(){
+								
+								//set random stroke width range
+								ctx.lineWidth = Math.floor((Math.random()*longestDimension/50 + 2));
+								window.radius = Math.floor((Math.random()*ldMultiplier*3.7)+ldMultiplier*6);
+								randomize(colorArray[3],colorArray[4],colorArray[5]);
+								ctx.beginPath();
+								ctx.arc(window.x,window.y,window.radius, window.startAngle, window.endAngle, window.aC);
+								ctx.stroke();
+							},1);
+							
+							setTimeout(function(){						
+								window.clearInterval(layer3)
+							},3500);
+							
+						},200);
+						
+						
+						
+						
+						// layer 2
+						
+						setTimeout(function(){
+							var layer2 = setInterval(function(){
+							
+								ctx.lineWidth = Math.floor((Math.random()*longestDimension/70) + 2);
+								
+								window.radius = Math.floor((Math.random()*ldMultiplier*4.5) + ldMultiplier*3.5);
+								
+								randomize(colorArray[6],colorArray[7],colorArray[8]);
+								ctx.beginPath();
+								ctx.arc(window.x,window.y,window.radius, window.startAngle, window.endAngle, window.aC);
+								ctx.stroke();
+							},1);
+							
+							setTimeout(function(){						
+								window.clearInterval(layer2)
+							},3500);
+						},400);
+						
+						
+						
+						// layer 1
+						
+						setTimeout(function(){
+							var layer1 = setInterval(function(){
+								ctx.lineWidth = Math.floor((Math.random()*longestDimension/160));
+							
+								window.radius = Math.floor((Math.random()*ldMultiplier*3.6)+ldMultiplier*0.1);
+								
+								randomize(colorArray[9],colorArray[10],colorArray[11]);
+								ctx.beginPath();
+								ctx.arc(window.x,window.y,window.radius, window.startAngle, window.endAngle, window.aC);
+								ctx.stroke();
+							},1);
+							setTimeout(function(){						
+								window.clearInterval(layer1)
+							},2500);
+						},600);
+						
+						
+					}
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="button"></div>
+		<canvas id="Canvas1" width="900" height="900">Your browser does not support canvas.</canvas>
+	</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Arcs</title>
+		<script src="extra/jquery.js"></script>
+		<script src="extra/jquery-ui.js"></script>
+		<script src="extra/arcscript.js"></script>
+		<script src="extra/functions.js"></script>
+		<link rel="stylesheet" type="text/css" href="extra/reset.css">
+		<link rel="stylesheet" type="text/css" href="extra/style.css">
+		<link href="extra/lightness-theme.css" rel="stylesheet" type="text/css"/>		
+		<script src="extra/colorpicker/jquery.colorpicker.js"></script>
+		<link href="extra/colorpicker/jquery.colorpicker.css" rel="stylesheet" type="text/css"/>
+		<script>
+			
+		</script>
+	</head>
+	<body>
+		<div id="clicktospin"></div>
+		<div id="swatch-tooltip"></div>
+		<div id="menu-button"></div>
+		<div id="control-bar">
+			<div id="line-width">
+				<div class="text"></div>
+				<input class="textfield rounded form-style" type="text" class="cp-basic" value="1"/>
+			</div>
+			<div id="line-quantity">
+				<div class="text"></div>
+				<input class="textfield rounded form-style" type="text" class="cp-basic" value="1" maxlength="3"/>
+			</div>
+			<div id="color">
+				<div class="text"></div>
+				<div class="dropdown rounded form-style">
+					<span class="dropdowntext">Random</span>
+					<div class="arrow"></div>
+					<div id="popupcolors" class="rounded form-style">
+						<div id="random-drop" class="dropitem">Random</div>
+						<div id="red-drop" class="dropitem">Red</div>
+						<div id="green-drop" class="dropitem">Green</div>
+						<div id="blue-drop" class="dropitem">Blue</div>
+						<div id="orange-drop" class="dropitem">Orange</div>
+						<div id="white-drop" class="dropitem">White</div>
+						<div id="black-drop" class="dropitem">Black</div>
+						<div id="custom-drop" class="dropitem">Custom</div>
+					</div>
+				</div>
+				<div id="hide"></div>
+				<div id="swatch-line1">
+					<div id="swatch1" class="swatch"></div>
+					<div id="swatch2" class="swatch"></div>
+					<div id="swatch3" class="swatch"></div>
+					<div id="swatch4" class="swatch"></div>
+					<div id="swatch5" class="swatch"></div>
+					<div id="swatch6" class="swatch"></div>
+				</div>
+				<div id="swatch-line2">
+					<div id="swatch7" class="swatch"></div>
+					<div id="swatch8" class="swatch"></div>
+					<div id="swatch9" class="swatch"></div>
+					<div id="swatch10" class="swatch"></div>
+					<div id="swatch11" class="swatch"></div>
+					<div id="swatch12" class="swatch"></div>
+				</div>
+			</div>
+			
+		</div>
+		<div id="button"></div>
+		<canvas id="Canvas1" width="900" height="900">Your browser does not support canvas.</canvas>
+	</body>
+</html>
