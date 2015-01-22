@@ -1,0 +1,28 @@
+html, body{
+	font-size: 30px;
+	font-family: helvetica, arial, sans-serif;
+	font-weight: bold;
+	text-align: left;
+	background-color: black;
+	margin: 50px 0 0 50px;
+}
+.text{
+	margin-top: 20px;
+}
+.menu {
+	width: 400px;
+}
+.menu li {
+	position: relative;
+}
+.hoverText{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-color: black;
+	display: none;
+}
+a{
+	text-decoration: none;
+	color: red;
+}

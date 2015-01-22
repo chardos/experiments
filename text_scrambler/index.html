@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Text Change</title>
+		<script src="extra/jquery.js"></script>
+		<script src="extra/jquery.hoverIntent.minified.js"></script>
+		<link rel="stylesheet" type="text/css" href="extra/reset.css">
+		<link rel="stylesheet" type="text/css" href="extra/style.css">
+		
+		<script>
+			window.onload = function() {
+			
+			// SET VARIABLES----------------------------------------
+				
+				changeArray = new Array;		// the array that stores all the randomized letters
+				reverseArray = new Array();		// the array that stores the letters to revert back to the original text
+				
+				var intervalEnter = new Array();  
+				var intervalLeave = new Array();				
+				var intervalIsClear = true;
+				var intervalsAreConcurrent = false;
+				
+				var currentListItem;
+				var oldHoveredItemIndex;
+				
+				var textCounter=0;
+				var reverseArray1 = new Array();
+				var randomNumber;
+				var randomLetter;
+				
+				var alphabet = 'abcdefghijklmnopqrstuvwxyz123456789!#$%^&*()';
+				var alphabetArray = alphabet.split('');
+			
+			// MENU TEXT INTO ARRAYS----------------------------------------
+				
+				//originaltext into arrays
+				i=0;
+				var originalTexts = [];
+				$(".menu .text").each(function( ) {
+				  originalTexts[i] = $.trim( $(this).html() );
+				  i++;
+				});
+				
+				//hovertext into arrays
+				i=0;
+				var hoverTexts = [];
+				$(".menu .hoverText").each(function( ) {
+				  hoverTexts[i] = $.trim( $(this).html() );
+				  i++
+				});
+
+			// SET FUNCTIONS----------------------------------------	
+				
+				function randomLetter(){
+					randomNumber = Math.ceil((Math.random()*42));
+					return alphabetArray[randomNumber];
+				}
+				function changeToHoverText(){
+
+					clearInterval(intervalLeave[hoveredItemIndex]);
+
+					currentListItem = hoveredItemIndex;
+					textCounter = 0;
+					x = $('.hoverText:eq(' + hoveredItemIndex + ')');
+					x.html('');
+					x.css('display','inline');
+					
+					intervalEnter[hoveredItemIndex] = setInterval(function(){
+						//intervalIsClear = false;
+						x.html(changeArray[hoveredItemIndex][textCounter]);
+						textCounter++;
+						console.log('interEnter ' + textCounter);
+						if(textCounter==changeArray[hoveredItemIndex].length){ 
+							clearInterval(intervalEnter[hoveredItemIndex]);
+						}
+					},10);
+				}
+				function changeToOriginalText(){
+					clearInterval(intervalEnter[hoveredItemIndex]);
+					
+					textCounter2 = 0;
+					y = $('.text:eq(' + hoveredItemIndex + ')');
+					x.css('display','none');
+					oldHoveredItemIndex = hoveredItemIndex;
+					
+					intervalLeave[hoveredItemIndex] = setInterval(function(){
+						intervalIsClear = false;
+						y.html(reverseArray[oldHoveredItemIndex][textCounter2]);
+						console.log('interLeave' + oldHoveredItemIndex + ' '+ textCounter2);
+						textCounter2++;
+						
+						if(textCounter2==reverseArray[oldHoveredItemIndex].length){ 
+							clearInterval(intervalLeave[oldHoveredItemIndex]);
+							intervalIsClear = true;
+						}
+					},10);
+				}
+				
+			//CREATE THE ARRAYS----------------------------------------------------------------------
+				
+				//CHANGE ARRAY--------
+				for (var s = 0; s < originalTexts.length; s++) {
+						
+						
+					changeArray[s] = new Array;
+					
+					//add first 3 random letters
+					var tempText = '';
+					tempText += randomLetter();
+					changeArray[s][0] = tempText;
+					//console.log( changeArray[s][0] );
+					
+					tempText = randomLetter() + randomLetter();	
+					changeArray[s][1] = tempText;
+					//console.log( changeArray[s][1] );
+					
+					tempText = randomLetter() + randomLetter() + randomLetter();
+					changeArray[s][2] = tempText;
+					//console.log( changeArray[s][2] );
+					
+					
+					//loop through the rest of the letters
+					for (i=0; i < hoverTexts[s].length; i++){
+						
+						tempText = tempText.substr(0, tempText.length - 3);	//subtracts 3 letters from temptext
+						tempText += hoverTexts[s].charAt(i)  + randomLetter() + randomLetter() + randomLetter();
+						changeArray[s][i*3 +3] = tempText;
+						//console.log(changeArray[s][i*3 +3]);
+						
+						tempText = tempText.substr(0, tempText.length - 4);	
+						tempText += hoverTexts[s].charAt(i) + randomLetter() + randomLetter() + randomLetter();
+						changeArray[s][i*3 +4] = tempText;
+						//console.log(changeArray[s][i*3 +4]);
+						
+						tempText = tempText.substr(0, tempText.length - 4);	
+						tempText += hoverTexts[s].charAt(i) + randomLetter() + randomLetter() + randomLetter();
+						changeArray[s][i*3 +5] = tempText;
+						//console.log(changeArray[s][i*3 +5]);
+						
+					}
+					
+					//trim off the excess letters in the array
+					for (var i = 0; i < changeArray[s].length; i++) {
+						changeArray[s][i] = changeArray[s][i].substr(0, hoverTexts[s].length );	
+					}
+				}
+				
+				//REVERSE ARRAY (revert text to normal)---------
+				for (var s = 0; s < hoverTexts.length; s++) {
+						
+						
+					reverseArray[s] = new Array;
+					
+					//add first 3 random letters
+					var tempText = '';
+					tempText += randomLetter();
+					reverseArray[s][0] = tempText;
+					console.log( reverseArray[s][0] );
+					
+					tempText = randomLetter() + randomLetter();	
+					reverseArray[s][1] = tempText;
+					console.log( reverseArray[s][1] );
+					
+					tempText = randomLetter() + randomLetter() + randomLetter();
+					reverseArray[s][2] = tempText;
+					console.log( reverseArray[s][2] );
+					
+					
+					//loop through the rest of the letters
+					for (i=0; i < originalTexts[s].length; i++){
+						
+						tempText = tempText.substr(0, tempText.length - 3);	//subtracts 3 letters from temptext
+						tempText += originalTexts[s].charAt(i)  + randomLetter() + randomLetter() + randomLetter();
+						reverseArray[s][i*3 +3] = tempText;
+						console.log(reverseArray[s][i*3 +3]);
+						
+						tempText = tempText.substr(0, tempText.length - 4);	
+						tempText += originalTexts[s].charAt(i) + randomLetter() + randomLetter() + randomLetter();
+						reverseArray[s][i*3 +4] = tempText;
+						console.log(reverseArray[s][i*3 +4]);
+						
+						tempText = tempText.substr(0, tempText.length - 4);	
+						tempText += originalTexts[s].charAt(i) + randomLetter() + randomLetter() + randomLetter();
+						reverseArray[s][i*3 +5] = tempText;
+						console.log(reverseArray[s][i*3 +5]);
+						
+					}
+					
+					//trim off the excess letters in the array
+					for (var i = 0; i < reverseArray[s].length; i++) {
+						reverseArray[s][i] = reverseArray[s][i].substr(0, originalTexts[s].length );	
+					}
+				}
+				
+				
+			// ON HOVER / MOUSELEAVE - TEXT CHANGE------------------------------------------------------
+				$('.menu li').hoverIntent( 
+					function() {
+						
+						hoveredItemIndex = $('.menu li').index(this);
+						changeToHoverText();
+
+					}, 
+					function(){
+						changeToOriginalText();
+					}
+				);
+				
+			}	//End window.onload
+					
+			
+		</script>
+		
+	</head>
+	<body>
+		<ul class="menu">
+			<li>
+				<a href="#">
+					<div class="text">
+						Zombies 
+					</div>
+					<span class="hoverText">
+						Reversus inferno
+					</span>
+				</a>
+			</li>
+			<li>
+				<a href="#">	
+					<div class="text">
+						De carne
+					</div>
+					<span class="hoverText">
+						 Animata corpora 
+					</span>
+				</a>
+			</li>
+			<li>
+				<a href="#">
+					<div class="text">
+						Apocalypsi 
+					</div>
+					<span class="hoverText">
+						Undead dictum
+					</span>
+				</a>
+			</li>
+			<li>
+				<a href="#">
+					<div class="text">
+						Voodoo 
+					</div>
+					<span class="hoverText">
+						Suscitat mortuos
+					</span>
+				</a>
+			</li>
+			<li>
+				<a href="#">
+					<div class="text">
+						Undead 
+					</div>
+					<span class="hoverText">
+						Sicut malus
+					</span>
+				</a>
+			</li>
+			
+		</ul>
+	</body>
+</html>
