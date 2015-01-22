@@ -1,0 +1,64 @@
+#menu-button{
+	width: 47px;
+	height: 152px;
+	position: absolute;
+	right: 0px;
+	top: 196px;
+	background-image: url('../images/menu-button.png');
+}
+#menu-button:hover{
+	background-position: -47px 0;
+}
+
+#menu-container{
+	width: 276px;
+	height: 276px;
+	position: absolute;
+	right: 0px;
+	top: 200px;
+	display: none;
+	/*background-color: red;*/
+}
+.menu-item{
+	position: absolute;
+}
+#close{
+	top: -20px;
+	right: 0px;
+	width: 0px;
+	height: 138px;
+	
+	-webkit-transform: skew(0deg,45deg); /* Safari and Chrome */
+	transform: skew(0deg,45deg);
+	-ms-transform: skew(0deg,45deg); /* IE 9 */	
+}
+#whats-new{
+	top: -20px;
+	right: 138px;
+	width: 0px;
+	height: 138px;
+	
+	-webkit-transform: skew(0deg,45deg); /* Safari and Chrome */
+	transform: skew(0deg,45deg);
+	-ms-transform: skew(0deg,45deg); /* IE 9 */	
+}
+#good-to-know{
+	top: 138px;
+	right: 118px;
+	width: 138px;
+	height: 0px;
+	
+	-webkit-transform: skew(45deg,0deg); /* Safari and Chrome */
+	transform: skew(45deg,0deg);
+	-ms-transform: skew(45deg,0deg); /* IE 9 */	
+}
+#global-connections{
+	top: 158px;
+	left: 138px;
+	width: 0px;
+	height: 138px;
+	
+	-webkit-transform: skew(0deg,45deg); /* Safari and Chrome */
+	transform: skew(0deg,45deg);
+	-ms-transform: skew(0deg,45deg); /* IE 9 */	
+}

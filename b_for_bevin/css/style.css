@@ -1,0 +1,311 @@
+html, body{
+	background-color: #100844;
+	height: 100%;
+}
+.container{
+	width: 700px;
+	margin: 100px auto 0;
+	position: relative;
+}
+.b{
+	position: absolute;
+	top:0px;
+	left:0px;
+	
+    height: 200px;
+    width: 200px;
+    background-color: #ffec47;
+    text-align: center;
+    color: #4031a3;
+    font-size:125px;
+    line-height: 200px;
+}
+
+.b:hover{
+    background-color: #4031a3;
+    color: #ffec47;
+	font-size: 90px;    
+}
+
+.b .text1, .b .text2, .b .circle {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 200px;
+	width: 200px;
+
+	background-image: url('../images/b.png');
+}
+
+.b .text1{
+	display: block;
+}
+.b:hover .text1{
+	display: none;
+}
+.b .text2{
+	display: none;
+	background-position: -200px 0px;
+}
+.b:hover .text2{
+	display: block;
+}
+.b .circle{
+	background-position: -400px 0px;
+	display: none;
+}
+.b:hover .circle{
+	display: block;
+}
+.is{
+	position: absolute;
+	top:100px;
+	left: 200px;
+	
+	height: 100px;
+	width: 100px;
+}
+.is .front{
+	position: absolute;
+	top:0px;
+	left: 0px;
+	color: #f04848;
+
+	height: 100px;
+	width: 100px;
+
+	background-image: url('../images/is.jpg');
+	z-index:10;	
+}
+.is .back{
+	position: absolute;
+	top:0px;
+	left: 0px;
+	color: #FFF;
+
+	height: 100px;
+	width: 100px;
+	z-index: 5;	
+
+	background-image: url('../images/is.jpg');
+	background-position: -100px 0px;
+}
+.is:hover .front{
+	display: none;
+}
+
+.cartoon{
+	position: absolute;
+	top:200px;
+	left:0px;
+	
+    height: 200px;
+    width: 200px;
+    background-color: #4031a3;
+    text-align: center;
+
+    overflow: hidden;	
+}
+.cartoon .animation{
+	position: absolute;
+	top: 15px;
+	left: 42px;
+
+	width: 110px;
+	height: 330px;
+
+	background-image: url('../images/bev-sprite.png');
+	background-position: 0px 0px;
+
+}
+.cartoon:hover .animation{
+	top: -190px;
+	zoom: 1;
+}
+
+.for{
+	position: absolute;
+	top:200px;
+	left:200px;
+	
+    height: 100px;
+    width: 200px;
+    background-image: url('../images/for.png');
+    text-align: center;
+    color: #047b86;
+    font-size:42px;
+    line-height: 102px;
+	
+	overflow: hidden;
+}
+
+.for .bg, .for .stripes1, .for .stripes2, .for .text {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 200px;
+	height: 100px;
+}
+
+.for .bg{
+	background-color: #5242b6;
+	display: none;
+}
+.for:hover .bg{
+	display: block;
+}
+
+.for div.stripes1{
+	top: -100px;
+	left: 0px;
+	width: 300px;
+	background-image: url('../images/for.png');
+	background-position: -200px 0;
+
+}
+.for:hover div.stripes1{
+	top: 0px;
+	left: -100px;
+	zoom:1;
+}
+.for div.stripes2{
+	top: 100px;
+	left: -200px;
+	width: 300px;
+	background-image: url('../images/for.png');
+	background-position: -200px -100px;
+}
+.for:hover div.stripes2{
+	top: 0px;
+	left: -100px;
+	zoom:1;
+}
+
+.for div.text {
+	display: none;
+	left: 50px;
+	width: 100px;
+	background-image: url('../images/for.png');
+	background-position: -500px 0;
+}
+.for:hover div.text {
+	display: block;
+}
+
+.lips{
+	position: absolute;
+	top:200px;
+	left:400px;
+	
+    height: 100px;
+    width: 100px;
+    background-color: #FFF;
+    text-align: center;
+    font-size:125px;
+    line-height: 205px;
+    overflow: hidden;
+		
+}
+.lips .main{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index 10;
+}
+.lips .corner{
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-image: url('../images/lips.jpg');
+    z-index: 5;
+}
+.lips .corner1{
+    top: 0px;
+    left: 0px;
+    background-position: -100px 0;
+}
+.lips .corner2{
+    top: 0px;
+    left: 50px;
+    background-position: -150px 0;
+}
+.lips .corner3{
+    top: 50px;
+    left: 0px;
+    background-position: -100px 50px;
+}
+.lips .corner4{
+    top: 50px;
+    left: 50px;
+    background-position: -150px 50px;
+}
+
+.lips:hover .corner1{
+    top: -50px;
+    left: -50px;
+    zoom: 1;
+}
+.lips:hover .corner2{
+    top: -50px;
+    left: 100px;
+    zoom: 1;
+}
+.lips:hover .corner3{
+    top: 100px;
+    left: -50px;
+    zoom: 1;
+}
+.lips:hover .corner4{
+    top: 100px;
+    left: 100px;
+    zoom: 1;
+}
+.bevin{
+	position: absolute;
+	top:300px;
+	left:200px;
+	
+    height: 200px;
+    width: 500px;
+    background-color: #f04848;
+    text-align: center;
+    
+    overflow: hidden;	
+}
+.bevin .text, .bevin .dots{
+	position: absolute;
+	top:0px;
+	left: 0px;
+}
+.bevin .text{
+	width: 500px;
+	height: 200px;
+
+	background: url('../images/bevin-beautiful.png');
+
+    z-index: 10;    
+}
+.bevin:hover .text{
+	background-position: 0 -200px;
+}
+.bevin .dots{
+	position: absolute;
+	top:0px;
+	left: 0px;
+	
+	height: 200px;
+    width: 500px;
+	display: none;
+	
+	background-image: url('../images/dots.png');
+	z-index: 5;
+}
+.bevin:hover{
+    background-color: #FFF;
+}
+.bevin:hover .dots{
+	display: block;	
+}
+
+
+

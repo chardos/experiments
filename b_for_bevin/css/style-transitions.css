@@ -1,0 +1,436 @@
+html{
+	background-color: #100844;
+	font-weight: bold;
+    font-family: didot-bold;
+}
+.container{
+	width: 700px;
+	margin: 100px auto 0;
+	position: relative;
+}
+.b{
+	position: absolute;
+	top:0px;
+	left:0px;
+	
+    height: 200px;
+    width: 200px;
+    background-color: #ffec47;
+    text-align: center;
+    color: #4031a3;
+    font-size:125px;
+    line-height: 200px;
+	
+	-webkit-transition: all .3s ease;
+    transition: all .3s ease;	
+}
+
+.b:hover{
+    background-color: #4031a3;
+    color: #ffec47;
+	font-size: 90px;
+	-webkit-transition: all .3s ease;
+    transition: all .3s ease;    
+}
+.b .text1, .b .text2, .b .circle {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 200px;
+	width: 200px;
+
+	background-image: url('../images/b.png');
+
+	-webkit-transition: all .3s ease;
+    transition: all .3s ease;
+}
+
+.b .text1{
+	opacity: 1;
+}
+.b:hover .text1{
+	opacity: 0;
+	-webkit-transform: scale(0.8);
+	transform: scale(0.8);
+}
+.b .text2{
+	opacity: 0;
+	background-position: -200px 0px;
+}
+.b:hover .text2{
+	opacity: 1;
+	-webkit-transform: scale(0.8);
+	transform: scale(0.8);
+}
+.b .circle{
+	background-position: -400px 0px;
+	-webkit-transform: scale(0.1);
+	transform: scale(0.1);
+	opacity: 0;
+}
+.b:hover .circle{
+	-webkit-transform: scale(1);
+	transform: scale(1);
+
+	-webkit-transform: rotate(90deg);
+	transform: rotate(135deg);
+	transform: rotate(135deg);
+	opacity: 1;
+}
+
+.is{	
+	position: absolute;
+	top:100px;
+	left: 200px;
+	
+	height: 100px;
+	width: 100px;
+	
+	text-align: center;
+    
+    font-size:42px;
+    line-height: 102px;
+	
+	-webkit-transition: all .3s ease;
+    transition: all .3s ease;
+}
+.is .front, .is .back, .is:hover .front, .is:hover .back {
+	-webkit-transition: all .3s ease;
+    transition: all .3s ease;
+}
+.is .front{
+	position: absolute;
+	top:0px;
+	left: 0px;
+	z-index: 20;
+
+	height: 100px;
+	width: 100px;
+
+	background-image: url('../images/is.jpg');
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+.is .back{
+	position: absolute;
+	top:0px;
+	left: 0px;
+	z-index: 10;
+
+	height: 100px;
+	width: 100px;
+
+	-webkit-transform: rotateY(180deg);
+	transform: rotateY(180deg);
+
+	background-image: url('../images/is.jpg');
+	background-position: -100px 0px;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+.is:hover .front{
+	-webkit-transform: rotateY(180deg);
+	transform: rotateY(180deg);
+
+	-webkit-transition: all .3s ease;
+    transition: all .3s ease;
+}
+.is:hover .back{
+	-webkit-transform: rotateY(0deg);
+	transform: rotateY(0deg);
+
+	
+}
+.cartoon{
+	position: absolute;
+	top:200px;
+	left:0px;
+	
+    height: 200px;
+    width: 200px;
+    background-color: #4031a3;
+    text-align: center;
+	
+	-webkit-transition: all .2s ease;
+    transition: all .2s ease;
+
+    overflow: hidden;
+	
+}
+.cartoon .animation{
+	position: absolute;
+	top: 15px;
+	left: 42px;
+
+	width: 110px;
+	height: 330px;
+
+	background-image: url('../images/bev-sprite.png');
+	background-position: 0px 0px;
+
+	-webkit-transition: top .2s ease;
+    transition: top .2s ease;
+}
+.cartoon:hover .animation{
+	top: -190px;
+}
+.for{
+	position: absolute;
+	top:200px;
+	left:200px;
+	
+    height: 100px;
+    width: 200px;
+    background-image: url('../images/for.png');
+    text-align: center;
+    color: #047b86;
+    font-size:42px;
+    line-height: 102px;
+	
+	overflow: hidden;
+}
+.for .bg, .for .stripes1, .for .stripes2, .for .text {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 200px;
+	height: 100px;
+}
+.for .bg, .for .stripes1, .for .stripes2, .for .text {
+	-webkit-transition: all .2s ease;
+    transition: all .2s ease;
+}
+.for .bg{
+	background-color: #5242b6;
+	opacitY: 0;
+}
+.for:hover .bg{
+	opacity: 1;
+}
+.for div.stripes1{
+	top: -100px;
+	left: 0px;
+	width: 300px;
+	background-image: url('../images/for.png');
+	background-position: -200px 0;
+}
+.for:hover div.stripes1{
+	top: 0px;
+	left: -100px;
+
+}
+.for div.stripes2{
+	top: 100px;
+	left: -200px;
+	width: 300px;
+	background-image: url('../images/for.png');
+	background-position: -200px -100px;
+}
+.for:hover div.stripes2{
+	top: 0px;
+	left: -100px;
+}
+
+.for div.text {
+	opacity: 0;
+	left: 50px;
+	width: 100px;
+	background-image: url('../images/for.png');
+	background-position: -500px 0;
+}
+.for:hover div.text {
+	opacity: 1;
+}
+
+.lips{
+	position: absolute;
+	top:200px;
+	left:400px;
+	
+    height: 100px;
+    width: 100px;
+    background-color: #FFF;
+    text-align: center;
+    font-size:125px;
+    line-height: 205px;
+	
+    overflow: hidden;	
+}
+.lips .main{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 5;
+}
+.lips .corner{
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-image: url('../images/lips.jpg');
+     -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+    z-index: 10;    
+}
+.lips .corner1{
+    top: 0px;
+    left: 0px;
+    background-position: -100px 0;
+
+}
+.lips .corner2{
+    top: 0px;
+    left: 50px;
+    background-position: -150px 0;
+
+}
+.lips .corner3{
+    top: 50px;
+    left: 0px;
+    background-position: -100px 50px;
+}
+.lips .corner4{
+    top: 50px;
+    left: 50px;
+    background-position: -150px 50px;
+}
+.lips:hover .corner1{
+    top: -50px;
+    left: -50px;
+}
+.lips:hover .corner2{
+    top: -50px;
+    left: 100px;
+}
+.lips:hover .corner3{
+    top: 100px;
+    left: -50px;
+}
+.lips:hover .corner4{
+    top: 100px;
+    left: 100px;
+}
+
+
+.bevin{
+	position: absolute;
+	top:300px;
+	left:200px;
+	
+    height: 200px;
+    width: 500px;
+    background-color: #f04848;
+    text-align: center;    
+	
+	-webkit-transition: all .3s ease;
+    transition: all .3s ease;
+    overflow: hidden;	
+}
+
+.bevin .text, .bevin .dots{
+	position: absolute;
+	top:0px;
+	left: 0px;
+}
+
+.bevin .text{
+	width: 500px;
+	height: 200px;
+
+	background: url('../images/bevin-beautiful.png');
+
+	-webkit-transition: all .3s ease;
+    transition: all .3s ease;
+    z-index: 10;    
+}
+.bevin:hover .text{
+	background-position: 0 -200px;
+}
+
+.bevin .dots{
+	position: absolute;
+	top:0px;
+	left: 0px;
+	
+	height: 200px;
+    width: 500px;
+	opacity: 0;
+	
+	background-image: url('../images/dots.png');
+	z-index: 5;
+}
+
+.bevin:hover{
+    background-color: #FFF;
+}
+.bevin:hover .dots{
+	opacity: 1;
+	-webkit-transition: all .3s ease;
+    transition: all .3s ease;	
+	
+	animation:mymove 1s infinite linear;
+	-moz-animation:mymove 1s infinite linear; /* Firefox */
+	-webkit-animation:mymove .5s infinite linear; /* Safari and Chrome */	
+}
+
+@keyframes mymove {
+  from {background-position: -23px 0px;}
+  to {background-position: 0px 0px;}
+}
+@-moz-keyframes mymove /* Firefox */ {
+  from {background-position: -23px 0px;}
+  to {background-position: 0px 0px;}
+}
+@-webkit-keyframes mymove /* Safari and Chrome */ {
+  from {background-position: -23px 0px;}
+  to {background-position: 0px 0px;}
+}
+.bevin .corner{
+	position: absolute;
+	width: 250px;
+	height: 100px;
+}
+.bevin .corner1{
+	top: 0px;
+	left: -250px;
+	background-image: url('../images/trianglecorners.png');
+	z-index: 50;
+}
+.bevin .corner2{
+	top: 0px;
+	right: -250px;
+	background-image: url('../images/trianglecorners.png');
+	background-position: 250px 0;
+	z-index: 50;
+}
+.bevin .corner3{
+	bottom: 0px;
+	left: -250px;
+	background-image: url('../images/trianglecorners.png');
+	background-position: 0 100px;
+	z-index: 50;
+}
+.bevin .corner4{
+	bottom: 0px;
+	right: -250px;
+	background-image: url('../images/trianglecorners.png');
+	background-position: 250px 100px;
+	z-index: 50;
+}
+
+.bevin:hover .corner{
+	-webkit-transition: all .3s ease;
+    transition: all .3s ease;
+	opacity: 0.8;
+}
+.bevin:hover .corner1{
+	left: 0px;
+}
+.bevin:hover .corner2{
+	right: 0px;
+}
+.bevin:hover .corner3{
+	left: 0px;
+}
+.bevin:hover .corner4{
+	right: 0px;
+}
