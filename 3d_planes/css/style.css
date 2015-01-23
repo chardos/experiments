@@ -1,3 +1,7 @@
+body{
+	font-family: helvetica, arial, sans-serif;
+	font-size: 24px;
+}
 .container{
 	width: 400px;
 	margin: 0 auto;
@@ -12,9 +16,24 @@
 	height: 200px;
 	transition: all 0.5s ease;
 	transform: perspective( 800px ) translateZ(0px);
+	transform-style: preserve-3d;
 }
 .plane:hover{
 	transform: perspective( 800px ) translateZ(20px);
+}
+.plane:hover .text{
+	transform: perspective( 800px ) translateY(-150%) translateZ(20px) rotateX(-90deg);
+}
+
+.text{
+	text-align: center;
+	position: absolute;
+	width: 100%;
+	top:50%;
+	transform: translateY(-50%);
+	transition: all 0.2s ease;
+	line-height: 1;
+
 }
 
 .plane1{
