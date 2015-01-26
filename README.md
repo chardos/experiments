@@ -4,7 +4,7 @@
 
 [B for Bevin](http://chardos.github.io/experiments/b_for_bevin/)
 
-[Fold out menu](http://chardos.github.io/experiments/fold_out_menu/)
+[Fold out menu](http://chardos.github.io/experiments/fold_out_menu/greensock)
 
 [Responsive grid](http://chardos.github.io/experiments/responsive_grid/)
 
