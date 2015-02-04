@@ -1,0 +1,39 @@
+<script src="../d3.v3.min.js" charset="utf-8"></script>
+
+<body>
+  
+  <svg width="720" height="120">
+    <circle cx="40" cy="60" r="10"></circle>
+    <circle cx="80" cy="60" r="10"></circle>
+    <circle cx="120" cy="60" r="10"></circle>
+  </svg>
+
+  <script>
+
+    var circle = d3.selectAll('circle');
+    circle.style('fill','steelblue')
+    circle.attr('r', 30)
+    circle.attr('cx', function(){
+      return Math.ceil(Math.random()*720);
+    })
+
+    circle.data([32, 57, 112]);
+    circle.attr("r", function(d) { return Math.sqrt(d); });
+    circle.attr('cx', function(d,i){ return i * 100 + 30} );
+    
+
+    var svg = d3.select('svg');
+    var circle = svg.selectAll('circle')
+                    .data([32, 57, 112, 293]);
+
+    var circleEnter = circle.enter().append('circle')
+
+    circleEnter.attr("cy", 60);
+    circleEnter.attr("cx", function(d, i) { return i * 100 + 30; });
+    circleEnter.attr("r", function(d) { return Math.sqrt(d); });
+    circle.style('fill','steelblue');
+
+
+  </script>
+
+</body>
