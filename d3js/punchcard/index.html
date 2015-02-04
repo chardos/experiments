@@ -91,7 +91,7 @@
         return( d[1] * wx + (wx / 2) );
         //return d[0]
       });
-      circle.attr('r', function(d){
+      circle.attr('r', 0).transition().attr('r', function(d){
         var radius = (d[2] / dataMax * range) + shift;
         if (radius == shift){
           return;
