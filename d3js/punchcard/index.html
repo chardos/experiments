@@ -68,8 +68,8 @@
     var wx = width / hours;
     var hx = height / days;
 
-    var dataSet1 = [[0,0,2],[0,23,5],[2,12,5],[6,23,2],[6,22,1],[6,1,1],[3,14,2],[3,15,2],[3,16,3],[3,18,5],[3,13,2]];
-    var dataSet2 = [[0,23,5],[1,3,5],[1,23,4],[2,13,7],[5,22,2],[5,7,2],[5,8,10],[5,21,8],[4,4,3],[3,15,5],[2,12,2],[4,16,8],[3,13,5]];
+    var dataSet1 = [[2,5,2],[2,6,4],[2,7,5],[2,8,6],[0,0,2],[0,23,5],[2,12,5],[6,23,2],[6,22,1],[6,1,1],[3,14,2],[3,15,2],[3,16,3],[3,18,5],[3,13,2]];
+    var dataSet2 = [[2,5,1],[2,6,5],[2,7,5],[2,8,6],[0,23,5],[1,3,5],[1,23,4],[2,13,7],[5,22,2],[5,7,2],[5,8,10],[5,21,8],[4,4,3],[3,15,5],[2,12,2],[4,16,8],[3,13,5]];
     
     var dataMin = calcMin(dataSet1, dataSet2);
     var dataMax = calcMax(dataSet1, dataSet2);
@@ -105,8 +105,8 @@
       });
     }
     
-    addCircles(dataSet1, '#ff7c16', 'one');
-    addCircles(dataSet2, 'black', 'two');
+    addCircles(dataSet1, '#ffa800', 'one');
+    addCircles(dataSet2, '#00a2ff', 'two');
 
     // function rearrange dots
 
@@ -122,18 +122,16 @@
             /*circleSet.one[0][i1].style({
               opacity: 0.5
             });*/
-            svg.selectAll('.' + 'one' + i1).style('opacity','0.4');
-            svg.selectAll('.' + 'two' + i2).style('opacity','0.4');
+            svg.selectAll('.' + 'one' + i1).remove();
+            svg.selectAll('.' + 'two' + i2).style('fill','#053620');
 
           }
         }
       }
 
+      //bring smallest radius circles to the top
       svg.selectAll('circle').sort(function(a,b){
-        if (a[2] > b[2]){
-          return a;
-        }
-        return b;
+        return b[2] - a[2]
       })
     }
     rearrangeDotOrder()
