@@ -7,6 +7,7 @@
 
 <head>
   <script src="../d3.v3.min.js" charset="utf-8"></script>
+  <script src="../jquery-1.11.2.min.js" charset="utf-8"></script>
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -105,8 +106,6 @@
       });
     }
     
-    addCircles(dataSet1, '#ffa800', 'one');
-    addCircles(dataSet2, '#00a2ff', 'two');
 
     // function rearrange dots
 
@@ -134,8 +133,33 @@
         return b[2] - a[2]
       })
     }
-    rearrangeDotOrder()
+    
 
+    function buildPunchCard(card1, card2){
+      addCircles(card1[0], card1[1], card1[2]);
+      if( arguments.length > 1) {
+        addCircles(card2[0], card2[1], card2[2]);
+        rearrangeDotOrder();
+      }
+    }
+
+    buildPunchCard(
+      [dataSet1, '#ffa800', 'one'],
+      [dataSet2, '#00a2ff', 'two']
+    )
+
+
+    /*
+    $.ajax({
+        url: "https://api.github.com/repos/chardos/experiments/stats/contributors",
+        dataType: "json",
+        success: function (returndata)
+        {
+            console.log(returndata[0]);
+            alert('Load was performed.');
+        }  
+    });
+    */
 
 
 
