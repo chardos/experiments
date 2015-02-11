@@ -8,16 +8,26 @@
 <head>
   <script src="../d3.v3.min.js" charset="utf-8"></script>
   <script src="../jquery-1.11.2.min.js" charset="utf-8"></script>
+  <script src="js/graph.js" charset="utf-8"></script>
+  <script src="js/helpers.js" charset="utf-8"></script>
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 
 
 <body bgcolor="grey">
+
+  <select name="" id="">
+    <option value="none">Please select</option>
+  </select>
+  <select name="" id="">
+    <option value="none">Please select</option>
+  </select>
   
-  <svg width="800" height="350">
-    <!-- <circle cx="120" cy="60" r="10"></circle> -->
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800" height="350">
+     <!-- <rect x="50" y="20" width="150" height="150"> -->
   </svg>
+
 
   <script>
 
@@ -26,38 +36,6 @@
     //<0-23> : Hour of Day, X Axis Value,
     //<n>    : Number of commits, Z Axis Value / Circle weight
     // example value: [0,8,2]
-
-    var opts = {
-      maxRadius: 15,
-      minRadius: 5
-    }
-
-    var range = opts.maxRadius - opts.minRadius;
-    var shift = opts.maxRadius - range;
-
-    function calcMax(dataSet1, dataSet2){
-      var max = 0;
-      var combinedSets = dataSet1.concat(dataSet2);
-
-      for (var i=0; i<combinedSets.length; i++){
-        if (combinedSets[i][2] > max){
-          max = combinedSets[i][2];
-        }
-      }
-      return max;
-    }
-
-    function calcMin(dataSet1, dataSet2){
-      var min;
-      var combinedSets = dataSet1.concat(dataSet2);
-      for (var i=0; i<combinedSets.length; i++){
-        if (combinedSets[i][2] < min || typeof min === 'undefined'){
-          min = combinedSets[i][2];
-        }
-      }
-      return min;
-    }
-
 
     var days = 7;
     var hours = 24;
@@ -68,99 +46,72 @@
 
     var wx = width / hours;
     var hx = height / days;
+    console.log(wx);
 
-    var dataSet1 = [[2,5,2],[2,6,4],[2,7,5],[2,8,6],[0,0,2],[0,23,5],[2,12,5],[6,23,2],[6,22,1],[6,1,1],[3,14,2],[3,15,2],[3,16,3],[3,18,5],[3,13,2]];
-    var dataSet2 = [[2,5,1],[2,6,5],[2,7,5],[2,8,6],[0,23,5],[1,3,5],[1,23,4],[2,13,7],[5,22,2],[5,7,2],[5,8,10],[5,21,8],[4,4,3],[3,15,5],[2,12,2],[4,16,8],[3,13,5]];
+    var dataSet1 = [[0,0,2],[1,0,2],[23,0,2],[9,1,6],[14,3,8],[10,1,3],[11,1,4],[12,1,6],[13,1,6],[14,1,5]];
+    var dataSet2 = [[1,0,3],[2,5,1],[2,6,5],[3,4,6],[10,1,3],[11,1,4],[12,1,6],[13,1,6],[14,1,4],[15,1,3]];
     
-    var dataMin = calcMin(dataSet1, dataSet2);
-    var dataMax = calcMax(dataSet1, dataSet2);
+    var dataMin = pc.calcMin(dataSet1, dataSet2);
+    var dataMax = pc.calcMax(dataSet1, dataSet2);
 
-    var circleSet = {}
+    var rectSet = {};
 
-    function addCircles(data, color, setNumber){
-
-      //create the circles
-      circleSet[setNumber] = svg.selectAll()
-                      .data(data)
-                      .enter().append('circle')
-                      .attr("class", function(d,i){ return setNumber + i})
-
-      circleSet[setNumber].attr('cy', function(d){
-        return( d[0] * hx + (hx / 2) );
-        //return d[0]
-      });
-      circleSet[setNumber].attr('cx', function(d){
-        return( d[1] * wx + (wx / 2) );
-        //return d[0]
-      });
-      circleSet[setNumber].attr('r', 0).transition().attr('r', function(d){
-        var radius = (d[2] / dataMax * range) + shift;
-        if (radius == shift){
-          return;
-        }
-        return radius;
-      });
-
-      circleSet[setNumber].style({
-        fill: color
-      });
-    }
-    
-
-    // function rearrange dots
-
-    function rearrangeDotOrder(){
-      for( i1=0; i1 < dataSet1.length; i1++){
-        for( i2=0; i2 < dataSet2.length; i2++){
-          if ( dataSet1[i1][0] == dataSet2[i2][0] && dataSet1[i1][1] == dataSet2[i2][1] && dataSet1[i1][2] == dataSet2[i2][2] ){
-            console.log(dataSet1[i1][0]);
-            console.log(dataSet1[i1][1]);
-            console.log(dataSet1[i1][2]);
-            console.log(i1);
-            console.log( circleSet.one[0][i1] );
-            /*circleSet.one[0][i1].style({
-              opacity: 0.5
-            });*/
-            svg.selectAll('.' + 'one' + i1).remove();
-            svg.selectAll('.' + 'two' + i2).style('fill','#053620');
-
-          }
-        }
-      }
-
-      //bring smallest radius circles to the top
-      svg.selectAll('circle').sort(function(a,b){
-        return b[2] - a[2]
-      })
-    }
-    
-
-    function buildPunchCard(card1, card2){
-      addCircles(card1[0], card1[1], card1[2]);
-      if( arguments.length > 1) {
-        addCircles(card2[0], card2[1], card2[2]);
-        rearrangeDotOrder();
-      }
-    }
-
-    buildPunchCard(
+    pc.buildPunchCard(
       [dataSet1, '#ffa800', 'one'],
       [dataSet2, '#00a2ff', 'two']
     )
-
-
-    /*
+    
     $.ajax({
-        url: "https://api.github.com/repos/chardos/experiments/stats/contributors",
-        dataType: "json",
-        success: function (returndata)
-        {
-            console.log(returndata[0]);
-            alert('Load was performed.');
-        }  
-    });
-    */
 
+      url: "https://api.github.com/repos/mebinum/realtrends/commits?per_page=100",
+      //url: "https://api.github.com/repos/guanqun/git-punchcard-plot/commits",
+      //url: "https://api.github.com/repos/jquery/jquery/commits",
+      dataType: "json",
+      success: function (result) {
+        console.log(result);
+        var authors = {};
+        var authorArray = [];
+
+        $.each(result, function(index, value){
+          if ( this.author && this.author.login){
+            var author = this.author.login;
+          }
+          var date = this.commit.committer.date;
+
+          if (typeof author != 'undefined'){
+            if (typeof authors[author] == 'undefined' ){
+              authors[author] = [];
+              authors[author].push( pc.convertDateToArray(date) );
+            }
+            else{
+              authors[author].push( pc.convertDateToArray(date) );
+            }
+          }
+        });
+        console.log(authors);
+
+        //alert('Load was performed.');
+      }  
+    });
+    
+
+  //count commits by punch card
+    /*$.ajax({
+
+      url: "https://api.github.com/repos/guanqun/git-punchcard-plot/stats/punch_card",
+      //url: "https://api.github.com/repos/guanqun/git-punchcard-plot/commits",
+      //url: "https://api.github.com/repos/jquery/jquery/commits",
+      dataType: "json",
+      success: function (result) {
+        console.log(result);
+        var totalCommits = 0;
+        $.each(result, function(index, value){
+          totalCommits += value[2];
+          console.log(value[2]);
+        });
+        console.log(totalCommits);
+      }  
+    });*/
 
 
 

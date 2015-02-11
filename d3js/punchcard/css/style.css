@@ -1,6 +1,9 @@
+select{
+  margin-bottom: 20px;
+}
+
 svg{
   background-color: #FFF;
+  display: block;
 }
-circle{
-  background-color: red;
-}
+
