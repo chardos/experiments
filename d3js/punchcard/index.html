@@ -46,7 +46,6 @@
 
     var wx = width / hours;
     var hx = height / days;
-    console.log(wx);
 
     var dataSet1 = [[0,0,2],[1,0,2],[23,0,2],[9,1,6],[14,3,8],[10,1,3],[11,1,4],[12,1,6],[13,1,6],[14,1,5]];
     var dataSet2 = [[1,0,3],[2,5,1],[2,6,5],[3,4,6],[10,1,3],[11,1,4],[12,1,6],[13,1,6],[14,1,4],[15,1,3]];
@@ -60,6 +59,36 @@
       [dataSet1, '#ffa800', 'one'],
       [dataSet2, '#00a2ff', 'two']
     )
+
+    function pushCompressedArray(authorsSquashed, authors, author){
+
+      //if empty push first value
+      if (authorsSquashed[author].length == 0){
+        authorsSquashed[author].push([ authors[author][0][0], authors[author][1][1], 1 ]);
+      }
+        //iterate through authors[author]
+        $.each(authors[author], function(i, v){
+          //if exists, increment existing array
+
+          $.each(authorsSquashed[author], function(si, sv){
+            //if matches
+            if (authors[author][i][0] == authorsSquashed[author][si][0] && authors[author][i][1] == authorsSquashed[author][si][1] ){
+              authorsSquashed[author][si][2] = authorsSquashed[author][si][2] + 1;
+            }
+            //else
+            else{
+              authorsSquashed[author][si].push( [authors[author][i][0], authors[author][i][1], 1] )
+            }
+          });
+
+
+        });
+
+      //console.log(authorsSquashed);
+    }
+
+    var authors;
+    var authorsSquashed;
     
     $.ajax({
 
@@ -68,27 +97,39 @@
       //url: "https://api.github.com/repos/jquery/jquery/commits",
       dataType: "json",
       success: function (result) {
-        console.log(result);
-        var authors = {};
-        var authorArray = [];
+        var author = ''
+        authors = {};
+        authorsSquashed = {};
 
         $.each(result, function(index, value){
           if ( this.author && this.author.login){
-            var author = this.author.login;
+            author = this.author.login;
           }
-          var date = this.commit.committer.date;
+          var date = pc.convertDateToArray(this.commit.committer.date);
 
           if (typeof author != 'undefined'){
             if (typeof authors[author] == 'undefined' ){
               authors[author] = [];
-              authors[author].push( pc.convertDateToArray(date) );
+              authors[author].push( date );
             }
             else{
-              authors[author].push( pc.convertDateToArray(date) );
+              authors[author].push( date );
             }
           }
         });
-        console.log(authors);
+
+        for (var author in authors) {
+          if (typeof authorsSquashed[author] == 'undefined' ){
+              authorsSquashed[author] = [];
+              pushCompressedArray(authorsSquashed, authors, author);
+          }
+          else {
+            pushCompressedArray(authorsSquashed, authors, author);
+          }
+        }
+
+        //console.log(authorsSquashed[author]);
+
 
         //alert('Load was performed.');
       }  
