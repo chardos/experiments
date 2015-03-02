@@ -24,8 +24,6 @@ pc.squashArray = function(arr){
   $.each(arr, function(i, v){
     var count = 0;
     $.each(squashedArr, function(si, sv){
-      console.log('v:' + v);
-      console.log('sv:' + sv);
       if( v[0] == sv[0] && v[1] == sv[1] ){
         sv[2]++;
         count = 0;
@@ -33,17 +31,13 @@ pc.squashArray = function(arr){
       }
       else{
         count++;
-        console.log('count up');
       }
     });
     if ( count > 0){
       squashedArr.push( [v[0], v[1], 1] );
     }
-    console.log('c:' + count);
-    console.log(squashedArr.toString());
-    console.log('__________');
   });
-  console.log(squashedArr);
+  return squashedArr;
 }
 
 

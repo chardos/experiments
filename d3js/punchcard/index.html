@@ -1,9 +1,3 @@
-<!-- TO DOS
-
-- Calculate the min/max off all data sets (not just first one)
-- Figure out how to make the smaller overlapping circle go to top
-
--->
 
 <head>
   <script src="../d3.v3.min.js" charset="utf-8"></script>
@@ -55,37 +49,8 @@
 
     var rectSet = {};
 
-    pc.buildPunchCard(
-      [dataSet1, '#ffa800', 'one'],
-      [dataSet2, '#00a2ff', 'two']
-    )
+    
 
-    function pushCompressedArray(authorsSquashed, authors, author){
-
-      //if empty push first value
-      if (authorsSquashed[author].length == 0){
-        authorsSquashed[author].push([ authors[author][0][0], authors[author][1][1], 1 ]);
-      }
-        //iterate through authors[author]
-        $.each(authors[author], function(i, v){
-          //if exists, increment existing array
-
-          $.each(authorsSquashed[author], function(si, sv){
-            //if matches
-            if (authors[author][i][0] == authorsSquashed[author][si][0] && authors[author][i][1] == authorsSquashed[author][si][1] ){
-              authorsSquashed[author][si][2] = authorsSquashed[author][si][2] + 1;
-            }
-            //else
-            else{
-              authorsSquashed[author][si].push( [authors[author][i][0], authors[author][i][1], 1] )
-            }
-          });
-
-
-        });
-
-      //console.log(authorsSquashed);
-    }
 
     var authors;
     var authorsSquashed;
@@ -119,40 +84,19 @@
         });
 
         for (var author in authors) {
-          if (typeof authorsSquashed[author] == 'undefined' ){
-              authorsSquashed[author] = [];
-              pushCompressedArray(authorsSquashed, authors, author);
-          }
-          else {
-            pushCompressedArray(authorsSquashed, authors, author);
-          }
+          authorsSquashed[author] = [];
+          authorsSquashed[author].push( pc.squashArray(authors[author]) )
+          console.log(  authorsSquashed  );
         }
+        pc.buildPunchCard(
+          [authorsSquashed['mebinum'][0], '#ffa800', 'one'],
+          [authorsSquashed['jordanwalsh23'][0], '#00a2ff', 'two']
+        )
 
-        //console.log(authorsSquashed[author]);
-
-
-        //alert('Load was performed.');
       }  
     });
     
 
-  //count commits by punch card
-    /*$.ajax({
-
-      url: "https://api.github.com/repos/guanqun/git-punchcard-plot/stats/punch_card",
-      //url: "https://api.github.com/repos/guanqun/git-punchcard-plot/commits",
-      //url: "https://api.github.com/repos/jquery/jquery/commits",
-      dataType: "json",
-      success: function (result) {
-        console.log(result);
-        var totalCommits = 0;
-        $.each(result, function(index, value){
-          totalCommits += value[2];
-          console.log(value[2]);
-        });
-        console.log(totalCommits);
-      }  
-    });*/
 
 
 
