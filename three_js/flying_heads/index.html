@@ -141,12 +141,8 @@
 			// so we have to define our own. 
 
 			function particleRender( context ) {
-				a = this;
-				context.globalAlpha = opac;
-				//var z = particles[this.id - 1].position.z;
-				//console.log(z);
+				context.globalAlpha = mouseY / window.innerHeight + 0.4;
 				context.drawImage(image, 0, 0, 10, 10);
-				// we get passed a reference to the canvas context
 			};
 
 			
