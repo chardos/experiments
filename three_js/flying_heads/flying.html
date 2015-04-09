@@ -19,9 +19,6 @@
 
 		<script>
 
-			//pull distance back
-			//include left right motion
-
 			// the main three.js components
 			var camera, scene, renderer,
 
@@ -145,7 +142,7 @@
 					particle.position.z +=  mouseY * 0.1;
 					//camera.position.x = mouseX/windowWidth - (windowWidth/2);
 					var cameraOffset = mouseX/windowWidth - 0.5;
-					camera.position.x = cameraOffset * -1000;
+					camera.position.x = cameraOffset * -750;
 
 		
 					// if the particle is too close move it to the back
