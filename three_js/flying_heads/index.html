@@ -10,14 +10,30 @@
 				margin: 0px;
 				overflow: hidden;
 			}
+			#stop{
+				position: absolute;
+				top: 5px;
+				right: 5px;
+				padding: 20px;
+				background-color: white;
+			}
 		</style>
 		
 	</head>
 	<body>
+		<div id="stop">stop</div>
 		<img src="images/rich-head.png" id="richhead" style="display: none;">
 		<script src="three.min.js"></script>
 
 		<script>
+			document.getElementById("stop").addEventListener("click", function(){
+		    clearInterval(interval);
+			});
+
+
+			var image = document.getElementById('richhead');
+			var interval;
+			var opac;
 
 			// the main three.js components
 			var camera, scene, renderer,
@@ -48,6 +64,13 @@
 				
 				// camera needs to go in the scene 
 				scene.add(camera);
+
+
+      
+      // directional lighting
+      var directionalLight = new THREE.DirectionalLight(0xffffff);
+      directionalLight.position.set(1, 1, 1).normalize();
+      scene.add(directionalLight);
 	
 				// and the CanvasRenderer figures out what the 
 				// stuff in the scene looks like and draws it!
@@ -65,7 +88,7 @@
 				
 				// render 30 times a second (should also look 
 				// at requestAnimationFrame) 
-				setInterval(update,1000/30); 
+				interval = setInterval(update,1000/60); 
 			
 			}
 
@@ -83,12 +106,11 @@
 			// creates a random field of Particle objects
 			
 			function makeParticles() { 
-				
 				var particle, material; 
 
 				// we're gonna move from z position -1000 (far away) 
 				// to 1000 (where the camera is) and add a random particle at every pos. 
-				for ( var zpos= -1000; zpos < 1000; zpos+=100 ) {
+				for ( var zpos= -1000; zpos < 1000; zpos+=80 ) {
 		
 					// we make a particle material and pass through the 
 					// colour and custom particle render function we defined. 
@@ -119,14 +141,12 @@
 			// so we have to define our own. 
 
 			function particleRender( context ) {
-				var image = document.getElementById('richhead');
+				a = this;
+				context.globalAlpha = opac;
+				//var z = particles[this.id - 1].position.z;
+				//console.log(z);
 				context.drawImage(image, 0, 0, 10, 10);
 				// we get passed a reference to the canvas context
-				//context.beginPath();
-				// and we just have to draw our shape at 0,0 - in this
-				// case an arc from 0 to 2Pi radians or 360º - a full circle!
-				//context.arc( 0, 0, 1, 0,  Math.PI * 2, true );
-				//context.fill();
 			};
 
 			
@@ -137,14 +157,15 @@
 				for(var i=0; i<particles.length; i++) {
 		
 					particle = particles[i]; 
-		
+					opac = particle.position.z/1000;
+					console.log(opac);
 					// and move it forward dependent on the mouseY position. 
-					particle.position.z +=  mouseY * 0.1;
+					particle.position.z +=  mouseY * 0.05;
 					//camera.position.x = mouseX/windowWidth - (windowWidth/2);
 					var cameraOffset = mouseX/windowWidth - 0.5;
 					camera.position.x = cameraOffset * -750;
 
-		
+
 					// if the particle is too close move it to the back
 					if(particle.position.z>1000) particle.position.z = -1000; 
 		
