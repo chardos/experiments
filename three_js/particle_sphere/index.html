@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
 	<head>
-		<title>three.js particle tutorial</title>
+		<title>Particle sphere</title>
 		<meta charset="utf-8">
 
 		<style type="text/css">
@@ -18,6 +18,10 @@
 
 		<script>
 
+		// TODO : UPDOWN MAKES ZOOM
+		// TODO : MAKE PARTICLES MOVE AROUND IN RANDOM DIRECTIONS
+		// TODO : MAKE LINES AROUND THE SPHERE?
+
 			// the main three.js components
 			var camera, scene, renderer,
 
@@ -27,8 +31,9 @@
 			// an array to store our particles in
 				particles = [];
 
-				windowWidth = window.innerWidth;
-			starDistance = 50;
+			windowWidth = window.innerWidth;
+			windowHeight = window.innerHeight;
+			starDistance = 500;
 
 			// let's get going! 
 			init();
@@ -41,7 +46,7 @@
 	
 				// move the camera backwards so we can see stuff! 
 				// default position is 0,0,0. 
-				camera.position.z = 1000;
+				baseZoom = camera.position.z = 1000;
 
 				// the scene contains all the 3D object data
 				scene = new THREE.Scene();
@@ -62,6 +67,7 @@
 			
 				// add the mouse move listener
 				document.addEventListener( 'mousemove', onMouseMove, false );
+
 				
 				// render 30 times a second (should also look 
 				// at requestAnimationFrame) 
@@ -88,7 +94,7 @@
 				var particle, material; 
 
 				//CREATE THE SPHERE
-				for (var i = 1; i < 30; i++){
+				for (var i = 1; i < 3000; i++){
 
 					var x = -1 + Math.random() * 2;
 					var y = -1 + Math.random() * 2;
@@ -102,14 +108,12 @@
 					material = new THREE.ParticleCanvasMaterial( { color: 0xffffff, program: particleRender } );
 					particle = new THREE.Particle(material);
 
-					particle.position.x = x*starDistance;
+					particle.position.x = (x*starDistance);
 					particle.position.y = y*starDistance;
 					particle.position.z = z*starDistance;
-					console.log(x + ' ' + y + ' ' + z);
-
 
 					// scale it up a bit
-					particle.scale.x = particle.scale.y = 10;
+					particle.scale.x = particle.scale.y = 3;
 
 					// add it to the scene
 					scene.add( particle );
@@ -118,32 +122,6 @@
 					particles.push(particle); 
 				}
 
-				// we're gonna move from z position -1000 (far away) 
-				// to 1000 (where the camera is) and add a random particle at every pos. 
-				/*for ( var zpos= -1000; zpos < 1000; zpos+=100 ) {
-		
-					// we make a particle material and pass through the 
-					// colour and custom particle render function we defined. 
-					material = new THREE.ParticleCanvasMaterial( { color: 0xffffff, program: particleRender } );
-					// make the particle
-					particle = new THREE.Particle(material);
-		
-					// give it a random x and y position between -500 and 500
-					particle.position.x = Math.random() * 1000 - 500;
-					particle.position.y = Math.random() * 1000 - 500;
-		
-					// set its z position
-					particle.position.z = zpos;
-		
-					// scale it up a bit
-					particle.scale.x = particle.scale.y = 10;
-		
-					// add it to the scene
-					scene.add( particle );
-		
-					// and to the array of particles. 
-					particles.push(particle); 
-				}*/
 				
 			}
 			
@@ -168,9 +146,11 @@
 		
 					particle = particles[i]; 
 		
-					// and move it forward dependent on the mouseY position. 
-					particle.position.z +=  mouseY * 0.1;
-					//camera.position.x = mouseX/windowWidth - (windowWidth/2);
+					//move cam zoom in out on mouseY
+					var cameraOffset = mouseX/windowWidth - 0.5;
+					camera.position.z = baseZoom - mouseY/1.5;
+
+					//move cam left right on mouseX
 					var cameraOffset = mouseX/windowWidth - 0.5;
 					camera.position.x = cameraOffset * -750;
 
