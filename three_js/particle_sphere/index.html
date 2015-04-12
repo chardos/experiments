@@ -28,6 +28,7 @@
 		<script>
 
 		// TODO : MAKE PARTICLES MOVE AROUND IN RANDOM DIRECTIONS
+		// TODO : PLUG INTO SOUNDCLOUDS API?
 		// TODO : MAKE LINES AROUND THE SPHERE?
 
 			// the main three.js components
@@ -46,6 +47,8 @@
 			zoomMultiplier = 1500;
 			panMultiplier = 1000;
 			particleSize = 2.5;
+			numberParticles = 5;
+			//numberParticles = 3000;
 
 			// let's get going! 
 			init();
@@ -83,8 +86,12 @@
 				
 				// render 30 times a second (should also look 
 				// at requestAnimationFrame) 
-				setInterval(update,1000/30); 
+				int = setInterval(update,1000/30); 
 			
+			}
+
+			function s(){ // stop
+				clearInterval(int)
 			}
 
 			// the main update function, called 30 times a second
@@ -106,13 +113,21 @@
 				return {x: x, y: y, z: z}
 			}
 
+			function unspherize(x,y,z){
+				var d = 1 * Math.pow(Math.sqrt(x) + Math.sqrt(y) + Math.sqrt(z), 2)
+				x *= d;
+				y *= d;
+				z *= d;
+				return {x: x, y: y, z: z}
+			}
+
 			// creates a random field of Particle objects
 			function makeParticles() { 
 				
 				var particle, material; 
 
 				//CREATE THE SPHERE
-				for (var i = 1; i < 3000; i++){
+				for (var i = 1; i < numberParticles; i++){
 
 					var x = -1 + Math.random() * 2;
 					var y = -1 + Math.random() * 2;
@@ -122,6 +137,9 @@
 					material = new THREE.ParticleCanvasMaterial( { color: 0xffffff, program: particleRender } );
 					particle = new THREE.Particle(material);
 
+					particle.position.origX = x;
+					particle.position.origY = y;
+					particle.position.origZ = z;
 					particle.position.x = sphere.x*starDistance;
 					particle.position.y = sphere.y*starDistance;
 					particle.position.z = sphere.z*starDistance;
@@ -159,19 +177,24 @@
 				for(var i=0; i<particles.length; i++) {
 		
 					particle = particles[i]; 
+
 		
 					//move cam zoom in out on mouseY
 					var cameraOffset = mouseY/windowHeight - 0.5;
-					document.getElementById('value').innerHTML = cameraOffset;
-					camera.position.z = baseZoom + cameraOffset * zoomMultiplier ;
+					camera.position.z = baseZoom + cameraOffset * zoomMultiplier;
 
 					//move cam left right on mouseX
 					var cameraOffset = mouseX/windowWidth - 0.5;
 					camera.position.x = cameraOffset * panMultiplier * -1;
 
-		
-					// if the particle is too close move it to the back
-					if(particle.position.z>1000) particle.position.z = -1000; 
+					//make particles move along x
+					particle.position.origX += 0.01;
+					var x = particle.position.origX;
+					var y = particle.position.origY;
+					var z = particle.position.origZ;
+					console.log( x + ' ' + y + ' ' + z );
+					console.log( spherize(x,y,z).x );
+					particle.position.x = spherize(x,y,z).x;
 		
 				}
 	
