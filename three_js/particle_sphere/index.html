@@ -24,8 +24,8 @@
 	<body>
 		<audio src="https://api.soundcloud.com/tracks/18345900/stream?client_id=74a591aaa5e9a7723d674ccf5fffe0bc" autoplay id="player">
 		<div id="value">Value</div>
-		<script src="jquery.js"></script>
-		<script src="three.min.js"></script>
+		<script src="lib/three.min.js"></script>
+		<script src="helpers.js"></script>
 		<script src="http://connect.soundcloud.com/sdk.js"></script>
 		<script>
 		  SC.initialize({
@@ -53,16 +53,17 @@
 
 		<script>
 
+		// animate random particles via mod
 		// TODO : PLUG INTO SOUNDCLOUDS API? anim using sphereSize
 
 			// the main three.js components
 			var camera, scene, renderer,
 
 			// to keep track of the mouse position
-				mouseX = 0, mouseY = 0,
+			mouseX = 0, mouseY = 0,
 
 			// an array to store our particles in
-				particles = [];
+			particles = [];
 
 			windowWidth = window.innerWidth;
 			windowHeight = window.innerHeight;
@@ -114,27 +115,9 @@
 			
 			}
 
-			function s(){ // stop
-				clearInterval(int)
-			}
-
-			// the main update function, called 30 times a second
-
 			function update() {
-
 				updateParticles();
-
-				// and render the scene from the perspective of the camera
-				renderer.render( scene, camera );
-
-			}
-
-			function spherize(x,y,z){
-				var d = 1 / Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
-				x *= d;
-				y *= d;
-				z *= d;
-				return {x: x, y: y, z: z}
+				renderer.render( scene, camera ); // and render the scene from the perspective of the camera
 			}
 
 			// creates a random field of Particle objects
@@ -157,9 +140,6 @@
 					particle.position.origY = sphere.y;
 					particle.position.origZ = sphere.z;
 
-					
-
-
 					// scale it up a bit
 					particle.scale.x = particle.scale.y = particleSize;
 
@@ -169,27 +149,11 @@
 					// and to the array of particles. 
 					particles.push(particle); 
 				}
-
 				
 			}
 			
-			// there isn't a built in circle particle renderer 
-			// so we have to define our own. 
-
-			function particleRender( context ) {
-				// we get passed a reference to the canvas context
-				context.beginPath();
-				// and we just have to draw our shape at 0,0 - in this
-				// case an arc from 0 to 2Pi radians or 360º - a full circle!
-				context.arc( 0, 0, 1, 0,  Math.PI * 2, true );
-				context.fill();
-			};
-
-			
-			// moves all the particles dependent on mouse position
 			
 			function updateParticles() { 
-
 
 				//AUDIO ------------------------------------
 
@@ -203,21 +167,16 @@
 				}
 				var avg = sum/frequencyData.length;
 				sphereSize = avg * 5;
-				//console.log(avg);
-
-
 
 				// iterate through every particle
 				for(var i=0; i<particles.length; i++) {
 		
 					particle = particles[i]; 
 
-
 					particle.position.x = particle.position.origX * sphereSize;
 					particle.position.y = particle.position.origY * sphereSize;
 					particle.position.z = particle.position.origZ * sphereSize;
 
-		
 					//move cam zoom in out on mouseY
 					var cameraOffset = mouseY/windowHeight - 0.5;
 					camera.position.z = baseZoom + cameraOffset * zoomMultiplier;
@@ -230,14 +189,6 @@
 				}
 	
 			}
-		
-			// called when the mouse moves
-			function updateMouseCoords( event ) {
-				// store the mouseX and mouseY position 
-				mouseX = event.clientX;
-				mouseY = event.clientY;
-			}
-
 
 			// --------------------------------------------------------------------------
 			// AUDIO STARTS HERE
