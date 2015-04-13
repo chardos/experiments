@@ -22,12 +22,38 @@
 		
 	</head>
 	<body>
+		<audio src="https://api.soundcloud.com/tracks/18345900/stream?client_id=74a591aaa5e9a7723d674ccf5fffe0bc" autoplay id="player">
 		<div id="value">Value</div>
+		<script src="jquery.js"></script>
 		<script src="three.min.js"></script>
+		<script src="http://connect.soundcloud.com/sdk.js"></script>
+		<script>
+		  SC.initialize({
+		    client_id: "74a591aaa5e9a7723d674ccf5fffe0bc"
+		  });
+
+		  /*SC.get("/users/adrian-lux/tracks", {limit: 100}, function(tracks){
+	      trackList = ""
+	      for (var i = 0; i < tracks.length; i++) {
+	        trackList += tracks[i].title + "<br>";
+	        gom = tracks[i]
+	        console.log(trackList);
+	      }
+	    });
+
+	    SC.stream("/tracks/18345900", function(sound){
+			  sound.play();
+			});*/
+
+			SC.get("/tracks/18345900", {limit: 5}, function(track){
+	      console.log(track);
+	    });
+
+		</script>
 
 		<script>
 
-		// TODO : PLUG INTO SOUNDCLOUDS API? anim using stardistance
+		// TODO : PLUG INTO SOUNDCLOUDS API? anim using sphereSize
 
 			// the main three.js components
 			var camera, scene, renderer,
@@ -40,12 +66,13 @@
 
 			windowWidth = window.innerWidth;
 			windowHeight = window.innerHeight;
-			starDistance = 500;
+			sphereSize = 500;
 			baseZoom = 1100;
 			zoomMultiplier = 2000;
 			panMultiplier = 2000;
 			particleSize = 2.5;
-			numberParticles = 3000;
+			numberParticles = 500;
+			fps = 30;
 
 			// let's get going! 
 			init();
@@ -83,7 +110,7 @@
 				
 				// render 30 times a second (should also look 
 				// at requestAnimationFrame) 
-				int = setInterval(update,1000/30); 
+				int = setInterval(update,1000/fps); 
 			
 			}
 
@@ -110,14 +137,6 @@
 				return {x: x, y: y, z: z}
 			}
 
-			function unspherize(x,y,z){
-				var d = 1 * Math.pow(Math.sqrt(x) + Math.sqrt(y) + Math.sqrt(z), 2)
-				x *= d;
-				y *= d;
-				z *= d;
-				return {x: x, y: y, z: z}
-			}
-
 			// creates a random field of Particle objects
 			function makeParticles() { 
 				
@@ -134,9 +153,12 @@
 					material = new THREE.ParticleCanvasMaterial( { color: 0xffffff, program: particleRender } );
 					particle = new THREE.Particle(material);
 
-					particle.position.x = sphere.x*starDistance;
-					particle.position.y = sphere.y*starDistance;
-					particle.position.z = sphere.z*starDistance;
+					particle.position.origX = sphere.x;
+					particle.position.origY = sphere.y;
+					particle.position.origZ = sphere.z;
+
+					
+
 
 					// scale it up a bit
 					particle.scale.x = particle.scale.y = particleSize;
@@ -167,10 +189,33 @@
 			// moves all the particles dependent on mouse position
 			
 			function updateParticles() { 
+
+
+				//AUDIO ------------------------------------
+
+				//get audio data
+				frequencyData = new Uint8Array(analyser.frequencyBinCount);
+				analyser.getByteFrequencyData(frequencyData);
+
+				var sum = 0;
+				for( var i = 0; i < frequencyData.length; i++ ){
+			    sum += parseInt( frequencyData[i], 10 ); //don't forget to add the base
+				}
+				var avg = sum/frequencyData.length;
+				sphereSize = avg * 5;
+				//console.log(avg);
+
+
+
 				// iterate through every particle
 				for(var i=0; i<particles.length; i++) {
 		
 					particle = particles[i]; 
+
+
+					particle.position.x = particle.position.origX * sphereSize;
+					particle.position.y = particle.position.origY * sphereSize;
+					particle.position.z = particle.position.origZ * sphereSize;
 
 		
 					//move cam zoom in out on mouseY
@@ -186,12 +231,29 @@
 	
 			}
 		
-		// called when the mouse moves
+			// called when the mouse moves
 			function updateMouseCoords( event ) {
 				// store the mouseX and mouseY position 
 				mouseX = event.clientX;
 				mouseY = event.clientY;
 			}
+
+
+			// --------------------------------------------------------------------------
+			// AUDIO STARTS HERE
+			// --------------------------------------------------------------------------
+
+			var context = new webkitAudioContext();
+			var audioElement = document.getElementById("player");
+			var analyser = context.createAnalyser();
+			analyser.fftSize = 32;
+
+			//audioElement.addEventListener("canplay", function() {
+			    var source = context.createMediaElementSource(audioElement);
+			    source.connect(analyser);
+			    source.connect(context.destination);
+			//});
+
 
 		</script>
 	</body>
