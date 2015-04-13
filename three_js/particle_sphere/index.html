@@ -22,7 +22,11 @@
 		
 	</head>
 	<body>
-		<audio src="https://api.soundcloud.com/tracks/18345900/stream?client_id=74a591aaa5e9a7723d674ccf5fffe0bc" autoplay id="player">
+		<!-- 
+			blackmill 18458327
+			mind your manners 18143761
+		-->
+		<audio src="https://api.soundcloud.com/tracks/18143761/stream?client_id=74a591aaa5e9a7723d674ccf5fffe0bc" autoplay id="player">
 		<div id="value">Value</div>
 		<script src="lib/three.min.js"></script>
 		<script src="helpers.js"></script>
@@ -30,7 +34,9 @@
 		<script>
 
 
-			// TODO : colorize the particles
+			// TODO : scale form inside to out
+			// TODO : explore ways to smooth out (sin cos tan)
+			// TODO : add slider for particle size
 			// TODO : intensify the particle movement
 			// TODO : plug in the URL.
 
@@ -38,11 +44,11 @@
 			//config
 			
 			sphereSize = 500;
-			baseZoom = 500;
-			zoomMultiplier = 3000; //how much the mouse will affect zoom
-			panMultiplier = 2000; //how much mouse affects pan
-			particleSize = 1;
-			numberParticles = 3000;
+			baseZoom = 200; //distance from 0,0,0
+			zoomMultiplier = 800; //how much the mouse will affect zoom
+			panMultiplier = 800; //how much mouse affects pan
+			particleBaseSize = 1;
+			numberParticles = 2500;
 			fps = 30;
 			fftSize = 512;
 
@@ -50,22 +56,21 @@
 		    client_id: "74a591aaa5e9a7723d674ccf5fffe0bc"
 		  });
 
-		  /*SC.get("/users/adrian-lux/tracks", {limit: 100}, function(tracks){
-	      trackList = ""
+		  //use this to get track ID's
+		  SC.get("/users/chiddybang/tracks", {limit: 100}, function(tracks){
 	      for (var i = 0; i < tracks.length; i++) {
-	        trackList += tracks[i].title + "<br>";
-	        gom = tracks[i]
-	        console.log(trackList);
+	      	console.log(tracks[i].title);
+	      	console.log(tracks[i].id);
 	      }
 	    });
 
-	    SC.stream("/tracks/18345900", function(sound){
+	    /*SC.stream("/tracks/18345900", function(sound){
 			  sound.play();
 			});*/
 
-			SC.get("/tracks/18345900", {limit: 5}, function(track){
+			/*SC.get("/tracks/18345900", {limit: 5}, function(track){
 	      console.log(track);
-	    });
+	    });*/
 
 		</script>
 
@@ -150,9 +155,6 @@
 					particle.position.origY = sphere.y;
 					particle.position.origZ = sphere.z;
 
-					// scale it up a bit
-					particle.scale.x = particle.scale.y = particleSize;
-
 					// add it to the scene
 					scene.add( particle );
 		
@@ -184,15 +186,20 @@
 					particle.position.y = particle.position.origY * sphereSize;
 					particle.position.z = particle.position.origZ * sphereSize;
 
-					if (frequencyData[mod] < 100) color = [1,1,0];
-					else if (frequencyData[mod] < 140) color = [0.5,1,1];
-					else if (frequencyData[mod] < 160) color = [0,0.5,1];
-					else if (frequencyData[mod] < 200) color = [1,0.5,0.25];
-					else if (frequencyData[mod] < 230) color = [0,1,0];
-					else color = [1,0,1];
+					if (frequencyData[mod] < 40) color = [1,0,0];
+					else if (frequencyData[mod] < 80) color = [1,0.2,0];
+					else if (frequencyData[mod] < 120) color = [1,0.4,0];
+					else if (frequencyData[mod] < 140) color = [1,0.6,0];
+					else if (frequencyData[mod] < 160) color = [1,0.8,0];
+					else if (frequencyData[mod] < 200) color = [1,1,0];
+					else if (frequencyData[mod] < 230) color = [0.8,1,0];
+					else color = [0.6,1,0];
 					particle.material.color.r = color[0];
 					particle.material.color.g = color[1];
 					particle.material.color.b = color[2];
+
+					//change scale based on freq
+					particle.scale.x = particle.scale.y = particleBaseSize *(frequencyData[mod]/255)+0.25;
 
 					//move cam zoom in out on mouseY
 					var cameraOffset = mouseY/windowHeight - 0.5;
