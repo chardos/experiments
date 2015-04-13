@@ -186,14 +186,7 @@
 					particle.position.y = particle.position.origY * sphereSize;
 					particle.position.z = particle.position.origZ * sphereSize;
 
-					if (frequencyData[mod] < 40) color = [1,0,0];
-					else if (frequencyData[mod] < 80) color = [1,0.2,0];
-					else if (frequencyData[mod] < 120) color = [1,0.4,0];
-					else if (frequencyData[mod] < 140) color = [1,0.6,0];
-					else if (frequencyData[mod] < 160) color = [1,0.8,0];
-					else if (frequencyData[mod] < 200) color = [1,1,0];
-					else if (frequencyData[mod] < 230) color = [0.8,1,0];
-					else color = [0.6,1,0];
+					var color = colorize(frequencyData[mod]);
 					particle.material.color.r = color[0];
 					particle.material.color.g = color[1];
 					particle.material.color.b = color[2];
