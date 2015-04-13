@@ -28,6 +28,23 @@
 		<script src="helpers.js"></script>
 		<script src="http://connect.soundcloud.com/sdk.js"></script>
 		<script>
+
+
+			// TODO : colorize the particles
+			// TODO : plug in the URL.
+
+
+			//config
+			
+			sphereSize = 500;
+			baseZoom = 500;
+			zoomMultiplier = 3000; //how much the mouse will affect zoom
+			panMultiplier = 2000; //how much mouse affects pan
+			particleSize = 1;
+			numberParticles = 3000;
+			fps = 30;
+			fftSize = 512;
+
 		  SC.initialize({
 		    client_id: "74a591aaa5e9a7723d674ccf5fffe0bc"
 		  });
@@ -53,9 +70,10 @@
 
 		<script>
 
-		// animate random particles via mod
-		// TODO : PLUG INTO SOUNDCLOUDS API? anim using sphereSize
 
+
+			windowWidth = window.innerWidth;
+			windowHeight = window.innerHeight;
 			// the main three.js components
 			var camera, scene, renderer,
 
@@ -65,15 +83,7 @@
 			// an array to store our particles in
 			particles = [];
 
-			windowWidth = window.innerWidth;
-			windowHeight = window.innerHeight;
-			sphereSize = 500;
-			baseZoom = 1100;
-			zoomMultiplier = 2000;
-			panMultiplier = 2000;
-			particleSize = 2.5;
-			numberParticles = 500;
-			fps = 30;
+			
 
 			// let's get going! 
 			init();
@@ -102,12 +112,10 @@
 	
 				// the renderer's canvas domElement is added to the body
 				document.body.appendChild( renderer.domElement );
-
 				makeParticles(); 
 			
 				// add the mouse move listener
 				document.addEventListener( 'mousemove', updateMouseCoords, false );
-
 				
 				// render 30 times a second (should also look 
 				// at requestAnimationFrame) 
@@ -161,17 +169,13 @@
 				frequencyData = new Uint8Array(analyser.frequencyBinCount);
 				analyser.getByteFrequencyData(frequencyData);
 
-				var sum = 0;
-				for( var i = 0; i < frequencyData.length; i++ ){
-			    sum += parseInt( frequencyData[i], 10 ); //don't forget to add the base
-				}
-				var avg = sum/frequencyData.length;
-				sphereSize = avg * 5;
-
 				// iterate through every particle
 				for(var i=0; i<particles.length; i++) {
 		
 					particle = particles[i]; 
+
+					var mod = i%(fftSize/2)
+					sphereSize = frequencyData[mod];
 
 					particle.position.x = particle.position.origX * sphereSize;
 					particle.position.y = particle.position.origY * sphereSize;
@@ -197,7 +201,7 @@
 			var context = new webkitAudioContext();
 			var audioElement = document.getElementById("player");
 			var analyser = context.createAnalyser();
-			analyser.fftSize = 32;
+			analyser.fftSize = fftSize;
 
 			//audioElement.addEventListener("canplay", function() {
 			    var source = context.createMediaElementSource(audioElement);
