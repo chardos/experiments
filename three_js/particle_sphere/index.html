@@ -8,7 +8,9 @@
 			body {
 				background-color: #000000;
 				margin: 0px;
+				font-size: 12px;
 				overflow: hidden;
+				font-family: helvetica, arial, sans-serif;
 			}
 
 			#value{
@@ -18,38 +20,45 @@
 				right: 0px;
 				background-color: white;
 			}
+			#fps{
+				color: #777;
+				position: absolute;
+				bottom: 5px;
+				right: 5px;
+			}
 		</style>
 		
 	</head>
 	<body>
+		<div id="fps">fps</div>
+		<div id="value">Value</div>
 		<!-- 
 			blackmill 18458327
 			mind your manners 18143761
 		-->
 		<audio src="https://api.soundcloud.com/tracks/18143761/stream?client_id=74a591aaa5e9a7723d674ccf5fffe0bc" autoplay id="player">
-		<div id="value">Value</div>
 		<script src="lib/three.min.js"></script>
 		<script src="helpers.js"></script>
 		<script src="http://connect.soundcloud.com/sdk.js"></script>
 		<script>
 
 
-			// TODO : scale form inside to out
+			// TODO : look for optimizations
 			// TODO : explore ways to smooth out (sin cos tan)
-			// TODO : add slider for particle size
 			// TODO : intensify the particle movement
 			// TODO : plug in the URL.
+			// TODO : add slider for particle size
 
 
 			//config
 			
 			sphereSize = 500;
 			baseZoom = 200; //distance from 0,0,0
-			zoomMultiplier = 800; //how much the mouse will affect zoom
+			zoomMultiplier = 500; //how much the mouse will affect zoom
 			panMultiplier = 800; //how much mouse affects pan
 			particleBaseSize = 1;
-			numberParticles = 2500;
-			fps = 30;
+			numberParticles = 1500;
+			fps = 50;
 			fftSize = 512;
 
 		  SC.initialize({
@@ -77,7 +86,7 @@
 		<script>
 
 
-
+			var lastCalledTime;
 			windowWidth = window.innerWidth;
 			windowHeight = window.innerHeight;
 			// the main three.js components
@@ -133,6 +142,7 @@
 			function update() {
 				updateParticles();
 				renderer.render( scene, camera ); // and render the scene from the perspective of the camera
+				calcFPS();
 			}
 
 			// creates a random field of Particle objects
@@ -145,7 +155,7 @@
 
 					var x = -1 + Math.random() * 2;
 					var y = -1 + Math.random() * 2;
-					var z = -1 + Math.random() * 2;
+					var z = Math.abs( -1 + Math.random() * 2 ); //abs = half sphere
 					var sphere = spherize(x,y,z);
 
 					material = new THREE.ParticleCanvasMaterial( { color: 0x000fff, program: particleRender } );
@@ -192,7 +202,7 @@
 					particle.material.color.b = color[2];
 
 					//change scale based on freq
-					particle.scale.x = particle.scale.y = particleBaseSize *(frequencyData[mod]/255)+0.25;
+					particle.scale.x = particle.scale.y = particleBaseSize *(frequencyData[mod]/300)+0.5;
 
 					//move cam zoom in out on mouseY
 					var cameraOffset = mouseY/windowHeight - 0.5;

@@ -8,18 +8,19 @@ function spherize(x,y,z){
 
 
 function colorize(freq){
-  if (freq < 40) color = [1,0,0];
-  else if (freq < 80) color = [1,0.2,0];
+  if (freq == 0) color = [0,0,0];
+  else if (freq < 80) color = [1,0,0];
+  else if (freq < 100) color = [1,0.2,0];
   else if (freq < 120) color = [1,0.4,0];
-  else if (freq < 140) color = [1,0.6,0];
-  else if (freq < 160) color = [1,0.8,0];
-  else if (freq < 200) color = [1,1,0];
-  else if (freq < 230) color = [0.8,1,0];
+  else if (freq < 160) color = [1,0.6,0];
+  else if (freq < 190) color = [1,0.8,0];
+  else if (freq < 230) color = [1,1,0];
+  else if (freq < 240) color = [0.8,1,0];
   else color = [0.6,1,0];
   return color;
 }
 
-      
+        
 // there isn't a built in circle particle renderer 
 // so we have to define our own. 
 
@@ -38,6 +39,20 @@ function updateMouseCoords( event ) {
   // store the mouseX and mouseY position 
   mouseX = event.clientX;
   mouseY = event.clientY;
+}
+
+//calc fps
+function calcFPS(){
+ if(!lastCalledTime) {
+  console.log('nup');
+     lastCalledTime = Date.now();
+     fps = 0;
+     return;
+  }
+  delta = (new Date().getTime() - lastCalledTime)/1000;
+  lastCalledTime = Date.now();
+  fps = Math.ceil(1/delta);
+  document.getElementById('fps').innerHTML = fps + 'fps';
 }
 
 
