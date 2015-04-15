@@ -65,12 +65,14 @@
 				// camera needs to go in the scene 
 				scene.add(camera);
 
-
+				//add black plane
+				var geometry = new THREE.PlaneGeometry( 10000, 10000, 1 );
+				var material = new THREE.MeshBasicMaterial( {color: 0x000000, side: THREE.DoubleSide} );
+				plane = new THREE.Mesh( geometry, material );
+				plane.position.z = -800;
+				scene.add( plane );
       
-      // directional lighting
-      var directionalLight = new THREE.DirectionalLight(0xffffff);
-      directionalLight.position.set(1, 1, 1).normalize();
-      scene.add(directionalLight);
+
 	
 				// and the CanvasRenderer figures out what the 
 				// stuff in the scene looks like and draws it!
@@ -141,7 +143,6 @@
 			// so we have to define our own. 
 
 			function particleRender( context ) {
-				context.globalAlpha = mouseY / window.innerHeight + 0.4;
 				context.drawImage(image, 0, 0, 10, 10);
 			};
 
@@ -153,17 +154,22 @@
 				for(var i=0; i<particles.length; i++) {
 		
 					particle = particles[i]; 
-					opac = particle.position.z/1000;
-					console.log(opac);
+					
 					// and move it forward dependent on the mouseY position. 
 					particle.position.z +=  mouseY * 0.05;
 					//camera.position.x = mouseX/windowWidth - (windowWidth/2);
 					var cameraOffset = mouseX/windowWidth - 0.5;
 					camera.position.x = cameraOffset * -750;
+					camera.lookAt(new THREE.Vector3(0,0,-500));
 
+					//change opacity
+					particle.material.opacity = opac+0.2;
+					if(particle.position.z>1000) particle.position.z = -1000; 
 
 					// if the particle is too close move it to the back
-					if(particle.position.z>1000) particle.position.z = -1000; 
+					opac = (particle.position.z+800)/2000;
+					
+					
 		
 				}
 	
