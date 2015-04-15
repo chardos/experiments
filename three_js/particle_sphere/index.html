@@ -45,6 +45,7 @@
 
 			// TODO : look for optimizations
 			// TODO : explore ways to smooth out (sin cos tan)
+			// TODO : add FPS graph like :http://jabtunes.com/labs/particles/experiments_fbo.html
 			// TODO : intensify the particle movement
 			// TODO : plug in the URL.
 			// TODO : add slider for particle size
@@ -84,24 +85,15 @@
 		</script>
 
 		<script>
-
-
 			var lastCalledTime;
 			windowWidth = window.innerWidth;
 			windowHeight = window.innerHeight;
 			// the main three.js components
 			var camera, scene, renderer,
 
-			// to keep track of the mouse position
 			mouseX = 0, mouseY = 0,
-
-			// an array to store our particles in
 			particles = [];
 
-
-			
-
-			// let's get going! 
 			init();
 
 			function init() {
