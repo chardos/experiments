@@ -43,8 +43,11 @@
 		<script>
 
 
-			// TODO : look for optimizations
+			// TODO : change renderer to webgl (migration to latest three js may work)
+			// TODO : create pause play for audio
+			// TODO : look for further optimizations
 			// TODO : explore ways to smooth out (sin cos tan)
+			// TODO : add FPS graph like :http://jabtunes.com/labs/particles/experiments_fbo.html
 			// TODO : add FPS graph like :http://jabtunes.com/labs/particles/experiments_fbo.html
 			// TODO : intensify the particle movement
 			// TODO : plug in the URL.
@@ -57,8 +60,8 @@
 			baseZoom = 200; //distance from 0,0,0
 			zoomMultiplier = 500; //how much the mouse will affect zoom
 			panMultiplier = 800; //how much mouse affects pan
-			particleBaseSize = 1;
-			numberParticles = 1500;
+			particleBaseSize = 2.5;
+			numberParticles = 5;
 			fps = 50;
 			fftSize = 512;
 
@@ -69,8 +72,8 @@
 		  //use this to get track ID's
 		  SC.get("/users/chiddybang/tracks", {limit: 100}, function(tracks){
 	      for (var i = 0; i < tracks.length; i++) {
-	      	console.log(tracks[i].title);
-	      	console.log(tracks[i].id);
+	      	//console.log(tracks[i].title);
+	      	//console.log(tracks[i].id);
 	      }
 	    });
 
@@ -111,11 +114,29 @@
 				
 				// camera needs to go in the scene 
 				scene.add(camera);
+
+				//add black plane
+				/*var geometry = new THREE.PlaneGeometry( 50, 50, 1 );
+				var material = new THREE.MeshBasicMaterial( {color: 0xff0000, side: THREE.DoubleSide} );
+				plane = new THREE.Mesh( geometry, material );
+				scene.add( plane );*/
+
+        //var geometry = new THREE.SphereGeometry( 100, 32, 16 );
+        var geometry = new THREE.Geometry();
+        geometry.vertices.push(new THREE.Vector3( -10,  10, 0 ));
+        geometry.vertices.push(new THREE.Vector3( 10,  0, 10 ));
+
+        material = new THREE.PointCloudMaterial( { size: 1 });
+
+				particle = new THREE.PointCloud(geometry, material);
+
+				// add it to the scene
+				scene.add( particle );
 	
 				// and the CanvasRenderer figures out what the 
 				// stuff in the scene looks like and draws it!
 	 
-				renderer = new THREE.CanvasRenderer();
+				renderer = new THREE.WebGLRenderer();
 				renderer.setSize( window.innerWidth, window.innerHeight );
 	
 				// the renderer's canvas domElement is added to the body
@@ -150,8 +171,8 @@
 					var z = Math.abs( -1 + Math.random() * 2 ); //abs = half sphere
 					var sphere = spherize(x,y,z);
 
-					material = new THREE.ParticleCanvasMaterial( { color: 0x000fff, program: particleRender } );
-					particle = new THREE.Particle(material);
+					material = new THREE.PointCloudMaterial( { color: 0x000fff, size: 2 } );
+					particle = new THREE.Sprite(material);
 
 					particle.position.origX = sphere.x;
 					particle.position.origY = sphere.y;
@@ -213,7 +234,7 @@
 			// AUDIO STARTS HERE
 			// --------------------------------------------------------------------------
 
-			var context = new webkitAudioContext();
+			var context = new AudioContext();
 			var audioElement = document.getElementById("player");
 			var analyser = context.createAnalyser();
 			analyser.fftSize = fftSize;

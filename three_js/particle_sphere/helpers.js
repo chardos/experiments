@@ -44,7 +44,6 @@ function updateMouseCoords( event ) {
 //calc fps
 function calcFPS(){
  if(!lastCalledTime) {
-  console.log('nup');
      lastCalledTime = Date.now();
      fps = 0;
      return;
