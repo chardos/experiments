@@ -58,12 +58,12 @@
 			
 			sphereSize = 500;
 			baseZoom = 200; //distance from 0,0,0
-			zoomMultiplier = 500; //how much the mouse will affect zoom
-			panMultiplier = 800; //how much mouse affects pan
+			zoomMultiplier = 300; //how much the mouse will affect zoom
+			panMultiplier = 600; //how much mouse affects pan
 			particleBaseSize = 2.5;
-			numberParticles = 5;
+			numberParticles = 5000;
 			fps = 50;
-			fftSize = 512;
+			fftSize = 1024;
 
 		  SC.initialize({
 		    client_id: "74a591aaa5e9a7723d674ccf5fffe0bc"
@@ -95,7 +95,7 @@
 			var camera, scene, renderer,
 
 			mouseX = 0, mouseY = 0,
-			particles = [];
+			particles
 
 			init();
 
@@ -121,17 +121,6 @@
 				plane = new THREE.Mesh( geometry, material );
 				scene.add( plane );*/
 
-        //var geometry = new THREE.SphereGeometry( 100, 32, 16 );
-        var geometry = new THREE.Geometry();
-        geometry.vertices.push(new THREE.Vector3( -10,  10, 0 ));
-        geometry.vertices.push(new THREE.Vector3( 10,  0, 10 ));
-
-        material = new THREE.PointCloudMaterial( { size: 1 });
-
-				particle = new THREE.PointCloud(geometry, material);
-
-				// add it to the scene
-				scene.add( particle );
 	
 				// and the CanvasRenderer figures out what the 
 				// stuff in the scene looks like and draws it!
@@ -153,37 +142,38 @@
 			}
 
 			function update() {
-				updateParticles();
 				renderer.render( scene, camera ); // and render the scene from the perspective of the camera
+				updateParticles();
 				calcFPS();
 			}
 
 			// creates a random field of Particle objects
 			function makeParticles() { 
 				
-				var particle, material; 
+				var particleGeom = new THREE.Geometry();
+				var material; 
 
 				//CREATE THE SPHERE
-				for (var i = 1; i < numberParticles; i++){
+				for (var i = 0; i < numberParticles; i++){
 
+					//create particle within half sphere
 					var x = -1 + Math.random() * 2;
 					var y = -1 + Math.random() * 2;
 					var z = Math.abs( -1 + Math.random() * 2 ); //abs = half sphere
 					var sphere = spherize(x,y,z);
 
-					material = new THREE.PointCloudMaterial( { color: 0x000fff, size: 2 } );
-					particle = new THREE.Sprite(material);
+	        particleGeom.vertices.push(new THREE.Vector3( sphere.x,  sphere.y, sphere.z ));
+	        particleGeom.vertices[i].origX = sphere.x
+	        particleGeom.vertices[i].origY = sphere.y
+	        particleGeom.vertices[i].origZ = sphere.z
 
-					particle.position.origX = sphere.x;
-					particle.position.origY = sphere.y;
-					particle.position.origZ = sphere.z;
+	        material = new THREE.PointCloudMaterial( { size: 1 });
 
-					// add it to the scene
-					scene.add( particle );
-		
-					// and to the array of particles. 
-					particles.push(particle); 
 				}
+
+				particles = new THREE.PointCloud(particleGeom, material);
+				particles.geometry.verticesNeedUpdate = true;
+				scene.add( particles );
 				
 			}
 			
@@ -196,26 +186,31 @@
 				frequencyData = new Uint8Array(analyser.frequencyBinCount);
 				analyser.getByteFrequencyData(frequencyData);
 
+
+				//PARTICLES ------------------------------------
+
+
+				particles.geometry.verticesNeedUpdate = true;
+
+
 				// iterate through every particle
-				for(var i=0; i<particles.length; i++) {
-					
+				for(var i=0; i<particles.geometry.vertices.length; i++) {
 					var color;
-					particle = particles[i]; 
+					particle = particles.geometry.vertices[i]; 
+					//console.log(particle);
 
 					//distance from center determined by mod
 					var mod = i%(fftSize/2)
 					sphereSize = frequencyData[mod];
-					particle.position.x = particle.position.origX * sphereSize;
-					particle.position.y = particle.position.origY * sphereSize;
-					particle.position.z = particle.position.origZ * sphereSize;
+					particle.x = particle.origX * sphereSize;
+					particle.y = particle.origY * sphereSize;
+					particle.z = particle.origZ * sphereSize;
 
-					var color = colorize(frequencyData[mod]);
-					particle.material.color.r = color[0];
-					particle.material.color.g = color[1];
-					particle.material.color.b = color[2];
+					//var color = colorize(frequencyData[mod]);
+					//particle.material.color.r = color[0];
+					//particle.material.color.g = color[1];
+					//particle.material.color.b = color[2];
 
-					//change scale based on freq
-					particle.scale.x = particle.scale.y = particleBaseSize *(frequencyData[mod]/300)+0.5;
 
 					//move cam zoom in out on mouseY
 					var cameraOffset = mouseY/windowHeight - 0.5;
