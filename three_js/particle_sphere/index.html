@@ -60,10 +60,10 @@
 			
 			sphereSize = 500;
 			baseZoom = 200; //distance from 0,0,0
-			zoomMultiplier = 200; //how much the mouse will affect zoom
+			zoomMultiplier = 100; //how much the mouse will affect zoom
 			panMultiplier = 300; //how much mouse affects pan
-			particleBaseSize = 1;
-			numberParticles = 5000;
+			particleBaseSize = 0.7;
+			numberParticles = 10000;
 			fps = 60;
 			fftSize = 512;
 
@@ -222,11 +222,8 @@
 					particle.y = particle.origY * sphereSize;
 					particle.z = particle.origZ * sphereSize;
 
-					colors[i] = new THREE.Color(1,1,1);
-					//var color = colorize(frequencyData[mod]);
-					//particle.material.color.r = color[0];
-					//particle.material.color.g = color[1];
-					//particle.material.color.b = color[2];
+					var color = colorize(frequencyData[mod]);
+					colors[i] = new THREE.Color(color[0],color[1],color[2]);
 
 					//move cam zoom in out on mouseY
 					var cameraOffset = mouseY/windowHeight - 0.5;
