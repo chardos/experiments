@@ -37,13 +37,15 @@
 			mind your manners 18143761
 		-->
 		<audio src="https://api.soundcloud.com/tracks/18143761/stream?client_id=74a591aaa5e9a7723d674ccf5fffe0bc" autoplay id="player">
+		<!-- <audio src="audio/in-da-club.mp3" autoplay id="player"> -->
+
 		<script src="lib/three.min.js"></script>
 		<script src="helpers.js"></script>
 		<script src="http://connect.soundcloud.com/sdk.js"></script>
 		<script>
 
 
-			// TODO : change renderer to webgl (migration to latest three js may work)
+			// TODO : add back colors
 			// TODO : create pause play for audio
 			// TODO : look for further optimizations
 			// TODO : explore ways to smooth out (sin cos tan)
@@ -58,12 +60,12 @@
 			
 			sphereSize = 500;
 			baseZoom = 200; //distance from 0,0,0
-			zoomMultiplier = 300; //how much the mouse will affect zoom
-			panMultiplier = 600; //how much mouse affects pan
-			particleBaseSize = 2.5;
+			zoomMultiplier = 200; //how much the mouse will affect zoom
+			panMultiplier = 300; //how much mouse affects pan
+			particleBaseSize = 1;
 			numberParticles = 5000;
-			fps = 50;
-			fftSize = 1024;
+			fps = 60;
+			fftSize = 512;
 
 		  SC.initialize({
 		    client_id: "74a591aaa5e9a7723d674ccf5fffe0bc"
@@ -152,6 +154,7 @@
 				
 				var particleGeom = new THREE.Geometry();
 				var material; 
+		    var colors = [];
 
 				//CREATE THE SPHERE
 				for (var i = 0; i < numberParticles; i++){
@@ -167,12 +170,25 @@
 	        particleGeom.vertices[i].origY = sphere.y
 	        particleGeom.vertices[i].origZ = sphere.z
 
-	        material = new THREE.PointCloudMaterial( { size: 1 });
+
+	        // vertex colors
+	        // random color
+	        colors[i] = new THREE.Color(1,1,1);
+	        colors[i].setHSL( Math.random(), 1.0, 0.5 );
+
+
 
 				}
+				particleGeom.colors = colors;
+			    
+		    // material
+		    material = new THREE.PointCloudMaterial({
+		        size: particleBaseSize,
+		        vertexColors: THREE.VertexColors
+		    });
 
+        //material = new THREE.PointCloudMaterial( { size: 1 });
 				particles = new THREE.PointCloud(particleGeom, material);
-				particles.geometry.verticesNeedUpdate = true;
 				scene.add( particles );
 				
 			}
@@ -191,13 +207,13 @@
 
 
 				particles.geometry.verticesNeedUpdate = true;
-
+				particles.geometry.colorsNeedUpdate = true;
+				var colors = [];
+				geometry = particles.geometry;
 
 				// iterate through every particle
 				for(var i=0; i<particles.geometry.vertices.length; i++) {
-					var color;
 					particle = particles.geometry.vertices[i]; 
-					//console.log(particle);
 
 					//distance from center determined by mod
 					var mod = i%(fftSize/2)
@@ -206,11 +222,11 @@
 					particle.y = particle.origY * sphereSize;
 					particle.z = particle.origZ * sphereSize;
 
+					colors[i] = new THREE.Color(1,1,1);
 					//var color = colorize(frequencyData[mod]);
 					//particle.material.color.r = color[0];
 					//particle.material.color.g = color[1];
 					//particle.material.color.b = color[2];
-
 
 					//move cam zoom in out on mouseY
 					var cameraOffset = mouseY/windowHeight - 0.5;
@@ -222,6 +238,8 @@
 					camera.lookAt(new THREE.Vector3(0,0,0));
 
 				}
+
+				geometry.colors = colors;
 	
 			}
 
