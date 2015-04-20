@@ -3,66 +3,48 @@
 	<head>
 		<title>Particle sphere</title>
 		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="style.css">
 
-		<style type="text/css">
-			body {
-				background-color: #000000;
-				margin: 0px;
-				font-size: 12px;
-				overflow: hidden;
-				font-family: helvetica, arial, sans-serif;
-			}
-
-			#value{
-				display: none;
-				position: absolute;
-				padding: 20px;
-				right: 0px;
-				background-color: white;
-			}
-			#fps{
-				color: #777;
-				position: absolute;
-				bottom: 5px;
-				right: 5px;
-			}
-			#textinput{
-				position: absolute;
-				bottom: 5px;
-				left: 5px;
-			}
-			#gettrack{
-				position: absolute;
-				bottom: 5px;
-				left: 130px;
-			}
-		</style>
 		
 	</head>
 	<body>
-		<div id="fps">fps</div>
-		<div id="value">Value</div>
-		<input type="text" id="textinput">
-		<button id="gettrack">Submit</button>
+		<div id="bottomBar">
+			<input type="text" id="textinput">
+			<button id="gettrack">Submit</button>
+			<button id="pause">Pause</button>
+			<button id="play">Play</button>
+			<div id="fps">fps</div>
+			<div id="value">Value</div>
+		</div>
+		
 		<!-- 
 			blackmill 18458327
 			mind your manners 18143761
 		-->
 		<script src="http://connect.soundcloud.com/sdk.js"></script>
-		<audio src="https://api.soundcloud.com/tracks/18143761/stream?client_id=74a591aaa5e9a7723d674ccf5fffe0bc" autoplay id="player">
-		<!-- <audio src="audio/in-da-club.mp3" autoplay id="player"> -->
+		<script>
+			SC.initialize({
+		    client_id: "74a591aaa5e9a7723d674ccf5fffe0bc"
+		  });
+		</script>
+		<!--<audio src="https://api.soundcloud.com/tracks/18143761/stream?client_id=74a591aaa5e9a7723d674ccf5fffe0bc" autoplay id="player">-->
+		<audio src="audio/in-da-club.mp3" autoplay preload="auto" id="player">
 
 		<script src="lib/three.min.js"></script>
 		<script src="helpers.js"></script>
-		<script src="audioinput.js"></script>
+		<script src="audiohelpers.js"></script>
 		<script>
 
 
-			// TODO : plug in the URL.
-			// TODO : make particles round
 			// TODO : create pause play for audio
+			// TODO : add playbar
+			// TODO : fix soundcloud issue
+			// TODO : search by artist - get playlist
+			// TODO : colors slowly shift
+			// TODO : Try different visualiations
 			// TODO : add FPS graph like :http://jabtunes.com/labs/particles/experiments_fbo.html
 			// TODO : add slider for particle size
+			// TODO : make particles round
 
 
 			//config
@@ -76,9 +58,7 @@
 			fps = 60;
 			fftSize = 512;
 
-		  SC.initialize({
-		    client_id: "74a591aaa5e9a7723d674ccf5fffe0bc"
-		  });
+		  
 
 	    /*SC.stream("/tracks/18345900", function(sound){
 			  sound.play();
@@ -177,7 +157,6 @@
 		        vertexColors: THREE.VertexColors
 		    });
 
-        //material = new THREE.PointCloudMaterial( { size: 1 });
 				particles = new THREE.PointCloud(particleGeom, material);
 				scene.add( particles );
 				
