@@ -8,7 +8,9 @@ gettrack.addEventListener("click", function(e){
   track_url = textinput.value;
   SC.get('/resolve', { url: track_url }, function(track) {
     console.log(track.id);
-    audioElement.src = 'https://api.soundcloud.com/tracks/' + track.id + '/stream?client_id=74a591aaa5e9a7723d674ccf5fffe0bc'
+    console.log(track);
+    console.log(track.uri);
+    audioElement.src = track.stream_url + '?client_id=74a591aaa5e9a7723d674ccf5fffe0bc'
   });
 });
 
