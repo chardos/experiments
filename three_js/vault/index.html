@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<title>Particle sphere</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="style.css">
+
+		
+	</head>
+	<body>
+		<div id="fps">fps</div>
+
+		<script src="js/lib/three.min.js"></script>
+		<script src="js/helpers.js"></script>
+		<script>
+			// TODO : add todo
+
+
+			baseZoom = 500; //distance from 0,0,0
+			zoomMultiplier = 100; //how much the mouse will affect zoom
+			panMultiplier = 800; //how much mouse affects pan
+			fps = 60;
+
+
+			var lastCalledTime;
+			windowWidth = window.innerWidth;
+			windowHeight = window.innerHeight;
+			// the main three.js components
+			var camera, scene, renderer
+
+			var mouseX = 0;
+			var mouseY = 0;
+
+			init();
+
+			function init() {
+
+				// field of view, aspect ratio for render output, near and far clipping plane. 
+				camera = new THREE.PerspectiveCamera(80, windowWidth / window.innerHeight, 1, 4000 );
+				camera.position.z = baseZoom;
+
+				// the scene contains all the 3D object data
+				scene = new THREE.Scene();
+				
+				// camera needs to go in the scene 
+				scene.add(camera);
+	 
+				renderer = new THREE.WebGLRenderer();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+	
+				// the renderer's canvas domElement is added to the body
+				document.body.appendChild( renderer.domElement );
+				makeScene(); 
+			
+				// add the mouse move listener
+				document.addEventListener( 'mousemove', updateMouseCoords, false );
+				
+				// render 30 times a second (should also look 
+				// at requestAnimationFrame) 
+				int = setInterval(update,1000/fps); 
+			
+			}
+
+			function update() {
+				renderer.render( scene, camera ); // and render the scene from the perspective of the camera
+				updateCamera();
+				calcFPS();
+			}
+
+			// creates a random field of Particle objects
+			function makeScene() { 
+
+				var material = new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.DoubleSide} );
+				var plane = new THREE.Mesh(new THREE.PlaneGeometry(500, 500), material);
+				var ninetyDeg =  parseFloat( (Math.PI / 2 ).toFixed(3) );
+				plane.rotation.x = ninetyDeg;  
+
+	      plane.overdraw = true;
+	      scene.add(plane);
+				
+			}
+			
+			
+			function updateCamera() { 
+
+					//move cam zoom in out on mouseY
+					var cameraOffset = mouseY/windowHeight - 0.5;
+					camera.position.y = cameraOffset + cameraOffset * panMultiplier;
+
+					//rotate cam left right on mouseX
+					var cameraOffset = mouseX/windowWidth - 0.5;
+					camera.position.x = cameraOffset * panMultiplier * -1;
+					camera.lookAt(new THREE.Vector3(0,0,0));
+
+			}
+
+
+
+		</script>
+	</body>
+</html>
