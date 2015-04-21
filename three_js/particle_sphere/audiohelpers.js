@@ -7,10 +7,8 @@ gettrack.addEventListener("click", function(e){
   console.log(SC);
   track_url = textinput.value;
   SC.get('/resolve', { url: track_url }, function(track) {
-    console.log(track.id);
-    console.log(track);
-    console.log(track.uri);
-    audioElement.src = track.stream_url + '?client_id=74a591aaa5e9a7723d674ccf5fffe0bc'
+    audioElement.src = track.stream_url + '?client_id=74a591aaa5e9a7723d674ccf5fffe0bc';
+    audioElement.load();
   });
 });
 
