@@ -13,10 +13,10 @@
 		<script src="js/lib/three.min.js"></script>
 		<script src="js/helpers.js"></script>
 		<script>
-			// TODO : add todo
+			// TODO : add texture
 
 
-			baseZoom = 500; //distance from 0,0,0
+			baseZoom = 800; //distance from 0,0,0
 			zoomMultiplier = 100; //how much the mouse will affect zoom
 			panMultiplier = 800; //how much mouse affects pan
 			fps = 60;
@@ -69,13 +69,18 @@
 
 			// creates a random field of Particle objects
 			function makeScene() { 
+				var texture = THREE.ImageUtils.loadTexture( "img/grid.png" );
+				texture.wrapS = THREE.RepeatWrapping; 
+				texture.wrapT = THREE.RepeatWrapping;
+				// how many times to repeat in each direction; the default is (1,1),
+				//   which is probably why your example wasn't working
+				texture.repeat.set( 20, 20 ); 
 
-				var material = new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.DoubleSide} );
-				var plane = new THREE.Mesh(new THREE.PlaneGeometry(500, 500), material);
+				var material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+				//var material = new THREE.MeshBasicMaterial( {color: 0xffffff} );
+				var plane = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000), material);
 				var ninetyDeg =  parseFloat( (Math.PI / 2 ).toFixed(3) );
 				plane.rotation.x = ninetyDeg;  
-
-	      plane.overdraw = true;
 	      scene.add(plane);
 				
 			}
