@@ -5,21 +5,6 @@ function spherize(x,y,z){
   z *= d;
   return {x: x, y: y, z: z}
 }
-
-
-function colorize(freq){
-  if (freq == 0) color = [0,0,0];
-  else if (freq < 80) color = [1,0,0];
-  else if (freq < 100) color = [1,0.2,0];
-  else if (freq < 120) color = [1,0.4,0];
-  else if (freq < 160) color = [1,0.6,0];
-  else if (freq < 190) color = [1,0.8,0];
-  else if (freq < 230) color = [1,1,0];
-  else if (freq < 240) color = [0.8,1,0];
-  else color = [0.6,1,0];
-  return color;
-}
-
         
 // there isn't a built in circle particle renderer 
 // so we have to define our own. 

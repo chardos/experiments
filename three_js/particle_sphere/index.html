@@ -36,11 +36,7 @@
 		<script>
 
 
-			// TODO : create pause play for audio
 			// TODO : add playbar
-			// TODO : fix soundcloud issue
-			// TODO : search by artist - get playlist
-			// TODO : colors slowly shift
 			// TODO : Try different visualiations
 			// TODO : add FPS graph like :http://jabtunes.com/labs/particles/experiments_fbo.html
 			// TODO : add slider for particle size
@@ -48,13 +44,12 @@
 
 
 			//config
-			
 			sphereSize = 500;
 			baseZoom = 200; //distance from 0,0,0
 			zoomMultiplier = 100; //how much the mouse will affect zoom
 			panMultiplier = 300; //how much mouse affects pan
 			particleBaseSize = 0.7;
-			numberParticles = 10000;
+			numberParticles = 15000;
 			fps = 60;
 			fftSize = 512;
 
@@ -193,10 +188,9 @@
 					particle.y = particle.origY * sphereSize;
 					particle.z = particle.origZ * sphereSize;
 
-					var color = colorize(frequencyData[mod]);
-					//colors[i] = new THREE.Color(color[0],color[1],color[2]);
 					colors[i] = new THREE.Color();
-					colors[i].setHSL( baseSaturation, 1, .6 );
+					var modifiedSaturation = baseSaturation + (frequencyData[mod]/250)
+					colors[i].setHSL( modifiedSaturation, 1, .6 );
 
 
 					
@@ -211,7 +205,7 @@
 					camera.lookAt(new THREE.Vector3(0,0,0));
 
 				}
-				baseSaturation += + 0.0005;
+				baseSaturation += + 0.005;
 				if (baseSaturation > 1) baseSaturation = 0;
 				geometry.colors = colors;
 	
