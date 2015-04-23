@@ -32,13 +32,9 @@ V.starburst.makeParticles = function() {
     particleGeom.vertices[i].origY = sphere.y
     particleGeom.vertices[i].origZ = sphere.z
 
-
     // vertex colors
-    // random color
     colors[i] = new THREE.Color(1,1,1);
     colors[i].setHSL( Math.random(), 1.0, 0.5 );
-
-
 
   }
   particleGeom.colors = colors;
@@ -65,9 +61,7 @@ V.starburst.updateParticles = function() {
   frequencyData = new Uint8Array(analyser.frequencyBinCount);
   analyser.getByteFrequencyData(frequencyData);
 
-
   //PARTICLES ------------------------------------
-
 
   particles.geometry.verticesNeedUpdate = true;
   particles.geometry.colorsNeedUpdate = true;
@@ -88,9 +82,6 @@ V.starburst.updateParticles = function() {
     colors[i] = new THREE.Color();
     var modifiedSaturation = baseSaturation + (frequencyData[mod]/250)
     colors[i].setHSL( modifiedSaturation, 1, .6 );
-
-
-    
 
     //move cam zoom in out on mouseY
     var cameraOffset = mouseY/windowHeight - 0.5;
