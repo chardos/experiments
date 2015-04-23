@@ -1,3 +1,42 @@
+var V = V || {};
+V.changeViz = function(){
+  var cfg = V.config;
+  var sVars = V.starburst.vars;
+  if(cfg.viz == 0){
+    sVars.sphereFloor = 100;
+    sVars.sphereRange = 0.6;
+    setTimeout(function(){
+      cfg.baseZoom = 300;
+    },700)
+  }
+  if(cfg.viz == 1){
+    cfg.baseZoom = 175;
+  }
+  if(cfg.viz == 2){
+    sVars.sphereFloor = 0;
+    sVars.sphereRange = 1;
+    setTimeout(function(){
+      cfg.baseZoom = 300;
+    },700)
+  }
+  if(cfg.viz == 3){
+    cfg.baseZoom = 200;
+    setTimeout(function(){
+      cfg.baseZoom = 500;
+    },700)
+    setTimeout(function(){
+      cfg.baseZoom = 150;
+    },1200)
+  }
+
+
+  cfg.viz++;
+  if(cfg.viz > 3){
+    cfg.viz = 0;
+  }
+}
+
+
 function spherize(x,y,z){
   var d = 1 / Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
   x *= d;
@@ -38,6 +77,8 @@ function calcFPS(){
   fps = Math.ceil(1/delta);
   document.getElementById('fps').innerHTML = fps + 'fps';
 }
+
+
 
 
 function s(){ // stop

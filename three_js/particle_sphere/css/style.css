@@ -7,6 +7,7 @@ body {
 }
 
 #bottomBar{
+  text-align: center;
   opacity: 0.3;
   position: absolute;
   background-color: rgba(0,0,0,0.8);
@@ -20,13 +21,16 @@ body {
   transition: opacity 0.2s;
 }
 audio{
-  float: left;
+  width: 100%;
+  max-width: 800px;
 }
 #textinput{
+  display: none;
   float: left;
   margin: 8px 8px 0 150px;
 }
 #gettrack{
+  display: none;
   float: left;
   margin: 8px 8px 0 0;
 }

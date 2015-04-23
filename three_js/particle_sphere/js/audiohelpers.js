@@ -4,7 +4,6 @@ var pauseBtn = document.getElementById('pause');
 var playBtn = document.getElementById('play');
 
 gettrack.addEventListener("click", function(e){
-  console.log(SC);
   track_url = textinput.value;
   SC.get('/resolve', { url: track_url }, function(track) {
     audioElement.src = track.stream_url + '?client_id=74a591aaa5e9a7723d674ccf5fffe0bc';

@@ -31,13 +31,13 @@
 
 			// TODO : Try sphere visualisation
 			// TODO : Try particle wave visualisation
+			// TODO : addtrackball instead of mousing
+			// TODO : change to request animation frame
 			// TODO : add FPS graph like :http://jabtunes.com/labs/particles/experiments_fbo.html
 			// TODO : add slider for particle size
 			// TODO : make particles round
 
 			//config
-			
-			baseZoom = 200;
 			fps = 60;
 			fftSize = 512;
 
@@ -45,6 +45,12 @@
 
 		<script>
 			var V = V || {};
+			V.config = {
+				viz: 0,
+				baseZoom: 200
+			}
+
+
 
 			var lastCalledTime;
 			windowWidth = window.innerWidth;
@@ -62,7 +68,7 @@
 			function init() {
 				// field of view, aspect ratio for render output, near and far clipping plane. 
 				camera = new THREE.PerspectiveCamera(80, windowWidth / window.innerHeight, 1, 4000 );
-				camera.position.z = baseZoom;
+				camera.position.z = V.starburst.config.baseZoom;
 
 				// the scene contains all the 3D object data
 				scene = new THREE.Scene();
@@ -87,6 +93,10 @@
 				// render 30 times a second (should also look 
 				// at requestAnimationFrame) 
 				int = setInterval(update,1000/fps); 
+
+				var changeViz = setInterval(function(){
+			    V.changeViz();
+			  },1500)
 			
 			}
 

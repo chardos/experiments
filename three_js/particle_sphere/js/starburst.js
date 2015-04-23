@@ -2,18 +2,21 @@ var V = V || {};
 
 V.starburst = {};
 
-V.config = {
-  sphereSize: 500,
-  baseZoom:  200, //distance from 0,0,0
+V.starburst.config = {
   zoomMultiplier:  100, //how much the mouse will affect zoom
   panMultiplier:  300, //how much mouse affects pan
   particleBaseSize:  0.7,
   numberParticles:  15000
 }
 
+V.starburst.vars={
+  sphereFloor: 0,
+  sphereRange: 1
+}
+
 V.starburst.makeParticles = function() { 
         
-  var cfg = V.config;
+  var cfg = V.starburst.config;
   var particleGeom = new THREE.Geometry();
   var material; 
   var colors = [];
@@ -27,7 +30,7 @@ V.starburst.makeParticles = function() {
     var z = Math.abs( -1 + Math.random() * 2 ); //abs = half sphere
     var sphere = spherize(x,y,z);
 
-    particleGeom.vertices.push(new THREE.Vector3( sphere.x,  sphere.y, sphere.z ));
+    particleGeom.vertices.push( new THREE.Vector3() );
     particleGeom.vertices[i].origX = sphere.x
     particleGeom.vertices[i].origY = sphere.y
     particleGeom.vertices[i].origZ = sphere.z
@@ -53,7 +56,8 @@ V.starburst.makeParticles = function() {
 
 V.starburst.updateParticles = function() { 
 
-  var cfg = V.config;
+  var cfg = V.starburst.config;
+  var vars = V.starburst.vars;
 
   //AUDIO ------------------------------------
 
@@ -74,10 +78,10 @@ V.starburst.updateParticles = function() {
 
     //distance from center determined by mod
     var mod = i%(fftSize/2)
-    cfg.sphereSize = frequencyData[mod];
-    particle.x = particle.origX * cfg.sphereSize;
-    particle.y = particle.origY * cfg.sphereSize;
-    particle.z = particle.origZ * cfg.sphereSize;
+    var distFromCentre = frequencyData[mod];
+    particle.x = particle.origX * distFromCentre * vars.sphereRange + particle.origX*vars.sphereFloor;
+    particle.y = particle.origY * distFromCentre * vars.sphereRange + particle.origY*vars.sphereFloor;
+    particle.z = particle.origZ * distFromCentre * vars.sphereRange + particle.origZ*vars.sphereFloor;
 
     colors[i] = new THREE.Color();
     var modifiedSaturation = baseSaturation + (frequencyData[mod]/250)
@@ -85,7 +89,7 @@ V.starburst.updateParticles = function() {
 
     //move cam zoom in out on mouseY
     var cameraOffset = mouseY/windowHeight - 0.5;
-    camera.position.z = cfg.baseZoom + cameraOffset * cfg.zoomMultiplier;
+    camera.position.z = V.config.baseZoom + cameraOffset * cfg.zoomMultiplier;
 
     //rotate cam left right on mouseX
     var cameraOffset = mouseX/windowWidth - 0.5;
