@@ -11,8 +11,7 @@ V.starburst.config = {
 
 V.starburst.vars={
   sphereFloor: 0,
-  sphereRange: 1,
-  disableInnerSphere: false
+  sphereRange: 1
 }
 
 V.starburst.makeParticles = function() { 
@@ -87,11 +86,6 @@ V.starburst.updateParticles = function() {
     colors[i] = new THREE.Color();
     var modifiedSaturation = baseSaturation + (frequencyData[mod]/250)
     colors[i].setHSL( modifiedSaturation, 1, .6 );
-
-    //if amplitude at 0, make particle black
-    if (vars.disableInnerSphere){
-      if (amplitude == 0) colors[i].setHSL(0,0,0);
-    }
 
     //move cam zoom in out on mouseY
     var cameraOffset = mouseY/windowHeight - 0.5;
