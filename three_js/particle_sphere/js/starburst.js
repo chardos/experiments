@@ -3,13 +3,13 @@ var V = V || {};
 V.starburst = {};
 
 V.starburst.config = {
-  zoomMultiplier:  100, //how much the mouse will affect zoom
-  panMultiplier:  300, //how much mouse affects pan
-  particleBaseSize:  0.7,
-  numberParticles:  15000,
+  zoomMultiplier: 100, //how much the mouse will affect zoom
+  panMultiplier: 300, //how much mouse affects pan
+  numberParticles: 15000,
 }
 
 V.starburst.vars={
+  particleBaseSize: 0.7,
   sphereFloor: 0,
   sphereRange: 1
 }
@@ -17,6 +17,7 @@ V.starburst.vars={
 V.starburst.makeParticles = function() { 
         
   var cfg = V.starburst.config;
+  var sVars = V.starburst.vars;
   var particleGeom = new THREE.Geometry();
   var material; 
   var colors = [];
@@ -44,7 +45,7 @@ V.starburst.makeParticles = function() {
     
   // material
   material = new THREE.PointCloudMaterial({
-      size: cfg.particleBaseSize,
+      size: sVars.particleBaseSize,
       vertexColors: THREE.VertexColors
   });
 
@@ -87,9 +88,9 @@ V.starburst.updateParticles = function() {
     var modifiedSaturation = baseSaturation + (frequencyData[mod]/250)
     colors[i].setHSL( modifiedSaturation, 1, .6 );
 
-    //move cam zoom in out on mouseY
+    //move cam up down out on mouseY
     var cameraOffset = mouseY/windowHeight - 0.5;
-    camera.position.z = V.config.baseZoom + cameraOffset * cfg.zoomMultiplier;
+    camera.position.y = cameraOffset * cfg.panMultiplier;
 
     //rotate cam left right on mouseX
     var cameraOffset = mouseX/windowWidth - 0.5;

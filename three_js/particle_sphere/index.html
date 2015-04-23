@@ -66,9 +66,10 @@
 			init();
 
 			function init() {
+
 				// field of view, aspect ratio for render output, near and far clipping plane. 
 				camera = new THREE.PerspectiveCamera(80, windowWidth / window.innerHeight, 1, 4000 );
-				camera.position.z = V.starburst.config.baseZoom;
+				camera.position.z = V.config.baseZoom;
 
 				// the scene contains all the 3D object data
 				scene = new THREE.Scene();
@@ -95,7 +96,7 @@
 				int = setInterval(update,1000/fps); 
 
 				var changeViz = setInterval(function(){
-			    //V.changeViz();
+			    V.changeViz();
 			  },1500)
 			
 			}

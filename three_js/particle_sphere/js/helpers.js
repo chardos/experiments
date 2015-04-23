@@ -14,21 +14,35 @@ V.changeViz = function(){
   if(cfg.viz == 1){
     console.log(1);
     cfg.baseZoom = 175;
+    setTimeout(function(){
+      particles.material.size = sVars.particleBaseSize * 2;
+    },700)
+    setTimeout(function(){
+      particles.material.size = sVars.particleBaseSize = 0.7;
+    },1200)
   }
   if(cfg.viz == 2){
     console.log(2);
     sVars.sphereFloor = 0;
     sVars.sphereRange = 1;
     setTimeout(function(){
-      sVars.sphereRange = 2;
+      cfg.baseZoom = 100;
     },700)
     setTimeout(function(){
       cfg.baseZoom = 300;
+      V.starburst.vars.sphereFloor=120;
+    V.starburst.vars.sphereRange=.05;
     },1200)
   }
   if(cfg.viz == 3){
     console.log(3);
+    sVars.sphereFloor = 50;
+    sVars.sphereRange = 1;
     cfg.baseZoom = 200;
+    setTimeout(function(){
+      sVars.sphereFloor = 80;
+      cfg.baseZoom = 500;
+    },300)
     setTimeout(function(){
       cfg.baseZoom = 500;
     },700)
