@@ -2,7 +2,9 @@ var V = V || {};
 V.changeViz = function(){
   var cfg = V.config;
   var sVars = V.starburst.vars;
+
   if(cfg.viz == 0){
+    console.log(0);
     sVars.sphereFloor = 100;
     sVars.sphereRange = 0.6;
     setTimeout(function(){
@@ -10,28 +12,42 @@ V.changeViz = function(){
     },700)
   }
   if(cfg.viz == 1){
+    console.log(1);
     cfg.baseZoom = 175;
   }
   if(cfg.viz == 2){
+    console.log(2);
     sVars.sphereFloor = 0;
     sVars.sphereRange = 1;
     setTimeout(function(){
-      cfg.baseZoom = 300;
+      sVars.sphereRange = 2;
     },700)
+    setTimeout(function(){
+      cfg.baseZoom = 300;
+    },1200)
   }
   if(cfg.viz == 3){
+    console.log(3);
     cfg.baseZoom = 200;
     setTimeout(function(){
       cfg.baseZoom = 500;
     },700)
     setTimeout(function(){
-      cfg.baseZoom = 150;
+      cfg.baseZoom = 200;
     },1200)
+  }
+  if(cfg.viz == 4){
+    console.log(4);
+    V.starburst.vars.sphereFloor=120;
+    V.starburst.vars.sphereRange=.05;
+    setTimeout(function(){
+      cfg.baseZoom = 160;
+    },1300)
   }
 
 
   cfg.viz++;
-  if(cfg.viz > 3){
+  if(cfg.viz > 4){
     cfg.viz = 0;
   }
 }

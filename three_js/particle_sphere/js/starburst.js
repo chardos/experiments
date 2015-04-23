@@ -6,12 +6,13 @@ V.starburst.config = {
   zoomMultiplier:  100, //how much the mouse will affect zoom
   panMultiplier:  300, //how much mouse affects pan
   particleBaseSize:  0.7,
-  numberParticles:  15000
+  numberParticles:  15000,
 }
 
 V.starburst.vars={
   sphereFloor: 0,
-  sphereRange: 1
+  sphereRange: 1,
+  disableInnerSphere: false
 }
 
 V.starburst.makeParticles = function() { 
@@ -69,7 +70,7 @@ V.starburst.updateParticles = function() {
 
   particles.geometry.verticesNeedUpdate = true;
   particles.geometry.colorsNeedUpdate = true;
-  var colors = [];
+  var colors = []; //create the array that will house all the colors of each particle
   geometry = particles.geometry;
 
   // iterate through every particle
@@ -78,14 +79,19 @@ V.starburst.updateParticles = function() {
 
     //distance from center determined by mod
     var mod = i%(fftSize/2)
-    var distFromCentre = frequencyData[mod];
-    particle.x = particle.origX * distFromCentre * vars.sphereRange + particle.origX*vars.sphereFloor;
-    particle.y = particle.origY * distFromCentre * vars.sphereRange + particle.origY*vars.sphereFloor;
-    particle.z = particle.origZ * distFromCentre * vars.sphereRange + particle.origZ*vars.sphereFloor;
+    var amplitude = frequencyData[mod];
+    particle.x = particle.origX * amplitude * vars.sphereRange + particle.origX*vars.sphereFloor;
+    particle.y = particle.origY * amplitude * vars.sphereRange + particle.origY*vars.sphereFloor;
+    particle.z = particle.origZ * amplitude * vars.sphereRange + particle.origZ*vars.sphereFloor;
 
     colors[i] = new THREE.Color();
     var modifiedSaturation = baseSaturation + (frequencyData[mod]/250)
     colors[i].setHSL( modifiedSaturation, 1, .6 );
+
+    //if amplitude at 0, make particle black
+    if (vars.disableInnerSphere){
+      if (amplitude == 0) colors[i].setHSL(0,0,0);
+    }
 
     //move cam zoom in out on mouseY
     var cameraOffset = mouseY/windowHeight - 0.5;
