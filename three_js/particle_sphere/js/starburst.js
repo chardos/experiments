@@ -11,19 +11,20 @@ V.starburst.config = {
 V.starburst.vars={
   particleBaseSize: 0.7,
   sphereFloor: 0,
-  sphereRange: 1
+  sphereRange: 1,
+  baseHue: 0
 }
 
 V.starburst.makeParticles = function() { 
         
-  var cfg = V.starburst.config;
+  var sCfg = V.starburst.config;
   var sVars = V.starburst.vars;
   var particleGeom = new THREE.Geometry();
   var material; 
   var colors = [];
 
   //CREATE THE SPHERE
-  for (var i = 0; i < cfg.numberParticles; i++){
+  for (var i = 0; i < sCfg.numberParticles; i++){
 
     //create particle within half sphere
     var x = -1 + Math.random() * 2;
@@ -57,8 +58,8 @@ V.starburst.makeParticles = function() {
 
 V.starburst.updateParticles = function() { 
 
-  var cfg = V.starburst.config;
-  var vars = V.starburst.vars;
+  var sCfg = V.starburst.config;
+  var sVars = V.starburst.vars;
 
   //AUDIO ------------------------------------
 
@@ -80,26 +81,26 @@ V.starburst.updateParticles = function() {
     //distance from center determined by mod
     var mod = i%(fftSize/2)
     var amplitude = frequencyData[mod];
-    particle.x = particle.origX * amplitude * vars.sphereRange + particle.origX*vars.sphereFloor;
-    particle.y = particle.origY * amplitude * vars.sphereRange + particle.origY*vars.sphereFloor;
-    particle.z = particle.origZ * amplitude * vars.sphereRange + particle.origZ*vars.sphereFloor;
+    particle.x = particle.origX * amplitude * sVars.sphereRange + particle.origX*sVars.sphereFloor;
+    particle.y = particle.origY * amplitude * sVars.sphereRange + particle.origY*sVars.sphereFloor;
+    particle.z = particle.origZ * amplitude * sVars.sphereRange + particle.origZ*sVars.sphereFloor;
 
     colors[i] = new THREE.Color();
-    var modifiedSaturation = baseSaturation + (frequencyData[mod]/250)
-    colors[i].setHSL( modifiedSaturation, 1, .6 );
+    var modifiedHue = sVars.baseHue + (frequencyData[mod]/250)
+    colors[i].setHSL( modifiedHue, 1, .6 );
 
     //move cam up down out on mouseY
     var cameraOffset = mouseY/windowHeight - 0.5;
-    camera.position.y = cameraOffset * cfg.panMultiplier;
+    camera.position.y = cameraOffset * sCfg.panMultiplier;
 
     //rotate cam left right on mouseX
     var cameraOffset = mouseX/windowWidth - 0.5;
-    camera.position.x = cameraOffset * cfg.panMultiplier * -1;
+    camera.position.x = cameraOffset * sCfg.panMultiplier * -1;
     camera.lookAt(new THREE.Vector3(0,0,0));
 
   }
-  baseSaturation += + 0.005;
-  if (baseSaturation > 1) baseSaturation = 0;
+  sVars.baseHue += + 0.005;
+  if (sVars.baseHue > 1) sVars.baseHue = 0;
   geometry.colors = colors;
 
 }
