@@ -101,7 +101,10 @@ V.starburst.updateParticles = function() {
     var modifiedHue = sVars.baseHue + (frequencyData[fftBand]/250)
     colors[i].setHSL( modifiedHue, 1, .6 );
 
-
+    //if no volume, blacken all particles.
+    if (averageVolume == 0){
+      colors[i].setHSL(0,0,0);
+    }
 
     //move cam up down out on mouseY
     var cameraOffset = mouseY/windowHeight - 0.5;
