@@ -66,6 +66,12 @@ V.starburst.updateParticles = function() {
   //get audio data
   frequencyData = new Uint8Array(analyser.frequencyBinCount);
   analyser.getByteFrequencyData(frequencyData);
+  //get average
+  var averageVolume = 0;
+  for(var i=0; i<frequencyData.length/5; i++) { //divide by 4 = just the bass
+    averageVolume += frequencyData[i];
+  }
+  averageVolume /= 500;
 
   //PARTICLES ------------------------------------
 
@@ -78,16 +84,24 @@ V.starburst.updateParticles = function() {
   for(var i=0; i<particles.geometry.vertices.length; i++) {
     particle = particles.geometry.vertices[i]; 
 
-    //distance from center determined by mod
-    var mod = i%(fftSize/2)
-    var amplitude = frequencyData[mod];
+    //assign each particle to a FFT band
+    var fftBand = i%(fftSize/2)
+    var amplitude = frequencyData[fftBand];
+
+    //make particles with 0 amplitude bounce to averagevolume
+    if (amplitude == 0) amplitude = averageVolume; 
+
     particle.x = particle.origX * amplitude * sVars.sphereRange + particle.origX*sVars.sphereFloor;
     particle.y = particle.origY * amplitude * sVars.sphereRange + particle.origY*sVars.sphereFloor;
     particle.z = particle.origZ * amplitude * sVars.sphereRange + particle.origZ*sVars.sphereFloor;
 
+
+    //colorize the particle
     colors[i] = new THREE.Color();
-    var modifiedHue = sVars.baseHue + (frequencyData[mod]/250)
+    var modifiedHue = sVars.baseHue + (frequencyData[fftBand]/250)
     colors[i].setHSL( modifiedHue, 1, .6 );
+
+
 
     //move cam up down out on mouseY
     var cameraOffset = mouseY/windowHeight - 0.5;

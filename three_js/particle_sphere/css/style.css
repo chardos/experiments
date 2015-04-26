@@ -48,8 +48,9 @@ audio{
 #value{
   display: none;
   position: absolute;
-  padding: 20px;
-  right: 0px;
+  padding: 5px;
+  top: 10px;
+  left: 10px;
   background-color: white;
 }
 #fps{
