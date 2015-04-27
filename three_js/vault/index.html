@@ -15,6 +15,8 @@
 		<script>
 			// TODO : add texture
 
+			var V = V || {};
+
 
 			baseZoom = 800; //distance from 0,0,0
 			zoomMultiplier = 100; //how much the mouse will affect zoom
@@ -31,9 +33,8 @@
 			var mouseX = 0;
 			var mouseY = 0;
 
-			init();
 
-			function init() {
+			V.init = function() {
 
 				// field of view, aspect ratio for render output, near and far clipping plane. 
 				camera = new THREE.PerspectiveCamera(80, windowWidth / window.innerHeight, 1, 4000 );
@@ -50,7 +51,7 @@
 	
 				// the renderer's canvas domElement is added to the body
 				document.body.appendChild( renderer.domElement );
-				makeScene(); 
+				V.makeScene(); 
 			
 				// add the mouse move listener
 				document.addEventListener( 'mousemove', updateMouseCoords, false );
@@ -61,14 +62,15 @@
 			
 			}
 
+
 			function update() {
 				renderer.render( scene, camera ); // and render the scene from the perspective of the camera
-				updateCamera();
+				V.updateCamera();
 				calcFPS();
 			}
 
 			// creates a random field of Particle objects
-			function makeScene() { 
+			V.makeScene = function() { 
 				var texture = THREE.ImageUtils.loadTexture( "img/grid.png" );
 				texture.wrapS = THREE.RepeatWrapping; 
 				texture.wrapT = THREE.RepeatWrapping;
@@ -86,7 +88,7 @@
 			}
 			
 			
-			function updateCamera() { 
+			V.updateCamera = function() { 
 
 					//move cam zoom in out on mouseY
 					var cameraOffset = mouseY/windowHeight - 0.5;
@@ -99,6 +101,7 @@
 
 			}
 
+			V.init();
 
 
 		</script>
