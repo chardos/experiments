@@ -18,7 +18,7 @@
 			var V = V || {};
 
 
-			baseZoom = 800; //distance from 0,0,0
+			baseZoom = 200; //distance from 0,0,0
 			zoomMultiplier = 100; //how much the mouse will affect zoom
 			panMultiplier = 800; //how much mouse affects pan
 			fps = 60;
@@ -84,6 +84,28 @@
 				var ninetyDeg =  parseFloat( (Math.PI / 2 ).toFixed(3) );
 				plane.rotation.x = ninetyDeg;  
 	      scene.add(plane);
+
+	      var loader = new THREE.JSONLoader(); // init the loader util
+
+				// init loading
+				loader.load('js/cube.json', function (geometry) {
+				  // create a new material
+				  var material = new THREE.MeshLambertMaterial({
+				  	color: '0xFF0000',
+				  	vertexColors: '0xFF0000'
+				  });
+				  
+				  // create a mesh with models geometry and material
+				  var mesh = new THREE.Mesh(
+				    geometry,
+				    material
+				  );
+				  mesh.scale.set(50,50,50);
+				  
+				  
+				  scene.add(mesh);
+				  console.log('loaded');
+				});
 				
 			}
 			
