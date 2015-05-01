@@ -90,9 +90,8 @@
 				// init loading
 				loader.load('js/cube.json', function (geometry) {
 				  // create a new material
-				  var material = new THREE.MeshLambertMaterial({
-				  	color: '0xFF0000',
-				  	vertexColors: '0xFF0000'
+				  var material = new THREE.MeshBasicMaterial({
+				  	color: new THREE.Color(1,1,0)
 				  });
 				  
 				  // create a mesh with models geometry and material
@@ -101,7 +100,7 @@
 				    material
 				  );
 				  mesh.scale.set(50,50,50);
-				  
+				  mesh.position.y = 51;
 				  
 				  scene.add(mesh);
 				  console.log('loaded');
