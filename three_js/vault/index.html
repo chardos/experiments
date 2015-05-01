@@ -4,8 +4,6 @@
 		<title>Particle sphere</title>
 		<meta charset="utf-8">
 		<link rel="stylesheet" type="text/css" href="style.css">
-
-		
 	</head>
 	<body>
 		<div id="fps">fps</div>
@@ -17,12 +15,10 @@
 
 			var V = V || {};
 
-
 			baseZoom = 200; //distance from 0,0,0
 			zoomMultiplier = 100; //how much the mouse will affect zoom
 			panMultiplier = 800; //how much mouse affects pan
 			fps = 60;
-
 
 			var lastCalledTime;
 			windowWidth = window.innerWidth;
@@ -32,7 +28,6 @@
 
 			var mouseX = 0;
 			var mouseY = 0;
-
 
 			V.init = function() {
 
@@ -61,7 +56,6 @@
 				int = setInterval(update,1000/fps); 
 			
 			}
-
 
 			function update() {
 				renderer.render( scene, camera ); // and render the scene from the perspective of the camera
