@@ -27,8 +27,8 @@
 		<script src="js/helpers.js"></script>
 		<script src="js/audiohelpers.js"></script>
 		<script src="js/starburst.js"></script>
+		<script src="js/init.js"></script>
 		<script>
-
 			// TODO : canvas effects like split half screen
 			// TODO : try to detect beats?
 			// TODO : Try particle wave visualisation
@@ -37,89 +37,7 @@
 			// TODO : add FPS graph like :http://jabtunes.com/labs/particles/experiments_fbo.html
 			// TODO : add slider for particle size
 			// TODO : make particles round
-
-			//config
-			fps = 60;
-			fftSize = 512;
-
 		</script>
 
-		<script>
-			var V = V || {};
-			V.config = {
-				viz: 0,
-				baseZoom: 200
-			}
-
-			var lastCalledTime;
-			windowWidth = window.innerWidth;
-			windowHeight = window.innerHeight;
-			// the main three.js components
-			var camera, scene, renderer
-
-			var mouseX = 0;
-			var mouseY = 0;
-			var particles;
-
-			init();
-
-			function init() {
-
-				// field of view, aspect ratio for render output, near and far clipping plane. 
-				camera = new THREE.PerspectiveCamera(80, windowWidth / window.innerHeight, 1, 4000 );
-				camera.position.z = V.config.baseZoom;
-
-				// the scene contains all the 3D object data
-				scene = new THREE.Scene();
-				
-				// camera needs to go in the scene 
-				scene.add(camera);
-
-	
-				// and the CanvasRenderer figures out what the 
-				// stuff in the scene looks like and draws it!
-	 
-				renderer = new THREE.WebGLRenderer();
-				renderer.setSize( window.innerWidth, window.innerHeight );
-	
-				// the renderer's canvas domElement is added to the body
-				document.body.appendChild( renderer.domElement );
-				V.starburst.makeParticles(); 
-			
-				// add the mouse move listener
-				document.addEventListener( 'mousemove', updateMouseCoords, false );
-				
-				// render 30 times a second (should also look 
-				// at requestAnimationFrame) 
-				int = setInterval(update,1000/fps); 
-
-				var changeViz = setInterval(function(){
-			    V.changeViz();
-			  },1500)
-			
-			}
-
-			function update() {
-				renderer.render( scene, camera ); // and render the scene from the perspective of the camera
-				V.starburst.updateParticles();
-				calcFPS();
-			}
-
-
-			// --------------------------------------------------------------------------
-			// AUDIO STARTS HERE
-			// --------------------------------------------------------------------------
-
-			var context = new AudioContext();
-			var audioElement = document.getElementById("player");
-			var analyser = context.createAnalyser();
-			analyser.fftSize = fftSize;
-
-	    var source = context.createMediaElementSource(audioElement);
-	    source.connect(analyser);
-	    source.connect(context.destination);
-
-
-		</script>
 	</body>
 </html>

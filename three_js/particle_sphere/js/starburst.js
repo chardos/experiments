@@ -3,7 +3,6 @@ var V = V || {};
 V.starburst = {};
 
 V.starburst.config = {
-  zoomMultiplier: 100, //how much the mouse will affect zoom
   panMultiplier: 300, //how much mouse affects pan
   numberParticles: 15000,
 }
@@ -58,6 +57,7 @@ V.starburst.makeParticles = function() {
 
 V.starburst.updateParticles = function() { 
 
+  var cfg = V.config;
   var sCfg = V.starburst.config;
   var sVars = V.starburst.vars;
 
@@ -85,7 +85,7 @@ V.starburst.updateParticles = function() {
     particle = particles.geometry.vertices[i]; 
 
     //assign each particle to a FFT band
-    var fftBand = i%(fftSize/2)
+    var fftBand = i%(cfg.fftSize/2)
     var amplitude = frequencyData[fftBand];
 
     //make particles with 0 amplitude bounce to averagevolume
