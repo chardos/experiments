@@ -1,13 +1,18 @@
+//TODO: make centreline red (as test)
+//TODO: make centreline affect by music
+
+
+
 var V = V || {};
 
 V.wave = {};
 
 V.wave.config = {
   particleBaseSize: 1.5,
-  panMultiplier: 300, //how much mouse affects pan
-  height: 256, // number of particles high
-  width: 20,
-  spacing: 5
+  panMultiplier: 75, //how much mouse affects pan
+  height: 64, // number of particles high
+  width: 200,
+  spacing: 5.3
 }
 
 V.wave.vars={
@@ -20,7 +25,7 @@ V.wave.makeParticles = function() {
         
   var wCfg = V.wave.config;
   var wVars = V.wave.vars;
-   particleGeom = new THREE.Geometry();
+  particleGeom = new THREE.Geometry();
   var material; 
   var colors = [];
 
@@ -35,7 +40,7 @@ V.wave.makeParticles = function() {
       particleGeom.vertices.push( new THREE.Vector3() );
       var index = i*wCfg.height + i2;
       particleGeom.vertices[index].x = x;
-      particleGeom.vertices[index].y = y;
+      particleGeom.vertices[index].y = y - (wCfg.height * wCfg.spacing/2);
       particleGeom.vertices[index].z = z;
 
       // vertex colors
@@ -52,11 +57,28 @@ V.wave.makeParticles = function() {
   });
 
   particles = new THREE.PointCloud(particleGeom, material);
-  particles.position.y = -100
-  scene.add( particles );
   
+  a = V.wave.selectColumn(5);
+
+  for(var i=0; i<a.length; i++) {
+    particle = a[i]; 
+    particle.x -= 50;
+  }
+
+  scene.add( particles );
 }
 
+V.wave.selectColumn = function(index) { 
+  var column = [];
+  var startI = this.config.height*index;
+  var endI = this.config.height*index + this.config.height
+  console.log(startI);
+  console.log(endI);
+  for(var i=startI; i<endI; i++) {
+    column.push(particles.geometry.vertices[i]); 
+  }
+  return column;
+}
 V.wave.updateParticles = function() { 
 
   var cfg = V.config;
@@ -78,13 +100,21 @@ V.wave.updateParticles = function() {
   //PARTICLES ------------------------------------
 
   particles.geometry.verticesNeedUpdate = true;
-  particles.geometry.colorsNeedUpdate = true;
-  var colors = []; //create the array that will house all the colors of each particle
-  geometry = particles.geometry;
 
- 
-  wVars.baseHue += + 0.005;
-  if (wVars.baseHue > 1) wVars.baseHue = 0;
-  geometry.colors = colors;
+  //move only 2nd column left
+
+  // move particles to the left
+  for(var i=0; i<particles.geometry.vertices.length; i++) {
+    particle = particles.geometry.vertices[i]; 
+    //particle.x -= 5;
+  }
+  //move cam up down out on mouseY
+  var cameraOffset = mouseY/windowHeight - 0.5;
+  camera.position.y = cameraOffset * wCfg.panMultiplier;
+
+  //rotate cam left right on mouseX
+  var cameraOffset = mouseX/windowWidth - 0.5;
+  camera.position.x = cameraOffset * wCfg.panMultiplier * -1;
+  camera.lookAt(new THREE.Vector3(0,0,0));
 
 }
