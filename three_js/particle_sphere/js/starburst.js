@@ -106,18 +106,18 @@ V.starburst.updateParticles = function() {
       colors[i].setHSL(0,0,0);
     }
 
-    //move cam up down out on mouseY
-    var cameraOffset = mouseY/windowHeight - 0.5;
-    camera.position.y = cameraOffset * sCfg.panMultiplier;
-
-    //rotate cam left right on mouseX
-    var cameraOffset = mouseX/windowWidth - 0.5;
-    camera.position.x = cameraOffset * sCfg.panMultiplier * -1;
-    camera.lookAt(new THREE.Vector3(0,0,0));
-
   }
   sVars.baseHue += + 0.005;
   if (sVars.baseHue > 1) sVars.baseHue = 0;
   geometry.colors = colors;
+
+  //move cam up down out on mouseY
+  var cameraOffset = mouseY/windowHeight - 0.5;
+  camera.position.y = cameraOffset * sCfg.panMultiplier;
+
+  //rotate cam left right on mouseX
+  var cameraOffset = mouseX/windowWidth - 0.5;
+  camera.position.x = cameraOffset * sCfg.panMultiplier * -1;
+  camera.lookAt(new THREE.Vector3(0,0,0));
 
 }
