@@ -1,5 +1,7 @@
-//TODO: make centreline red (as test)
-//TODO: make centreline affect by music
+
+//TODO: change particle brightness by amplitude
+//TODO: make the particles repeatable
+
 
 
 
@@ -8,26 +10,37 @@ var V = V || {};
 V.wave = {};
 
 V.wave.config = {
-  particleBaseSize: 1.5,
-  panMultiplier: 75, //how much mouse affects pan
-  height: 64, // number of particles high
-  width: 200,
-  spacing: 5.3
+  particleBaseSize: 3,
+  panMultiplier: 1400, //how much mouse affects pan
+  height: 128, // number of particles high
+  width: 4000,
+  spacing: 8,
+  baseZoom: 600
 }
 
 V.wave.vars={
+  heightToFFTratio: null,
   sphereFloor: 0,
   sphereRange: 1,
-  baseHue: 0
+  baseHue: 0,
+  column: 0,
+  colors: []
 }
 
 V.wave.makeParticles = function() { 
-        
+
+
   var wCfg = V.wave.config;
   var wVars = V.wave.vars;
   particleGeom = new THREE.Geometry();
   var material; 
   var colors = [];
+  camera.position.z = wCfg.baseZoom;
+
+
+  //set ratio
+  wVars.heightToFFTratio = V.config.fftSize / V.wave.config.height;
+
 
   //CREATE THE PARTICLE GRID
   for (var i = 0; i < wCfg.width; i++){
@@ -45,7 +58,9 @@ V.wave.makeParticles = function() {
 
       // vertex colors
       colors[index] = new THREE.Color(1,1,1);
-      colors[index].setHSL( Math.random(), 1.0, 0.5 );
+      var hue = Math.random();
+      colors[index].setHSL( hue, 1.0, 0.5 );
+      particleGeom.vertices[index].hue = hue;
     }
   }
   particleGeom.colors = colors;
@@ -53,18 +68,13 @@ V.wave.makeParticles = function() {
   // material
   material = new THREE.PointCloudMaterial({
     size: wCfg.particleBaseSize,
-    vertexColors: THREE.VertexColors
+    vertexColors: THREE.VertexColors,
+    sizeAttenuation: true
   });
 
   particles = new THREE.PointCloud(particleGeom, material);
   
-  a = V.wave.selectColumn(5);
-
-  for(var i=0; i<a.length; i++) {
-    particle = a[i]; 
-    particle.x -= 50;
-  }
-
+ 
   scene.add( particles );
 }
 
@@ -72,8 +82,15 @@ V.wave.selectColumn = function(index) {
   var column = [];
   var startI = this.config.height*index;
   var endI = this.config.height*index + this.config.height
-  console.log(startI);
-  console.log(endI);
+  for(var i=startI; i<endI; i++) {
+    column.push(particles.geometry.vertices[i]); 
+  }
+  return column;
+}
+V.wave.selectColorColumn = function(index) { 
+  var column = [];
+  var startI = this.config.height*index;
+  var endI = this.config.height*index + this.config.height
   for(var i=startI; i<endI; i++) {
     column.push(particles.geometry.vertices[i]); 
   }
@@ -90,23 +107,39 @@ V.wave.updateParticles = function() {
   //get audio data
   frequencyData = new Uint8Array(analyser.frequencyBinCount);
   analyser.getByteFrequencyData(frequencyData);
-  //get average
-  var averageVolume = 0;
-  for(var i=0; i<frequencyData.length/5; i++) { //divide by 4 = just the bass
-    averageVolume += frequencyData[i];
-  }
-  averageVolume /= 500;
+
+
 
   //PARTICLES ------------------------------------
 
   particles.geometry.verticesNeedUpdate = true;
+  particles.geometry.colorsNeedUpdate = true;
 
-  //move only 2nd column left
+  currentColumn = V.wave.selectColumn(wVars.column);
+  wVars.column++;
+
+  for(var i=0; i< currentColumn.length; i++) {
+    particle = currentColumn[i]; 
+
+    //assign each particle to a FFT band
+    var fftBand = i%(cfg.fftSize/wVars.heightToFFTratio)
+    var amplitude = frequencyData[fftBand];
+
+    particle.z = amplitude;
+
+    //colorize the particle
+    wVars.colors[i] = new THREE.Color();
+    var hue = particle.hue;
+    wVars.colors[i].setHSL( hue, 1, .4 );
+
+  }
+
+  particles.geometry.colors = colors;
 
   // move particles to the left
   for(var i=0; i<particles.geometry.vertices.length; i++) {
     particle = particles.geometry.vertices[i]; 
-    //particle.x -= 5;
+    particle.x -= wCfg.spacing;
   }
   //move cam up down out on mouseY
   var cameraOffset = mouseY/windowHeight - 0.5;
@@ -118,3 +151,4 @@ V.wave.updateParticles = function() {
   camera.lookAt(new THREE.Vector3(0,0,0));
 
 }
+
