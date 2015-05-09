@@ -79,23 +79,18 @@ V.wave.makeParticles = function() {
 }
 
 V.wave.selectColumn = function(index) { 
-  var column = [];
+  var column = {};
+  column.particles = [];
+  column.indices = [];
   var startI = this.config.height*index;
   var endI = this.config.height*index + this.config.height
   for(var i=startI; i<endI; i++) {
-    column.push(particles.geometry.vertices[i]); 
+    column.particles.push(particles.geometry.vertices[i]); 
+    column.indices.push(i); 
   }
   return column;
 }
-V.wave.selectColorColumn = function(index) { 
-  var column = [];
-  var startI = this.config.height*index;
-  var endI = this.config.height*index + this.config.height
-  for(var i=startI; i<endI; i++) {
-    column.push(particles.geometry.vertices[i]); 
-  }
-  return column;
-}
+
 V.wave.updateParticles = function() { 
 
   var cfg = V.config;
@@ -109,7 +104,6 @@ V.wave.updateParticles = function() {
   analyser.getByteFrequencyData(frequencyData);
 
 
-
   //PARTICLES ------------------------------------
 
   particles.geometry.verticesNeedUpdate = true;
@@ -118,8 +112,16 @@ V.wave.updateParticles = function() {
   currentColumn = V.wave.selectColumn(wVars.column);
   wVars.column++;
 
-  for(var i=0; i< currentColumn.length; i++) {
-    particle = currentColumn[i]; 
+
+  // move particles to the left
+  for(var i=0; i<particles.geometry.vertices.length; i++) {
+    particle = particles.geometry.vertices[i]; 
+    particle.x -= wCfg.spacing;
+  }
+
+  for(var i=0; i< currentColumn.particles.length; i++) {
+    particle = currentColumn.particles[i]; 
+    index = currentColumn.indices[i]; 
 
     //assign each particle to a FFT band
     var fftBand = i%(cfg.fftSize/wVars.heightToFFTratio)
@@ -128,19 +130,15 @@ V.wave.updateParticles = function() {
     particle.z = amplitude;
 
     //colorize the particle
-    wVars.colors[i] = new THREE.Color();
+    wVars.colors[index] = new THREE.Color();
     var hue = particle.hue;
-    wVars.colors[i].setHSL( hue, 1, .4 );
+    wVars.colors[index].setHSL( hue, 1, amplitude/255 );
 
   }
+  particles.geometry.colors = wVars.colors;
 
-  particles.geometry.colors = colors;
 
-  // move particles to the left
-  for(var i=0; i<particles.geometry.vertices.length; i++) {
-    particle = particles.geometry.vertices[i]; 
-    particle.x -= wCfg.spacing;
-  }
+
   //move cam up down out on mouseY
   var cameraOffset = mouseY/windowHeight - 0.5;
   camera.position.y = cameraOffset * wCfg.panMultiplier;
