@@ -4,6 +4,7 @@ body {
   font-size: 12px;
   overflow: hidden;
   font-family: helvetica, arial, sans-serif;
+  color: white;
 }
 
 #bottomBar{
@@ -23,6 +24,9 @@ body {
 audio{
   width: 100%;
   max-width: 800px;
+}
+#fullscreen{
+  float: left;
 }
 #textinput{
   display: none;

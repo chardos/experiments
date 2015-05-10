@@ -114,3 +114,26 @@ function calcFPS(){
 function s(){ // stop
   clearInterval(int)
 }
+
+
+function requestFullScreen(element) {
+    // Supports most browsers and their versions.
+    var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullscreen;
+
+    if (requestMethod) { // Native full screen.
+        requestMethod.call(element);
+    } else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
+        var wscript = new ActiveXObject("WScript.Shell");
+        if (wscript !== null) {
+            wscript.SendKeys("{F11}");
+        }
+    }
+}
+
+document.getElementById("fps").addEventListener("click", function(){
+  console.log('yo');
+});
+console.log('yo');
+
+var elem = document.body; // Make the body go full screen.
+requestFullScreen(elem);
