@@ -75,7 +75,7 @@ function spherize(x,y,z){
   return {x: x, y: y, z: z}
 }
         
-// there isn't a built in circle particle renderer 
+// there isn't a built in circle particle renderer f
 // so we have to define our own. 
 
 function particleRender( context ) {
@@ -109,12 +109,9 @@ function calcFPS(){
 }
 
 
-
-
 function s(){ // stop
   clearInterval(int)
 }
-
 
 function requestFullScreen(element) {
     // Supports most browsers and their versions.
@@ -130,10 +127,20 @@ function requestFullScreen(element) {
     }
 }
 
-document.getElementById("fps").addEventListener("click", function(){
-  console.log('yo');
-});
-console.log('yo');
-
 var elem = document.body; // Make the body go full screen.
-requestFullScreen(elem);
+
+document.getElementById("fullscreen").addEventListener("click", function(){
+  requestFullScreen(elem);
+});
+
+function FShandler(){
+  renderer.setSize( window.innerWidth, window.innerHeight );
+  setTimeout(function(){
+    renderer.setSize( window.innerWidth, window.innerHeight );
+  },1500)
+}
+
+document.addEventListener("fullscreenchange", FShandler);
+document.addEventListener("webkitfullscreenchange", FShandler);
+document.addEventListener("mozfullscreenchange", FShandler);
+document.addEventListener("MSFullscreenChange", FShandler);

@@ -12,7 +12,7 @@ V.wave = {};
 V.wave.config = {
   particleBaseSize: 3,
   panMultiplier: 1400, //how much mouse affects pan
-  height: 128, // number of particles high
+  height: 32,//128 // number of particles high
   width: 4000,
   spacing: 8,
   baseZoom: 600
