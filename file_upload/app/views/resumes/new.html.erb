@@ -7,8 +7,20 @@
     </ul>
   </div>
 <% end %>
-
 <div class="well">
+  
+  <%= form_for @resume, html: { multipart: true, class: 'dropzone dz-clickable' } do |f| %>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+    <div class="dz-message">
+      Drop files here or click to upload.<br>
+      <span class="note">(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</span>
+    </div>
+  <% end %>
+  
+</div>
+<div class="well">
+
   <%= form_for @resume, html: { multipart: true } do |f| %>
     <%= f.label :name %>
     <%= f.text_field :name %>

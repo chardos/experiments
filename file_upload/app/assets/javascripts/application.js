@@ -13,4 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require dropzone
 //= require_tree .
+
+
+//var myDropzone = new Dropzone("div#myId", { url: "/resumes"});
