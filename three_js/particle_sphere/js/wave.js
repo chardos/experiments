@@ -1,5 +1,5 @@
 
-//TODO: change particle brightness by amplitude
+//TODO: change brightness with a maximum of 0.6
 //TODO: make the particles repeatable
 
 
@@ -131,12 +131,14 @@ V.wave.updateParticles = function() {
 
     //colorize the particle
     wVars.colors[index] = new THREE.Color();
-    var hue = particle.hue;
-    wVars.colors[index].setHSL( hue, 1, amplitude/255 );
+    var modifiedHue = wVars.baseHue + (frequencyData[fftBand]/250)
+    wVars.colors[index].setHSL( modifiedHue, 1, amplitude/255 );
 
   }
   particles.geometry.colors = wVars.colors;
 
+  wVars.baseHue += + 0.005;
+  if (wVars.baseHue > 1) wVars.baseHue = 0;
 
 
   //move cam up down out on mouseY
