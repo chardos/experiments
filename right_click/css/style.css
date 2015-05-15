@@ -1,0 +1,60 @@
+/* -----------------GENERIC------------------- */
+
+
+
+
+/* -----------------HEADER------------------- */
+
+
+
+
+
+/* -----------------BODY------------------- */
+
+
+/* tasks */
+ 
+.tasks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+ 
+.task {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: solid 1px #dfdfdf;
+}
+ 
+.task:last-child {
+  border-bottom: none;
+}
+
+.context-menu {
+  display: none;
+  position: absolute;
+  z-index: 10;
+}
+ 
+.context-menu--active {
+  display: block;
+}
+
+
+/* -----------------CLEARFIX------------------- */
+
+
+.clearfix:after {
+     visibility: hidden;
+     display: block;
+     font-size: 0;
+     content: " ";
+     clear: both;
+     height: 0;
+     }
+.clearfix { display: inline-block; }
+/* start commented backslash hack \*/
+* html .clearfix { height: 1%; }
+.clearfix { display: block; }
+/* close commented backslash hack */
