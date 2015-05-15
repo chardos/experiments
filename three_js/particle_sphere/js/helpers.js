@@ -112,6 +112,9 @@ function calcFPS(){
 function s(){ // stop
   clearInterval(int)
 }
+document.addEventListener("click", function(){
+ s();
+});
 
 function requestFullScreen(element) {
     // Supports most browsers and their versions.
