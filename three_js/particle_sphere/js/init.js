@@ -46,8 +46,6 @@ V.init = function() {
 
   // add the mouse move listener
   document.addEventListener( 'mousemove', updateMouseCoords, false );
-  // render 30 times a second (should also look 
-  // at requestAnimationFrame) 
   int = setInterval(update,1000/V.config.fps); 
   renderer.render( scene, camera );
 

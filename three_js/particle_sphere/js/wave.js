@@ -1,6 +1,8 @@
 
-//TODO: change brightness with a maximum of 0.6
 //TODO: make the particles repeatable
+//TODO: trail off wave towards end to black
+//TODO: randomize start color
+//TODO: create different views of the wave
 
 
 
@@ -12,8 +14,8 @@ V.wave = {};
 V.wave.config = {
   particleBaseSize: 3,
   panMultiplier: 1400, //how much mouse affects pan
-  height: 32,//128 // number of particles high
-  width: 4000,
+  height: 128,//128 // number of particles high
+  width: 500,
   spacing: 8,
   baseZoom: 600
 }
@@ -29,7 +31,6 @@ V.wave.vars={
 
 V.wave.makeParticles = function() { 
 
-
   var wCfg = V.wave.config;
   var wVars = V.wave.vars;
   particleGeom = new THREE.Geometry();
@@ -37,10 +38,8 @@ V.wave.makeParticles = function() {
   var colors = [];
   camera.position.z = wCfg.baseZoom;
 
-
   //set ratio
   wVars.heightToFFTratio = V.config.fftSize / V.wave.config.height;
-
 
   //CREATE THE PARTICLE GRID
   for (var i = 0; i < wCfg.width; i++){
@@ -59,7 +58,7 @@ V.wave.makeParticles = function() {
       // vertex colors
       colors[index] = new THREE.Color(1,1,1);
       var hue = Math.random();
-      colors[index].setHSL( hue, 1.0, 0.5 );
+      colors[index].setHSL( hue, 1.0, 0 );
       particleGeom.vertices[index].hue = hue;
     }
   }
@@ -110,16 +109,23 @@ V.wave.updateParticles = function() {
   particles.geometry.colorsNeedUpdate = true;
 
   currentColumn = V.wave.selectColumn(wVars.column);
+  console.log(wVars.column);
   wVars.column++;
-
+  if(wVars.column >= wCfg.width){
+    wVars.column = 0;
+  }
 
   // move particles to the left
   for(var i=0; i<particles.geometry.vertices.length; i++) {
     particle = particles.geometry.vertices[i]; 
     particle.x -= wCfg.spacing;
+    if(particle.x < wCfg.width * wCfg.spacing * -1){
+      particle.x = 0 - wCfg.spacing;
+    }
   }
 
-  for(var i=0; i< currentColumn.particles.length; i++) {
+  //set z values + colors
+  for(var i=0; i < currentColumn.particles.length; i++) {
     particle = currentColumn.particles[i]; 
     index = currentColumn.indices[i]; 
 
@@ -131,13 +137,13 @@ V.wave.updateParticles = function() {
 
     //colorize the particle
     wVars.colors[index] = new THREE.Color();
-    var modifiedHue = wVars.baseHue + (frequencyData[fftBand]/250)
+    var modifiedHue = wVars.baseHue + (frequencyData[fftBand]/600)
     wVars.colors[index].setHSL( modifiedHue, 1, amplitude/255 );
 
   }
   particles.geometry.colors = wVars.colors;
 
-  wVars.baseHue += + 0.005;
+  wVars.baseHue += + 0.0003;
   if (wVars.baseHue > 1) wVars.baseHue = 0;
 
 
