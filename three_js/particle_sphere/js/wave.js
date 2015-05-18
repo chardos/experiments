@@ -1,10 +1,8 @@
 
-//TODO: make the particles repeatable
 //TODO: trail off wave towards end to black
 //TODO: randomize start color
 //TODO: create different views of the wave
-
-
+//TODO: alternate between the 2
 
 
 var V = V || {};
@@ -13,11 +11,12 @@ V.wave = {};
 
 V.wave.config = {
   particleBaseSize: 3,
+  cameraOffsetX: 800,
   panMultiplier: 1400, //how much mouse affects pan
   height: 128,//128 // number of particles high
   width: 500,
   spacing: 8,
-  baseZoom: 600
+  baseZoom: 900
 }
 
 V.wave.vars={
@@ -37,6 +36,7 @@ V.wave.makeParticles = function() {
   var material; 
   var colors = [];
   camera.position.z = wCfg.baseZoom;
+  camera.position.x = wCfg.cameraOffsetX * -1;
 
   //set ratio
   wVars.heightToFFTratio = V.config.fftSize / V.wave.config.height;
@@ -75,6 +75,7 @@ V.wave.makeParticles = function() {
   
  
   scene.add( particles );
+
 }
 
 V.wave.selectColumn = function(index) { 
@@ -152,9 +153,9 @@ V.wave.updateParticles = function() {
   camera.position.y = cameraOffset * wCfg.panMultiplier;
 
   //rotate cam left right on mouseX
-  var cameraOffset = mouseX/windowWidth - 0.5;
-  camera.position.x = cameraOffset * wCfg.panMultiplier * -1;
-  camera.lookAt(new THREE.Vector3(0,0,0));
+  //var cameraOffset = mouseX/windowWidth - 0.5;
+  //camera.position.x = cameraOffset * wCfg.panMultiplier * -1 - wCfg.cameraOffsetX;
+  camera.lookAt(new THREE.Vector3(camera.position.x,0,0));
 
 }
 
