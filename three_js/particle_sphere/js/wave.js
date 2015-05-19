@@ -1,6 +1,4 @@
 
-//TODO: trail off wave towards end to black
-//TODO: randomize start color
 //TODO: create different views of the wave
 //TODO: alternate between the 2
 
@@ -23,7 +21,7 @@ V.wave.vars={
   heightToFFTratio: null,
   sphereFloor: 0,
   sphereRange: 1,
-  baseHue: 0,
+  baseHue: Math.random(),
   column: 0,
   colors: []
 }
