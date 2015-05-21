@@ -66,6 +66,10 @@ V.changeViz = function(){
   }
 }
 
+V.oneToRand = function(num){
+  return Math.ceil(Math.random()*num);
+}
+
 
 function spherize(x,y,z){
   var d = 1 / Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
@@ -110,7 +114,8 @@ function calcFPS(){
 
 
 function s(){ // stop
-  clearInterval(int)
+  clearInterval(int);
+  audioElement.pause();
 }
 document.addEventListener("click", function(){
  s();

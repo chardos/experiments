@@ -49,9 +49,9 @@ V.init = function() {
   int = setInterval(update,1000/V.config.fps); 
   renderer.render( scene, camera );
 
-  /*var changeViz = setInterval(function(){
-    V.changeViz();
-  },1500)*/
+  var changeViz = setInterval(function(){
+    //V.waveChangeViz();
+  },1500);
 
 }
 

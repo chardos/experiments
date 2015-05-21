@@ -1,6 +1,7 @@
 
-//TODO: create different views of the wave
-//TODO: alternate between the 2
+//TODO: create view following behind the wave
+//TODO: make view where wave increases height based on ave volume
+//TODO: alternate between the 2 (wave and sphere)
 
 
 var V = V || {};
@@ -14,7 +15,8 @@ V.wave.config = {
   height: 128,//128 // number of particles high
   width: 500,
   spacing: 8,
-  baseZoom: 900
+  baseCamY: -400,
+  baseCamZ: 900
 }
 
 V.wave.vars={
@@ -23,7 +25,10 @@ V.wave.vars={
   sphereRange: 1,
   baseHue: Math.random(),
   column: 0,
-  colors: []
+  colors: [],
+  viz: 1,
+  currentVolume: null,
+  lastVolume: 500 //random large number
 }
 
 V.wave.makeParticles = function() { 
@@ -33,8 +38,9 @@ V.wave.makeParticles = function() {
   particleGeom = new THREE.Geometry();
   var material; 
   var colors = [];
-  camera.position.z = wCfg.baseZoom;
   camera.position.x = wCfg.cameraOffsetX * -1;
+  camera.position.y = wCfg.baseCamY;
+  camera.position.z = wCfg.baseCamZ;
 
   //set ratio
   wVars.heightToFFTratio = V.config.fftSize / V.wave.config.height;
@@ -101,6 +107,26 @@ V.wave.updateParticles = function() {
   frequencyData = new Uint8Array(analyser.frequencyBinCount);
   analyser.getByteFrequencyData(frequencyData);
 
+  wVars.currentVolume = 0;
+  for(var i=0; i<frequencyData.length; i++) { 
+    wVars.currentVolume += frequencyData[i];
+  }
+  wVars.currentVolume /= V.config.fftSize;
+
+  var volumeDelta = wVars.currentVolume - wVars.lastVolume;
+  if(volumeDelta > 5){
+    V.waveChangeViz();
+  };
+
+
+  //var volAdjust = (1 - audioElement.volume)  ;
+
+
+  wVars.lastVolume = wVars.currentVolume; 
+
+
+
+
 
   //PARTICLES ------------------------------------
 
@@ -108,7 +134,6 @@ V.wave.updateParticles = function() {
   particles.geometry.colorsNeedUpdate = true;
 
   currentColumn = V.wave.selectColumn(wVars.column);
-  console.log(wVars.column);
   wVars.column++;
   if(wVars.column >= wCfg.width){
     wVars.column = 0;
@@ -147,8 +172,8 @@ V.wave.updateParticles = function() {
 
 
   //move cam up down out on mouseY
-  var cameraOffset = mouseY/windowHeight - 0.5;
-  camera.position.y = cameraOffset * wCfg.panMultiplier;
+  //var cameraOffset = mouseY/windowHeight - 0.5;
+  //camera.position.y = cameraOffset * wCfg.panMultiplier;
 
   //rotate cam left right on mouseX
   //var cameraOffset = mouseX/windowWidth - 0.5;
@@ -156,4 +181,25 @@ V.wave.updateParticles = function() {
   camera.lookAt(new THREE.Vector3(camera.position.x,0,0));
 
 }
+
+
+V.waveChangeViz = function(){
+  var wCfg = V.wave.config;
+  var wVars = V.wave.vars;
+
+  wVars.viz = V.oneToRand(4)
+  if(wVars.viz == 1){
+    camera.position.z = wCfg.baseCamZ* 0.7;
+  }
+  if(wVars.viz == 2){
+    camera.position.z = wCfg.baseCamZ* 0.8;
+  }
+  if(wVars.viz == 3){
+    camera.position.z = wCfg.baseCamZ* 1;
+  }
+  if(wVars.viz == 4){
+    camera.position.z = wCfg.baseCamZ* 0.6;
+  }
+}
+
 
