@@ -15,11 +15,11 @@ V.wave.config = {
   height: 128,//128 // number of particles high
   width: 500,
   spacing: 8,
-  baseCamX: 800,
+  baseCamX: -600,
   baseCamY: -400,
   baseCamZ: 900,
-  coolOffPeriod: 500,
-  beatSensitivity: 3
+  coolOffPeriod: 1500,
+  beatSensitivity: 3 //lower is more sensitive
 }
 
 V.wave.vars={
@@ -32,7 +32,8 @@ V.wave.vars={
   viz: 1,
   currentVolume: null,
   lastVolume: 500, //random large number
-  cooledOff: true
+  cooledOff: true,
+  lookAtCamX: 1
 }
 
 V.wave.makeParticles = function() { 
@@ -42,7 +43,7 @@ V.wave.makeParticles = function() {
   particleGeom = new THREE.Geometry();
   var material; 
   var colors = [];
-  camera.position.x = wCfg.baseCamX * -1;
+  camera.position.x = wCfg.baseCamX;
   camera.position.y = wCfg.baseCamY;
   camera.position.z = wCfg.baseCamZ;
 
@@ -115,11 +116,17 @@ V.wave.updateFrame = function() {
 
   V.wave.setWaveSlice(cfg, wVars);
   V.wave.iterateParticles(wCfg, wVars);
+  //V.wave.stutterCamPosition(wCfg, wVars);
 
   wVars.baseHue += + 0.0003;
   if (wVars.baseHue > 1) wVars.baseHue = 0;
 
-  camera.lookAt(new THREE.Vector3(camera.position.x,0,0));
+  if(wVars.lookAtCamX == 1){
+    camera.lookAt(new THREE.Vector3(camera.position.x,-50,0));
+  }
+  else{
+    camera.lookAt(new THREE.Vector3(0,-50,0));
+  }
 }
 
 
@@ -144,8 +151,10 @@ V.wave.iterateParticles = function(wCfg, wVars){
     if(particle.x < wCfg.width * wCfg.spacing * -1){
       particle.x = 0 - wCfg.spacing;
     }
-    particle.z = particle.baseZ + wVars.currentVolume*1.5;
+    //particle.z = particle.baseZ + wVars.currentVolume;
+
   }
+
 }
 
 V.wave.setWaveSlice = function(cfg, wVars){
@@ -181,29 +190,21 @@ V.wave.getAudioData = function(wVars, wCfg){
   wVars.currentVolume /= V.config.fftSize;
 }
 
+V.wave.stutterCamPosition = function(wCfg, wVars){
+  camera.position.x = wCfg.baseCamX + wVars.currentVolume* 2;
+  //camera.position.y = wCfg.baseCamY + wVars.currentVolume* 5;
+}
+
 V.waveChangeViz = function(){
   var wCfg = V.wave.config;
   var wVars = V.wave.vars;
 
-  wVars.viz = V.oneToRand(6)
-  if(wVars.viz == 1){
-    camera.position.z = wCfg.baseCamZ* 0.8;
-  }
-  if(wVars.viz == 2){
-    camera.position.z = wCfg.baseCamZ* 0.9;
-  }
-  if(wVars.viz == 3){
-    camera.position.z = wCfg.baseCamZ* 1;
-  }
-  if(wVars.viz == 4){
-    camera.position.z = wCfg.baseCamZ* 1.5;
-  }
-  if(wVars.viz == 5){
-    camera.position.y = wCfg.baseCamY;
-  }
-  if(wVars.viz == 6){
-    camera.position.y = 0;
-  }
+  var yMultiplier = Math.random() + 0.5;
+  var zMultiplier = Math.random() + 0.2;
+
+  wVars.lookAtCamX = V.oneToRand(2);
+  camera.position.y = wCfg.baseCamY * yMultiplier;
+  camera.position.z = wCfg.baseCamZ * zMultiplier;
 
 
   //set cool off
