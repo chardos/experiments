@@ -51,7 +51,7 @@ V.init = function() {
 
 function update() {
   renderer.render( scene, camera ); // and render the scene from the perspective of the camera
-  V.wave.updateParticles();
+  V.wave.updateFrame();
   calcFPS();
 }
 

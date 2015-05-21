@@ -1,6 +1,7 @@
 
-//TODO: create view following behind the wave
-//TODO: make view where wave increases height based on ave volume
+//TODO: follow wave view
+//TODO: pull out random particles and enlarge
+//TODO: add microphone
 //TODO: alternate between the 2 (wave and sphere)
 
 
@@ -61,6 +62,7 @@ V.wave.makeParticles = function() {
       particleGeom.vertices[index].x = x;
       particleGeom.vertices[index].y = y - (wCfg.height * wCfg.spacing/2);
       particleGeom.vertices[index].z = z;
+      particleGeom.vertices[index].baseZ = z;
 
       // vertex colors
       colors[index] = new THREE.Color(1,1,1);
@@ -84,7 +86,7 @@ V.wave.makeParticles = function() {
 }
 
 
-V.wave.updateParticles = function() { 
+V.wave.updateFrame = function() { 
 
   var cfg = V.config;
   var wCfg = V.wave.config;
@@ -111,8 +113,8 @@ V.wave.updateParticles = function() {
     wVars.column = 0;
   }
 
-  V.wave.moveLeft(wCfg);
   V.wave.setWaveSlice(cfg, wVars);
+  V.wave.iterateParticles(wCfg, wVars);
 
   wVars.baseHue += + 0.0003;
   if (wVars.baseHue > 1) wVars.baseHue = 0;
@@ -134,7 +136,7 @@ V.wave.selectColumn = function(index) {
   return column;
 }
 
-V.wave.moveLeft = function(wCfg){
+V.wave.iterateParticles = function(wCfg, wVars){
   // move particles to the left
   for(var i=0; i<particles.geometry.vertices.length; i++) {
     particle = particles.geometry.vertices[i]; 
@@ -142,6 +144,7 @@ V.wave.moveLeft = function(wCfg){
     if(particle.x < wCfg.width * wCfg.spacing * -1){
       particle.x = 0 - wCfg.spacing;
     }
+    particle.z = particle.baseZ + wVars.currentVolume*1.5;
   }
 }
 
@@ -156,6 +159,7 @@ V.wave.setWaveSlice = function(cfg, wVars){
     var amplitude = frequencyData[fftBand];
 
     particle.z = amplitude;
+    particle.baseZ = amplitude;
 
     //colorize the particle
     wVars.colors[index] = new THREE.Color();
@@ -181,22 +185,26 @@ V.waveChangeViz = function(){
   var wCfg = V.wave.config;
   var wVars = V.wave.vars;
 
-  wVars.viz = V.oneToRand(1)
+  wVars.viz = V.oneToRand(6)
   if(wVars.viz == 1){
-    
-  }
-  if(wVars.viz == 2){
-    camera.position.z = wCfg.baseCamZ* 0.7;
-  }
-  if(wVars.viz == 3){
     camera.position.z = wCfg.baseCamZ* 0.8;
   }
-  if(wVars.viz == 4){
+  if(wVars.viz == 2){
+    camera.position.z = wCfg.baseCamZ* 0.9;
+  }
+  if(wVars.viz == 3){
     camera.position.z = wCfg.baseCamZ* 1;
   }
-  if(wVars.viz == 5){
-    camera.position.z = wCfg.baseCamZ* 0.6;
+  if(wVars.viz == 4){
+    camera.position.z = wCfg.baseCamZ* 1.5;
   }
+  if(wVars.viz == 5){
+    camera.position.y = wCfg.baseCamY;
+  }
+  if(wVars.viz == 6){
+    camera.position.y = 0;
+  }
+
 
   //set cool off
   wVars.cooledOff = false;
