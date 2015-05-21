@@ -1,4 +1,6 @@
 
+//TODO: extract particle wave update
+//TODO: create beat cool off
 //TODO: create view following behind the wave
 //TODO: make view where wave increases height based on ave volume
 //TODO: alternate between the 2 (wave and sphere)
@@ -77,7 +79,6 @@ V.wave.makeParticles = function() {
 
   particles = new THREE.PointCloud(particleGeom, material);
   
- 
   scene.add( particles );
 
 }
@@ -103,33 +104,15 @@ V.wave.updateParticles = function() {
 
   //AUDIO ------------------------------------
 
+
   //get audio data
-  frequencyData = new Uint8Array(analyser.frequencyBinCount);
-  analyser.getByteFrequencyData(frequencyData);
 
-  wVars.currentVolume = 0;
-  for(var i=0; i<frequencyData.length; i++) { 
-    wVars.currentVolume += frequencyData[i];
-  }
-  wVars.currentVolume /= V.config.fftSize;
-
-  var volumeDelta = wVars.currentVolume - wVars.lastVolume;
-  if(volumeDelta > 5){
-    V.waveChangeViz();
-  };
-
-
-  //var volAdjust = (1 - audioElement.volume)  ;
+  V.wave.getAudioData(wVars, wCfg);
 
 
   wVars.lastVolume = wVars.currentVolume; 
 
-
-
-
-
   //PARTICLES ------------------------------------
-
   particles.geometry.verticesNeedUpdate = true;
   particles.geometry.colorsNeedUpdate = true;
 
@@ -139,6 +122,23 @@ V.wave.updateParticles = function() {
     wVars.column = 0;
   }
 
+  V.wave.moveLeft(wCfg);
+  V.wave.setWaveSlice(cfg, wVars);
+
+  wVars.baseHue += + 0.0003;
+  if (wVars.baseHue > 1) wVars.baseHue = 0;
+
+  //move cam up down out on mouseY
+  //var cameraOffset = mouseY/windowHeight - 0.5;
+  //camera.position.y = cameraOffset * wCfg.panMultiplier;
+
+  //rotate cam left right on mouseX
+  //var cameraOffset = mouseX/windowWidth - 0.5;
+  //camera.position.x = cameraOffset * wCfg.panMultiplier * -1 - wCfg.cameraOffsetX;
+  camera.lookAt(new THREE.Vector3(camera.position.x,0,0));
+}
+
+V.wave.moveLeft = function(wCfg){
   // move particles to the left
   for(var i=0; i<particles.geometry.vertices.length; i++) {
     particle = particles.geometry.vertices[i]; 
@@ -147,7 +147,9 @@ V.wave.updateParticles = function() {
       particle.x = 0 - wCfg.spacing;
     }
   }
+}
 
+V.wave.setWaveSlice = function(cfg, wVars){
   //set z values + colors
   for(var i=0; i < currentColumn.particles.length; i++) {
     particle = currentColumn.particles[i]; 
@@ -166,22 +168,23 @@ V.wave.updateParticles = function() {
 
   }
   particles.geometry.colors = wVars.colors;
-
-  wVars.baseHue += + 0.0003;
-  if (wVars.baseHue > 1) wVars.baseHue = 0;
-
-
-  //move cam up down out on mouseY
-  //var cameraOffset = mouseY/windowHeight - 0.5;
-  //camera.position.y = cameraOffset * wCfg.panMultiplier;
-
-  //rotate cam left right on mouseX
-  //var cameraOffset = mouseX/windowWidth - 0.5;
-  //camera.position.x = cameraOffset * wCfg.panMultiplier * -1 - wCfg.cameraOffsetX;
-  camera.lookAt(new THREE.Vector3(camera.position.x,0,0));
-
 }
 
+V.wave.getAudioData = function(wVars, wCfg){
+  frequencyData = new Uint8Array(analyser.frequencyBinCount);
+  analyser.getByteFrequencyData(frequencyData);
+
+  wVars.currentVolume = 0;
+  for(var i=0; i<frequencyData.length; i++) { 
+    wVars.currentVolume += frequencyData[i];
+  }
+  wVars.currentVolume /= V.config.fftSize;
+
+  var volumeDelta = wVars.currentVolume - wVars.lastVolume;
+  if(volumeDelta > 5 * audioElement.volume){
+    V.waveChangeViz();
+  };
+}
 
 V.waveChangeViz = function(){
   var wCfg = V.wave.config;
