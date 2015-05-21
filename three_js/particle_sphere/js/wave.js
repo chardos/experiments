@@ -1,6 +1,4 @@
 
-//TODO: extract particle wave update
-//TODO: create beat cool off
 //TODO: create view following behind the wave
 //TODO: make view where wave increases height based on ave volume
 //TODO: alternate between the 2 (wave and sphere)
@@ -12,13 +10,15 @@ V.wave = {};
 
 V.wave.config = {
   particleBaseSize: 3,
-  cameraOffsetX: 800,
   panMultiplier: 1400, //how much mouse affects pan
   height: 128,//128 // number of particles high
   width: 500,
   spacing: 8,
+  baseCamX: 800,
   baseCamY: -400,
-  baseCamZ: 900
+  baseCamZ: 900,
+  coolOffPeriod: 500,
+  beatSensitivity: 3
 }
 
 V.wave.vars={
@@ -30,7 +30,8 @@ V.wave.vars={
   colors: [],
   viz: 1,
   currentVolume: null,
-  lastVolume: 500 //random large number
+  lastVolume: 500, //random large number
+  cooledOff: true
 }
 
 V.wave.makeParticles = function() { 
@@ -40,7 +41,7 @@ V.wave.makeParticles = function() {
   particleGeom = new THREE.Geometry();
   var material; 
   var colors = [];
-  camera.position.x = wCfg.cameraOffsetX * -1;
+  camera.position.x = wCfg.baseCamX * -1;
   camera.position.y = wCfg.baseCamY;
   camera.position.z = wCfg.baseCamZ;
 
@@ -80,21 +81,8 @@ V.wave.makeParticles = function() {
   particles = new THREE.PointCloud(particleGeom, material);
   
   scene.add( particles );
-
 }
 
-V.wave.selectColumn = function(index) { 
-  var column = {};
-  column.particles = [];
-  column.indices = [];
-  var startI = this.config.height*index;
-  var endI = this.config.height*index + this.config.height
-  for(var i=startI; i<endI; i++) {
-    column.particles.push(particles.geometry.vertices[i]); 
-    column.indices.push(i); 
-  }
-  return column;
-}
 
 V.wave.updateParticles = function() { 
 
@@ -104,12 +92,13 @@ V.wave.updateParticles = function() {
 
   //AUDIO ------------------------------------
 
-
-  //get audio data
-
   V.wave.getAudioData(wVars, wCfg);
-
-
+  var volumeDelta = wVars.currentVolume - wVars.lastVolume;
+  if(volumeDelta > wCfg.beatSensitivity * audioElement.volume){ //detect change in volume
+    if(wVars.cooledOff == true){
+      V.waveChangeViz();
+    }
+  };
   wVars.lastVolume = wVars.currentVolume; 
 
   //PARTICLES ------------------------------------
@@ -128,14 +117,21 @@ V.wave.updateParticles = function() {
   wVars.baseHue += + 0.0003;
   if (wVars.baseHue > 1) wVars.baseHue = 0;
 
-  //move cam up down out on mouseY
-  //var cameraOffset = mouseY/windowHeight - 0.5;
-  //camera.position.y = cameraOffset * wCfg.panMultiplier;
-
-  //rotate cam left right on mouseX
-  //var cameraOffset = mouseX/windowWidth - 0.5;
-  //camera.position.x = cameraOffset * wCfg.panMultiplier * -1 - wCfg.cameraOffsetX;
   camera.lookAt(new THREE.Vector3(camera.position.x,0,0));
+}
+
+
+V.wave.selectColumn = function(index) { 
+  var column = {};
+  column.particles = [];
+  column.indices = [];
+  var startI = this.config.height*index;
+  var endI = this.config.height*index + this.config.height
+  for(var i=startI; i<endI; i++) {
+    column.particles.push(particles.geometry.vertices[i]); 
+    column.indices.push(i); 
+  }
+  return column;
 }
 
 V.wave.moveLeft = function(wCfg){
@@ -179,30 +175,34 @@ V.wave.getAudioData = function(wVars, wCfg){
     wVars.currentVolume += frequencyData[i];
   }
   wVars.currentVolume /= V.config.fftSize;
-
-  var volumeDelta = wVars.currentVolume - wVars.lastVolume;
-  if(volumeDelta > 5 * audioElement.volume){
-    V.waveChangeViz();
-  };
 }
 
 V.waveChangeViz = function(){
   var wCfg = V.wave.config;
   var wVars = V.wave.vars;
 
-  wVars.viz = V.oneToRand(4)
+  wVars.viz = V.oneToRand(1)
   if(wVars.viz == 1){
-    camera.position.z = wCfg.baseCamZ* 0.7;
+    
   }
   if(wVars.viz == 2){
-    camera.position.z = wCfg.baseCamZ* 0.8;
+    camera.position.z = wCfg.baseCamZ* 0.7;
   }
   if(wVars.viz == 3){
-    camera.position.z = wCfg.baseCamZ* 1;
+    camera.position.z = wCfg.baseCamZ* 0.8;
   }
   if(wVars.viz == 4){
+    camera.position.z = wCfg.baseCamZ* 1;
+  }
+  if(wVars.viz == 5){
     camera.position.z = wCfg.baseCamZ* 0.6;
   }
+
+  //set cool off
+  wVars.cooledOff = false;
+  setTimeout(function(){
+    wVars.cooledOff = true;
+  },wCfg.coolOffPeriod)
 }
 
 

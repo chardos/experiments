@@ -33,10 +33,8 @@ V.init = function() {
   // camera needs to go in the scene 
   scene.add(camera);
 
-
   // and the CanvasRenderer figures out what the 
   // stuff in the scene looks like and draws it!
-
   renderer = new THREE.WebGLRenderer();
   renderer.setSize( window.innerWidth, window.innerHeight );
 
@@ -48,10 +46,6 @@ V.init = function() {
   document.addEventListener( 'mousemove', updateMouseCoords, false );
   int = setInterval(update,1000/V.config.fps); 
   renderer.render( scene, camera );
-
-  var changeViz = setInterval(function(){
-    //V.waveChangeViz();
-  },1500);
 
 }
 
