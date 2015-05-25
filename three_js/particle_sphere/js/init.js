@@ -10,6 +10,8 @@ V.config = {
   fftSize: 512
 }
 
+V.vizArray = ['starburst', 'wave']
+
 var lastCalledTime;
 windowWidth = window.innerWidth;
 windowHeight = window.innerHeight;
@@ -22,7 +24,55 @@ var particles;
 
 
 V.init = function() {
+  var cfg = V.config;
+  V.setup3dScene();
 
+  V.startViz();
+
+  // add the mouse move listener
+  document.addEventListener( 'mousemove', updateMouseCoords, false );
+  int = setInterval(update,1000/V.config.fps); 
+
+  changeVizint = setInterval(function(){
+    //reset viz
+    var currentViz = V[V.vizArray[V.config.viz]];
+    currentViz.reset(); 
+
+    //reset scene
+    element = document.querySelectorAll("canvas");
+    element[0].parentNode.removeChild(element[0]);
+    V.setup3dScene();
+
+    //set viz
+    cfg.viz++;
+    if (cfg.viz >= V.vizArray.length){
+      cfg.viz = 0;
+    }
+    V.startViz();
+  },3500)
+
+
+  
+  renderer.render( scene, camera );
+
+}
+
+
+function update() {
+  renderer.render( scene, camera ); // and render the scene from the perspective of the camera
+  //*******THIS CHANGES**********
+  var currentViz = V[V.vizArray[V.config.viz]];
+  currentViz.updateFrame();
+  calcFPS();
+}
+
+V.startViz = function(){
+  //*******THIS CHANGES**********
+  var currentViz = V[V.vizArray[V.config.viz]];
+  currentViz.makeParticles(); 
+}
+
+V.setup3dScene = function() {
   // field of view, aspect ratio for render output, near and far clipping plane. 
   camera = new THREE.PerspectiveCamera(80, windowWidth / window.innerHeight, 1, 4000 );
   camera.position.z = V.config.baseZoom;
@@ -40,26 +90,7 @@ V.init = function() {
 
   // the renderer's canvas domElement is added to the body
   document.body.appendChild( renderer.domElement );
-
-  //*******THIS CHANGES**********
-  V.starburst.makeParticles(); 
-
-  // add the mouse move listener
-  document.addEventListener( 'mousemove', updateMouseCoords, false );
-  int = setInterval(update,1000/V.config.fps); 
-
-  
-  renderer.render( scene, camera );
-
 }
-
-function update() {
-  renderer.render( scene, camera ); // and render the scene from the perspective of the camera
-  //*******THIS CHANGES**********
-  V.starburst.updateFrame();
-  calcFPS();
-}
-
 
 // --------------------------------------------------------------------------
 // AUDIO STARTS HERE

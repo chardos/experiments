@@ -50,6 +50,7 @@ function calcFPS(){
 
 function s(){ // stop
   clearInterval(int);
+  clearInterval(changeViewInt);
   audioElement.pause();
 }
 document.addEventListener("click", function(){

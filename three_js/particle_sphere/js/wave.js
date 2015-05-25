@@ -27,7 +27,6 @@ V.wave.vars={
   baseHue: Math.random(),
   column: 0,
   colors: [],
-  viz: 1,
   currentVolume: null,
   lastVolume: 500, //random large number
   cooledOff: true,
@@ -84,6 +83,9 @@ V.wave.makeParticles = function() {
 }
 
 
+V.wave.reset = function() { 
+
+}
 V.wave.updateFrame = function() { 
 
   var cfg = V.config;
@@ -97,7 +99,7 @@ V.wave.updateFrame = function() {
 
   if(volumeDelta > wCfg.bigBeatSensitivity * audioElement.volume){ //detect change in volume
     if(wVars.cooledOff == true){
-      V.wave.changeVizBig();
+      V.wave.changeView();
     }
   }
 
@@ -190,7 +192,7 @@ V.wave.stutterCamPosition = function(wCfg, wVars){
   //camera.position.y = wCfg.baseCamY + wVars.currentVolume* 3;
 }
 
-V.wave.changeVizBig = function(){
+V.wave.changeView = function(){
   var wCfg = V.wave.config;
   var wVars = V.wave.vars;
 

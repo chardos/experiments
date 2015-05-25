@@ -12,14 +12,20 @@ V.starburst.vars={
   sphereFloor: 0,
   sphereRange: 1,
   baseHue: 0,
-  view: 0
+  view: 0,
+  particleGeom: null
 }
 
+V.starburst.reset = function() { 
+  V.starburst.vars.particleGeom.dispose();
+}
 V.starburst.makeParticles = function() { 
         
   var sCfg = V.starburst.config;
   var sVars = V.starburst.vars;
-  var particleGeom = new THREE.Geometry();
+
+  sVars.particleGeom = new THREE.Geometry()
+  var particleGeom = sVars.particleGeom;
   var material; 
   var colors = [];
 
@@ -53,8 +59,8 @@ V.starburst.makeParticles = function() {
   particles = new THREE.PointCloud(particleGeom, material);
   scene.add( particles );
 
-  var changeVizInt = setInterval(function(){
-    V.starburst.changeViz();
+  changeViewInt = setInterval(function(){
+    V.starburst.changeView();
   },1500)
   
 }
@@ -128,7 +134,7 @@ V.starburst.updateFrame = function() {
 }
 
 
-V.starburst.changeViz = function(){
+V.starburst.changeView = function(){
   var cfg = V.config;
   var sVars = V.starburst.vars;
 
