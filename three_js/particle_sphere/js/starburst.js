@@ -11,7 +11,8 @@ V.starburst.vars={
   particleBaseSize: 0.7,
   sphereFloor: 0,
   sphereRange: 1,
-  baseHue: 0
+  baseHue: 0,
+  view: 0
 }
 
 V.starburst.makeParticles = function() { 
@@ -51,11 +52,15 @@ V.starburst.makeParticles = function() {
 
   particles = new THREE.PointCloud(particleGeom, material);
   scene.add( particles );
+
+  var changeVizInt = setInterval(function(){
+    V.starburst.changeViz();
+  },1500)
   
 }
 
 
-V.starburst.updateParticles = function() { 
+V.starburst.updateFrame = function() { 
 
   var cfg = V.config;
   var sCfg = V.starburst.config;
@@ -120,5 +125,73 @@ V.starburst.updateParticles = function() {
   camera.position.x = cameraOffset * sCfg.panMultiplier * -1;
   camera.lookAt(new THREE.Vector3(0,0,0));
 
+}
+
+
+V.starburst.changeViz = function(){
+  var cfg = V.config;
+  var sVars = V.starburst.vars;
+
+  if(sVars.view == 0){
+    console.log(0);
+    sVars.sphereFloor = 100;
+    sVars.sphereRange = 0.6;
+    setTimeout(function(){
+      cfg.baseZoom = 300;
+    },700)
+  }
+  if(sVars.view == 1){
+    console.log(1);
+    cfg.baseZoom = 175;
+    setTimeout(function(){
+      particles.material.size = sVars.particleBaseSize * 2;
+    },700)
+    setTimeout(function(){
+      particles.material.size = sVars.particleBaseSize = 0.7;
+    },1200)
+  }
+  if(sVars.view == 2){
+    console.log(2);
+    sVars.sphereFloor = 0;
+    sVars.sphereRange = 1;
+    setTimeout(function(){
+      cfg.baseZoom = 100;
+    },700)
+    setTimeout(function(){
+      cfg.baseZoom = 300;
+      V.starburst.vars.sphereFloor=120;
+    V.starburst.vars.sphereRange=.05;
+    },1200)
+  }
+  if(sVars.view == 3){
+    console.log(3);
+    sVars.sphereFloor = 50;
+    sVars.sphereRange = 1;
+    cfg.baseZoom = 200;
+    setTimeout(function(){
+      sVars.sphereFloor = 80;
+      cfg.baseZoom = 500;
+    },300)
+    setTimeout(function(){
+      cfg.baseZoom = 500;
+    },700)
+    setTimeout(function(){
+      cfg.baseZoom = 200;
+    },1200)
+  }
+  if(sVars.view == 4){
+    console.log(4);
+    V.starburst.vars.sphereFloor=120;
+    V.starburst.vars.sphereRange=.05;
+    setTimeout(function(){
+      cfg.baseZoom = 160;
+    },1300)
+  }
+
+
+  sVars.view++;
+  if(sVars.view > 4){
+    sVars.view = 0;
+  }
 }
 

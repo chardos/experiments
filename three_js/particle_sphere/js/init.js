@@ -40,18 +40,23 @@ V.init = function() {
 
   // the renderer's canvas domElement is added to the body
   document.body.appendChild( renderer.domElement );
-  V.wave.makeParticles(); 
+
+  //*******THIS CHANGES**********
+  V.starburst.makeParticles(); 
 
   // add the mouse move listener
   document.addEventListener( 'mousemove', updateMouseCoords, false );
   int = setInterval(update,1000/V.config.fps); 
+
+  
   renderer.render( scene, camera );
 
 }
 
 function update() {
   renderer.render( scene, camera ); // and render the scene from the perspective of the camera
-  V.wave.updateFrame();
+  //*******THIS CHANGES**********
+  V.starburst.updateFrame();
   calcFPS();
 }
 
