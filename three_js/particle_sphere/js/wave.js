@@ -1,5 +1,6 @@
 
-//TODO: follow wave view
+//TODO: split big and small beat sensitivity
+//TODO: add gsap
 //TODO: pull out random particles and enlarge
 //TODO: add microphone
 //TODO: alternate between the 2 (wave and sphere)
@@ -18,8 +19,10 @@ V.wave.config = {
   baseCamX: -600,
   baseCamY: -400,
   baseCamZ: 900,
+  coolOffPeriodSmall: 600,
   coolOffPeriod: 1500,
-  beatSensitivity: 3 //lower is more sensitive
+  smallBeatSensitivity: 1, //lower is more sensitive
+  bigBeatSensitivity: 3 //lower is more sensitive
 }
 
 V.wave.vars={
@@ -32,8 +35,8 @@ V.wave.vars={
   viz: 1,
   currentVolume: null,
   lastVolume: 500, //random large number
+  cooledOffSmall: true,
   cooledOff: true,
-  lookAtCamX: 1
 }
 
 V.wave.makeParticles = function() { 
@@ -97,11 +100,19 @@ V.wave.updateFrame = function() {
 
   V.wave.getAudioData(wVars, wCfg);
   var volumeDelta = wVars.currentVolume - wVars.lastVolume;
-  if(volumeDelta > wCfg.beatSensitivity * audioElement.volume){ //detect change in volume
+
+  if(volumeDelta > wCfg.bigBeatSensitivity * audioElement.volume){ //detect change in volume
     if(wVars.cooledOff == true){
-      V.waveChangeViz();
+      V.wave.changeVizBig();
     }
-  };
+  }
+  else if (volumeDelta > wCfg.smallBeatSensitivity * audioElement.volume){
+    if(wVars.cooledOffSmall == true){
+      V.wave.changeVizSmall();
+    }
+  }
+
+
   wVars.lastVolume = wVars.currentVolume; 
 
   //PARTICLES ------------------------------------
@@ -118,15 +129,12 @@ V.wave.updateFrame = function() {
   V.wave.iterateParticles(wCfg, wVars);
   //V.wave.stutterCamPosition(wCfg, wVars);
 
-  wVars.baseHue += + 0.0003;
-  if (wVars.baseHue > 1) wVars.baseHue = 0;
+  wVars.baseHue += 0.0003;
+  if(wVars.baseHue > 1){ 
+    wVars.baseHue = 0 
+  };
+  camera.lookAt(new THREE.Vector3(camera.position.x,-50,0));
 
-  if(wVars.lookAtCamX == 1){
-    camera.lookAt(new THREE.Vector3(camera.position.x,-50,0));
-  }
-  else{
-    camera.lookAt(new THREE.Vector3(0,-50,0));
-  }
 }
 
 
@@ -195,14 +203,14 @@ V.wave.stutterCamPosition = function(wCfg, wVars){
   //camera.position.y = wCfg.baseCamY + wVars.currentVolume* 5;
 }
 
-V.waveChangeViz = function(){
+V.wave.changeVizBig = function(){
+  console.log('big');
   var wCfg = V.wave.config;
   var wVars = V.wave.vars;
 
   var yMultiplier = Math.random() + 0.5;
-  var zMultiplier = Math.random() + 0.2;
+  var zMultiplier = Math.random()* 0.7 + 0.5;
 
-  wVars.lookAtCamX = V.oneToRand(2);
   camera.position.y = wCfg.baseCamY * yMultiplier;
   camera.position.z = wCfg.baseCamZ * zMultiplier;
 
@@ -212,6 +220,26 @@ V.waveChangeViz = function(){
   setTimeout(function(){
     wVars.cooledOff = true;
   },wCfg.coolOffPeriod)
+
+  wVars.cooledOffSmall = false;
+  setTimeout(function(){
+    wVars.cooledOffSmall = true;
+  },wCfg.coolOffPeriodSmall)
+}
+V.wave.changeVizSmall = function(){
+  console.log('small');
+  var wCfg = V.wave.config;
+  var wVars = V.wave.vars;
+
+  var zMultiplier = Math.random()* 0.2 + 0.9;
+
+  camera.position.z = wCfg.baseCamZ * zMultiplier;
+
+  //set cool off
+  wVars.cooledOffSmall = false;
+  setTimeout(function(){
+    wVars.cooledOffSmall = true;
+  },wCfg.coolOffPeriodSmall)
 }
 
 
