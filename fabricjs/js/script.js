@@ -11,18 +11,18 @@ F.vars = {
 	
 };
 
-function Table(canvas, name, left, top, width, height, imageId){
+function Table(o){
 
   var that = this;
   this.createTable = function(){
 
-    var imgElement = document.getElementById(imageId);
+    var imgElement = document.getElementById(o.imageId);
     that['table' + name] = new fabric.Image(imgElement, {
-      name: 'Table_' + name,
-      left: left,
-      top: top,
-      width: width,
-      height: height
+      name: 'Table_' + o.name,
+      left: o.x,
+      top: o.y,
+      width: o.width,
+      height: o.height
     });
 
     canvas.add(that['table' + name]);
@@ -32,16 +32,19 @@ function Table(canvas, name, left, top, width, height, imageId){
   this['table' + name].hasControls = false;
 
   canvas.on('object:modified', function(options) {
-
+    console.log('mod');
     thisObj = options.target;
 
     if ( thisObj.top > 100 ){ // check dropped below separator
-      if (options.target && options.target.name == 'Table_' + name) {
+      console.log(options.target.name);
+      console.log('Table_' + name);
+      if (options.target && options.target.name == 'Table_' + o.name) {
         //change name
-        thisObj.name = 'table_' + name;
+        thisObj.name = 'table_' + o.name;
 
         //re-enable rotation
         thisObj.hasControls = true;
+        console.log('create table now');
         that.createTable();
       }
     }
@@ -82,11 +85,25 @@ F.initEvents = function(canvas) {
 
 F.init = function() {
   // create a wrapper around native canvas element (with id="c")
-  var canvas = new fabric.Canvas('c');
+  canvas = new fabric.Canvas('c');
   canvas.selection = true;
 
-  var tableShort = new Table(canvas, 'c', 50, 30, 14, 51, 'table_c' );
-  var tableLong = new Table(canvas, 'straight', 200, 40, 10, 38, 'straight' );
+  var tableShort = new Table({
+    name: 'c', 
+    x: 50, 
+    y: 30, 
+    width: 14, 
+    height: 51, 
+    imageId: 'table_c' 
+  } );
+  var tableLong = new Table({
+    name: 'straight', 
+    x: 200, 
+    y: 40, 
+    width: 10, 
+    height: 38, 
+    imageId: 'straight' 
+  });
 
   F.createSeparator(canvas);
   F.initEvents(canvas);
