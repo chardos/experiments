@@ -2,6 +2,9 @@ canvas{
 
 }
 
+.hidden{
+  display: none;
+}
 
 .clearfix:after {
      visibility: hidden;

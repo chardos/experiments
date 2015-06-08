@@ -1,5 +1,7 @@
 
 // add images to the tables
+// stop objects from being having handles after 1 drag
+// allow deleting of the objects
 // get it into rails app
 // save objects to db via ajax
 
@@ -9,22 +11,23 @@ F.vars = {
 	
 };
 
-function Table(canvas, name, left, top, width, height){
-  //this.name = name;
+function Table(canvas, name, left, top, width, height, imageId){
 
   var that = this;
   this.createTable = function(){
-    console.log('creating table');
-    that['table' + name] = new fabric.Rect({
+
+    var imgElement = document.getElementById(imageId);
+    that['table' + name] = new fabric.Image(imgElement, {
       name: 'Table_' + name,
       left: left,
       top: top,
-      fill: 'black',
       width: width,
       height: height
     });
+
     canvas.add(that['table' + name]);
   }
+
   this.createTable();
   this['table' + name].hasControls = false;
 
@@ -82,8 +85,8 @@ F.init = function() {
   var canvas = new fabric.Canvas('c');
   canvas.selection = true;
 
-  var tableShort = new Table(canvas, 'short', 50, 50, 20, 45 );
-  var tableLong = new Table(canvas, 'long', 200, 50, 20, 45 );
+  var tableShort = new Table(canvas, 'c', 50, 30, 14, 51, 'table_c' );
+  var tableLong = new Table(canvas, 'straight', 200, 40, 10, 38, 'straight' );
 
   F.createSeparator(canvas);
   F.initEvents(canvas);
