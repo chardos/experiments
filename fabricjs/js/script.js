@@ -1,5 +1,4 @@
 
-// add images to the tables
 // stop objects from being having handles after 1 drag
 // allow deleting of the objects
 // get it into rails app
@@ -26,10 +25,10 @@ function Table(o){
     });
 
     canvas.add(that['table' + name]);
+    this['table' + name].hasControls = false;
   }
 
   this.createTable();
-  this['table' + name].hasControls = false;
 
   canvas.on('object:modified', function(options) {
     console.log('mod');
