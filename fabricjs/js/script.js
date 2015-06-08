@@ -1,5 +1,4 @@
 
-// stop objects from being having handles after 1 drag
 // allow deleting of the objects
 // get it into rails app
 // save objects to db via ajax
@@ -70,6 +69,17 @@ F.createSeparator = function(canvas){
   canvas.add(separator);
 }
 
+F.deletable = function(){
+  window.onkeydown = onKeyDownHandler;
+  function onKeyDownHandler(e) {
+    if (e.keyCode == 8 || e.keyCode == 46) {
+      var activeObject = canvas.getActiveObject();
+      if (activeObject) canvas.remove(activeObject);
+      return;
+    }
+  };
+}
+
 F.initEvents = function(canvas) {
   //on click event
   canvas.on('mouse:down', function(options) {
@@ -86,6 +96,8 @@ F.init = function() {
   // create a wrapper around native canvas element (with id="c")
   canvas = new fabric.Canvas('c');
   canvas.selection = true;
+
+  F.deletable();
 
   var tableShort = new Table({
     name: 'c', 
