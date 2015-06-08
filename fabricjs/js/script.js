@@ -1,7 +1,7 @@
 
-// add other tables
+// add images to the tables
 // get it into rails app
-// save to db via ajax
+// save objects to db via ajax
 
 var F = {}
 
@@ -16,7 +16,7 @@ function Table(canvas, name, left, top, width, height){
   this.createTable = function(){
     console.log('creating table');
     that['table' + name] = new fabric.Rect({
-      name: 'table_' + name,
+      name: 'Table_' + name,
       left: left,
       top: top,
       fill: 'black',
@@ -33,15 +33,12 @@ function Table(canvas, name, left, top, width, height){
     thisObj = options.target;
 
     if ( thisObj.top > 100 ){ // check dropped below separator
-      if (options.target && options.target.name == 'table_' + name) {
+      if (options.target && options.target.name == 'Table_' + name) {
         //change name
-        console.log('an object was modified!');
-        thisObj.name = 'table1';
+        thisObj.name = 'table_' + name;
 
         //re-enable rotation
-        //thisObj.setControlsVisibility({mtr: true})
         thisObj.hasControls = true;
-        p = that
         that.createTable();
       }
     }
@@ -56,35 +53,6 @@ function Table(canvas, name, left, top, width, height){
 
 }
 
-
-F.createTable1 = function(canvas){
-  var Table1 = new fabric.Rect({
-    name: 'Table1',
-    left: 50,
-    top: 50,
-    fill: 'green',
-    width: 20,
-    height: 45
-  });
-  Table1.hasControls = false;
-  canvas.add(Table1);
-
-  
-
-
-}
-F.createTable2 = function(canvas){
-  var Table2 = new fabric.Rect({
-    name: 'Table2',
-    left: 100,
-    top: 50,
-    fill: 'red',
-    width: 20,
-    height: 45
-  });
-  Table2.hasControls = false;
-  canvas.add(Table2);
-}
 F.createSeparator = function(canvas){
   var separator = new fabric.Rect({
     left: 0,
@@ -115,10 +83,8 @@ F.init = function() {
   canvas.selection = true;
 
   var tableShort = new Table(canvas, 'short', 50, 50, 20, 45 );
+  var tableLong = new Table(canvas, 'long', 200, 50, 20, 45 );
 
-
-  //F.createTable1(canvas);
-  F.createTable2(canvas);
   F.createSeparator(canvas);
   F.initEvents(canvas);
 }
