@@ -1,35 +1,26 @@
 <html>
   <head>
-    <script src="lib/react-0.14.3.min.js"></script>
+     <!-- jQuery, jQuery.ui -->
+    <link href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://code.jquery.com/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+
+    <!-- Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+    <script src="lib/react-0.14.3.js"></script>
     <script src="lib/JSXTransformer-0.13.3.js"></script>
-    <title>My first react file</title>
+
+    <!--Custom Styles -->
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <title>React Bulletin Board</title>
   </head>
 
   <body>
     <div id="react-container"></div>
-    <script type="text/jsx">
-    var MyComponent = React.createClass({
-      render: function(){
-        return <div>
-          <h1>{this.props.text}</h1>
-          <p>{this.props.children}</p>
-        </div>;
-      }
-    });
-    React.render(
-      //multiple components must be wrapped in an element
-      <div>
-      <MyComponent text="Hello world">
-        This is a hello.
-      </MyComponent>
-      <MyComponent text="How are ya?">
-        This is a how are you.
-      </MyComponent>
-      <MyComponent text="Goodbye">
-        This is a goodbye.
-      </MyComponent>
-      </div>
-      , document.getElementById('react-container'))
+    <script src="js/Note.js" type="text/jsx">
+
     </script>
   </body>
 </html>
