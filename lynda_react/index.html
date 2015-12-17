@@ -1,10 +1,26 @@
 <html>
   <head>
     <script src="lib/react-0.14.3.min.js"></script>
+    <script src="lib/JSXTransformer-0.13.3.js"></script>
     <title>My first react file</title>
   </head>
 
   <body>
-    <script src="build/helloworld.js"></script>
+    <div id="react-container"></div>
+    <script type="text/jsx">
+    var MyComponent = React.createClass({
+      render: function(){
+        return <div>My React Component</div>;
+      }
+    });
+    React.render(
+      //multiple components must be wrapped in an element
+      <div>
+      <MyComponent />
+      <MyComponent />
+      <MyComponent />
+      </div>
+      , document.getElementById('react-container'))
+    </script>
   </body>
 </html>
