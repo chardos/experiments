@@ -3,7 +3,7 @@ $(document).ready(function(){
 	var $wrap = $('.wrap');
 	$(document).on('mousemove', function(e){
 		var yPos = e.pageY/wheight;
-		var deg = 20 - (10*yPos);
+		var deg = 50 - (10*yPos);
 		$wrap.css('transform', `rotateX(${deg}deg)`)
 	})
 
