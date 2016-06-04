@@ -1,0 +1,65 @@
+.outer-wrap {
+  margin: 250px auto;
+  perspective: 1000px;
+  width: 100px; }
+
+.wrap {
+  transform-style: preserve-3d;
+  width: 100px;
+  height: 100px; }
+
+.panel {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: white;
+  padding-top: 35px; }
+
+.panel1 {
+  background-color: rgba(255, 0, 0, 0.7); }
+
+.panel2 {
+  background-color: rgba(0, 0, 255, 0.7);
+  transform: rotateZ(90deg);
+  transform: rotateY(-90deg);
+  transform-origin: top left; }
+
+.panel3 {
+  background-color: rgba(0, 255, 0, 0.7);
+  transform: rotateY(90deg);
+  transform-origin: top right; }
+
+.panel4 {
+  background-color: purple;
+  transform: rotateX(90deg);
+  transform-origin: top right; }
+
+.panel5 {
+  background-color: purple;
+  transform: rotateX(-90deg);
+  transform-origin: bottom right; }
+
+.panel6 {
+  background-color: yellow;
+  transform: translateZ(100px); }
+
+.triangle {
+  position: absolute;
+  width: 0;
+  height: 0; }
+
+.triangle1 {
+  border-style: solid;
+  border-width: 70px 50px 0 50px;
+  border-color: black transparent transparent transparent;
+  transform: rotateX(180deg);
+  transform-origin: top center; }
+
+.triangle2 {
+  border-style: solid;
+  border-width: 70px 50px 0 50px;
+  border-color: black transparent transparent transparent;
+  transform: rotateX(180deg) translateZ(-100px);
+  transform-origin: top center; }

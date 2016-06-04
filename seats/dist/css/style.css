@@ -1,0 +1,70 @@
+* {
+  box-sizing: border-box; }
+
+body {
+  text-align: center;
+  font-family: helvetica, sans-serif; }
+
+.outer-wrap {
+  margin-top: 100px;
+  perspective: 800px; }
+
+.wrap {
+  transform-style: preserve-3d;
+  transform: rotateX(50deg); }
+
+.row {
+  display: inline-block;
+  margin: 0 auto; }
+
+.seat {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  transition: all .3s; }
+
+.seat-front, .seat-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60px;
+  height: 60px; }
+
+.seat-front {
+  background-color: #999;
+  z-index: 5;
+  transition: .3s all;
+  transform-origin: 0 0; }
+
+.seat-back {
+  background-color: #777;
+  padding-top: 20px;
+  color: white; }
+
+.seat-front.s-flipped {
+  transform: rotateX(90deg);
+  height: 30px; }
+
+/* -----------------CLEARFIX------------------- */
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0; }
+
+.clearfix {
+  display: inline-block; }
+
+/* start commented backslash hack \*/
+* html .clearfix {
+  height: 1%; }
+
+.clearfix {
+  display: block; }
+
+/* close commented backslash hack */
