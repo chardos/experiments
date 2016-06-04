@@ -1,0 +1,50 @@
+.outer-wrap{
+  margin: 250px auto;
+  perspective: 1000px;
+  width: 100px;
+}
+.wrap{
+  transform-style: preserve-3d;
+  transform-origin: center center center;
+  width: 100px;
+  height: 100px;
+}
+
+.panel{
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: white;
+  padding-top: 35px;
+}
+
+.panel1{
+  background-color: red;
+}
+.panel2{
+  background-color: green;
+  transform: rotateZ(90deg);
+  transform: rotateY(-90deg);
+  transform-origin: top left;
+}
+.panel3{
+  background-color: blue;
+  transform: rotateY(90deg);
+  transform-origin: top right;
+}
+.panel4{
+  background-color: purple;
+  transform: rotateX(90deg);
+  transform-origin: top right;
+}
+.panel5{
+  background-color: purple;
+  transform: rotateX(-90deg);
+  transform-origin: bottom right;
+}
+.panel6{
+  background-color: yellow;
+  transform: translateZ(100px);
+}
