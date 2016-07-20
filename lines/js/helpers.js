@@ -1,3 +1,5 @@
+//Figure out a way of composing this into the Line constructor
+
 function draw(last, current, ctx){
 	ctx.beginPath();
 	ctx.moveTo(last.x, last.y);
@@ -19,4 +21,14 @@ function move(pos, direction){
 	else if( direction == 'left' ){
 		return { x: pos.x - 1, y: pos.y };
 	}
+}
+
+function getRandomDirection(n){
+	var directions = ['up', 'down', 'left', 'right'];
+	return directions[n];
+}
+
+function random(a, b){
+	var range = b - a + 1;
+	return Math.floor(Math.random()*range) + a;
 }
