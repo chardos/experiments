@@ -1,3 +1,24 @@
-body{
-  background-color: red;
+$roofHeight: 70;
+$roofWidth: 50;
+$roofHypotenuse: ($roofHeight * $roofHeight) + ($roofWidth * $roofWidth) + px;
+
+.triangle{
+  border-width: $roofHypotenuse;
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+.triangle1{
+  border-style: solid;
+  border-width: 70px 50px 0 50px;
+  border-color: black transparent transparent transparent;
+  transform: rotateX(180deg);
+  transform-origin: top center;
+}
+.triangle2{
+  border-style: solid;
+  border-width: $roofHeight $roofWidth 0 $roofWidth;
+  border-color: black transparent transparent transparent;
+  transform: rotateX(180deg) translateZ(-100px);
+  transform-origin: top center;
 }
