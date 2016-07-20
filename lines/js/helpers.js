@@ -24,8 +24,21 @@ function move(pos, direction){
 }
 
 function getRandomDirection(n){
-	var directions = ['up', 'down', 'left', 'right'];
+	var directions = ['up', 'right', 'down', 'left'];
 	return directions[n];
+}
+function turnLeftOrRight(direction, n){
+	var directions = ['up', 'right', 'down', 'left'];
+	var direction = directions.indexOf(direction)
+	if(n == 0){ //left
+		direction--;
+	}
+	else{ //right
+		direction++;
+	}
+	if(direction == 4) direction = 0;
+	if(direction == -1) direction = 3;
+	return directions[direction]
 }
 
 function random(a, b){

@@ -15,7 +15,8 @@ function Line(){
   var x = Math.ceil(Math.random() * windowWidth)
   var y = Math.ceil(Math.random() * innerHeight)
 	var direction = getRandomDirection( random(0,3) );
-	var secondsTilChange = random(1,4) * 60;
+	// var direction = getRandomDirection( random(0,3) );
+	var secondsTilChange = random(1,3) * 60;
 	var lastPosition;
 	var currentPosition = {x, y};
 	var interval = setInterval(function(){
@@ -28,7 +29,7 @@ function Line(){
 		secondsTilChange--;
 		if(secondsTilChange <= 0){
 			secondsTilChange = random(3,6) * 60;
-			direction = getRandomDirection( random(0,3) );
+			direction = turnLeftOrRight( direction, random(0,1) );
 		}
 
 	},1000/fps)
