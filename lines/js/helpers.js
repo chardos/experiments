@@ -41,6 +41,26 @@ function turnLeftOrRight(direction, n){
 	return directions[direction]
 }
 
+function wrapAround(pos, lastPos){
+	if(pos.x > windowWidth){
+		pos.x = 0;
+		lastPos.x = 0;
+	}
+	if(pos.x < 0){
+		pos.x = windowWidth;
+		lastPos.x = windowWidth;
+	}
+	if(pos.y > windowHeight){
+		pos.y = 0;
+		lastPos.y = 0;
+	}
+	if(pos.y < 0){
+		pos.y = windowHeight;
+		lastPos.y = windowHeight;
+	}
+	return [pos, lastPos];
+}
+
 function random(a, b){
 	var range = b - a + 1;
 	return Math.floor(Math.random()*range) + a;

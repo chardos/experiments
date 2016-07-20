@@ -7,24 +7,26 @@ document.body.appendChild(canvas);
 var ctx = canvas.getContext('2d');
 var fps = 60;
 
-//randomize direction change timing
-//start wrapping to otherside of screen
 //create an array holding all line instances
+//add diagonals
 
 function Line(){
   var x = Math.ceil(Math.random() * windowWidth)
   var y = Math.ceil(Math.random() * innerHeight)
 	var direction = getRandomDirection( random(0,3) );
 	// var direction = getRandomDirection( random(0,3) );
-	var secondsTilChange = random(1,3) * 60;
+	var secondsTilChange = random(1,4) * 60;
 	var lastPosition;
 	var currentPosition = {x, y};
 	var interval = setInterval(function(){
 		if(lastPosition){
 			draw(lastPosition, currentPosition, ctx);
 		}
+		//set new positions
 		lastPosition = $.extend({}, currentPosition); //deep copy current pos
 		currentPosition = move(currentPosition, direction);
+		//wrap positions if necessary
+		[currentPosition, lastPosition] = wrapAround(currentPosition, lastPosition)
 
 		secondsTilChange--;
 		if(secondsTilChange <= 0){
@@ -36,19 +38,6 @@ function Line(){
 }
 
 
-
-var line = new Line();
-var line2 = new Line();
-var line2 = new Line();
-var line2 = new Line();
-var line2 = new Line();
-var line = new Line();
-var line2 = new Line();
-var line2 = new Line();
-var line2 = new Line();
-var line2 = new Line();
-var line2 = new Line();
-var line2 = new Line();
-var line2 = new Line();
-var line2 = new Line();
-var line2 = new Line();
+for(var i = 0; i<50; i++){
+	var line = new Line();
+}
