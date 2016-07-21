@@ -13,14 +13,15 @@ var lines = [];
 
 
 
-for(var i = 0; i<100; i++){
+for(var i = 0; i<150; i++){
 	lines.push( new Line() );
 }
 
 var interval = setInterval(()=>{
 	lines.forEach(function(line){
+		console.log(line.lineWidth);
 		if(line.lastPosition){
-			line.draw(line.lastPosition, line.currentPosition, ctx);
+			line.draw(line.lastPosition, line.currentPosition, line.lineWidth, ctx);
 		}
 		//set new positions
 		line.lastPosition = $.extend({}, line.currentPosition); //deep copy current pos
@@ -33,6 +34,7 @@ var interval = setInterval(()=>{
 			line.secondsTilChange = random(3,6) * 60;
 			line.direction = turnLeftOrRight( line.direction, random(0,1) );
 		}
+		// line.lineWidth += .02;
 	})
 
 },1000/fps)
