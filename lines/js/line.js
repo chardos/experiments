@@ -1,10 +1,10 @@
 function Line(){
   var x = Math.ceil(Math.random() * windowWidth)
   var y = Math.ceil(Math.random() * innerHeight)
-  this.lineWidth = random(1,6);
+  this.lineWidth = random(1,10);
 	this.direction = getRandomDirection( random(0,3) );
 	// var direction = getRandomDirection( random(0,3) );
-	this.secondsTilChange = random(1,4) * 60;
+	this.secondsTilChange = randomFloat(1,4) * 60;
 	this.lastPosition = null;
 	this.currentPosition = {x, y};
 }

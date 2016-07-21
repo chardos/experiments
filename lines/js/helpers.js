@@ -59,3 +59,7 @@ function random(a, b){
 	var range = b - a + 1;
 	return Math.floor(Math.random()*range) + a;
 }
+function randomFloat(a, b){
+	var range = b - a + 1;
+	return Math.random()*range + a;
+}
