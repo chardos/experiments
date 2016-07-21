@@ -1,12 +1,6 @@
 //Figure out a way of composing this into the Line constructor
 
-function draw(last, current, ctx){
-	ctx.beginPath();
-	ctx.moveTo(last.x, last.y);
-	ctx.lineTo(current.x, current.y);
-	ctx.stroke();
-	ctx.closePath();
-}
+
 
 function move(pos, direction){
 	if(direction == 'up'){
