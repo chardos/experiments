@@ -3,7 +3,7 @@ function Linework(){
 	this.direction = getRandomDirection( random(0,3) );
 	// var direction = getRandomDirection( random(0,3) );
 	this.secondsTilChange = randomFloat(1,4) * 60;
-  this.speed = 50;
+  this.speed = 1;
 }
 
 
@@ -11,23 +11,30 @@ Linework.prototype.drawTo = function (x, y){
   var _this = this;
   var ctx = this.ctx;
   this.destination = {x: x, y: y};
+
+  //setup
+  this.currPos =  $.extend({}, this.origin);
   var angle = this.findDegrees(this.currPos, this.destination);
+  this.nextPos = this.getNextPos(angle);
+
   //move one step forward
   function step(){
-    //get the nextPos
-    _this.nextPos = _this.getNextPos(angle);
     //draw the line
     ctx.beginPath();
-    ctx.moveTo(_this.currPos.x, _this.currPos.y);
-    ctx.lineTo(_this.nextPos.x, _this.nextPos.y);
+    ctx.moveTo(this.currPos.x, this.currPos.y);
+    ctx.lineTo(this.nextPos.x, this.nextPos.y);
     ctx.stroke();
     ctx.closePath();
 
+    //set next coordinates
+    this.currPos =  $.extend({}, this.nextPos);
+    this.nextPos = this.getNextPos(angle);
+
     //
-    // requestAnimationFrame(step)
+    requestAnimationFrame(step.bind(this))
   }
   // step();
-  requestAnimationFrame(step)
+  requestAnimationFrame(step.bind(this))
 }
 
 

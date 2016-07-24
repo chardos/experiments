@@ -5,24 +5,18 @@ Linework.setContext = function (ctx){
 }
 Linework.prototype.setPosition = function (x, y){
   this.origin = {x: x, y: y};
-  this.currPos = {x: x, y: y};
-  this.nextPos = {};
 }
 Linework.prototype.findDegrees = function(p1, p2){
   return Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Math.PI;
 }
 Linework.prototype.getNextPos = function(angle){
 	angle = toRadians(angle)
-		console.log(Math.cos(angle) * this.speed);
-		console.log(Math.sin(angle) * this.speed);
-		console.log('angle', angle);
 		return {
 			x: this.currPos.x + (Math.cos(angle) * this.speed),
 			y: this.currPos.y + (Math.sin(angle) * this.speed)
 		}
 
 }
-
 
 
 
