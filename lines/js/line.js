@@ -1,4 +1,4 @@
-function Line(){
+function Linework(){
   var x = Math.ceil(Math.random() * windowWidth)
   var y = Math.ceil(Math.random() * innerHeight)
   this.lineWidth = random(1,10);
@@ -9,7 +9,15 @@ function Line(){
 	this.currentPosition = {x, y};
 }
 
-Line.prototype.draw = function (last, current, lineWidth, ctx){
+Linework.prototype.draw = function (last, current, lineWidth, ctx){
+	ctx.beginPath();
+	ctx.moveTo(last.x, last.y);
+	ctx.lineTo(current.x, current.y);
+  ctx.lineWidth = lineWidth;
+	ctx.stroke();
+	ctx.closePath();
+}
+Linework.prototype.drawTo = function (last, current, lineWidth, ctx){
 	ctx.beginPath();
 	ctx.moveTo(last.x, last.y);
 	ctx.lineTo(current.x, current.y);

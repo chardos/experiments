@@ -14,7 +14,7 @@ var lines = [];
 
 
 for(var i = 0; i<150; i++){
-	lines.push( new Line() );
+	lines.push( new Linework() );
 }
 
 var interval = setInterval(()=>{
