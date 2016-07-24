@@ -17,3 +17,11 @@ Line.prototype.draw = function (last, current, lineWidth, ctx){
 	ctx.stroke();
 	ctx.closePath();
 }
+
+
+//Desired API
+// var line = new Linework()
+// line.setPosition(x,y)
+// line.drawTo(x, y, speed(optional), callback(optional))
+// line.CurveTo(centerPointX, centerPointY, degrees, callback(optional))
+// must be chainable
