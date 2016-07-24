@@ -11,30 +11,34 @@ var lines = [];
 //create an array holding all line instances
 //add diagonals
 
+Linework.setContext(ctx);
+var line = new Linework();
+line.setPosition(100,100);
+line.drawTo(250,350);
 
 
-for(var i = 0; i<150; i++){
-	lines.push( new Linework() );
-}
 
-var interval = setInterval(()=>{
-	lines.forEach(function(line){
-		console.log(line.lineWidth);
-		if(line.lastPosition){
-			line.draw(line.lastPosition, line.currentPosition, line.lineWidth, ctx);
-		}
-		//set new positions
-		line.lastPosition = $.extend({}, line.currentPosition); //deep copy current pos
-		line.currentPosition = move(line.currentPosition, line.direction);
-		//wrap positions if necessary
-		[line.currentPosition, line.lastPosition] = wrapAround(line.currentPosition, line.lastPosition)
+// for(var i = 0; i<150; i++){
+// 	lines.push( new Linework() );
+// }
 
-		line.secondsTilChange--;
-		if(line.secondsTilChange <= 0){
-			line.secondsTilChange = random(3,6) * 60;
-			line.direction = turnLeftOrRight( line.direction, random(0,1) );
-		}
-		// line.lineWidth += .02;
-	})
-
-},1000/fps)
+// var interval = setInterval(()=>{
+// 	lines.forEach(function(line){
+// 		console.log(line.lineWidth);
+// 		if(line.lastPosition){
+// 			line.draw(line.lastPosition, line.currentPosition, line.lineWidth, ctx);
+// 		}
+// 		//set new positions
+// 		line.lastPosition = $.extend({}, line.currentPosition); //deep copy current pos
+// 		line.currentPosition = move(line.currentPosition, line.direction);
+// 		//wrap positions if necessary
+// 		[line.currentPosition, line.lastPosition] = wrapAround(line.currentPosition, line.lastPosition)
+//
+// 		line.secondsTilChange--;
+// 		if(line.secondsTilChange <= 0){
+// 			line.secondsTilChange = random(3,6) * 60;
+// 			line.direction = turnLeftOrRight( line.direction, random(0,1) );
+// 		}
+// 		// line.lineWidth += .02;
+// 	})
+// },1000/fps)
