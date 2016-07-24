@@ -12,9 +12,13 @@ var lines = [];
 //add diagonals
 
 Linework.setContext(ctx);
-var line = new Linework();
-line.setPosition(100,100);
-line.drawTo(250,350);
+var line1 = new Linework();
+line1.setPosition(100,100);
+line1.drawTo(100,200);
+
+var line2 = new Linework();
+line2.setPosition(200,100);
+line2.drawTo(150,150);
 
 
 
