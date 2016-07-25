@@ -8,8 +8,8 @@ var ctx = canvas.getContext('2d');
 var fps = 60;
 var lines = [];
 
-//create an array holding all line instances
-//add diagonals
+// add chaining
+// add curves
 
 Linework.setContext(ctx);
 var line1 = new Linework();

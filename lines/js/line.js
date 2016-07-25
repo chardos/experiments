@@ -34,16 +34,10 @@ Linework.prototype.drawTo = function (x, y){
     this.nextPos = this.getNextPos(angle);
 
     // check if the current pos hasnt reached destination
-    if(direction == 'up' && this.currPos.y > this.destination.y){
-      requestAnimationFrame(step.bind(this))
+    if(this.hasReachedDestination(direction, this.currPos, this.destination)){
+      console.log('reached');
     }
-    if(direction == 'down' && this.currPos.y < this.destination.y){
-      requestAnimationFrame(step.bind(this))
-    }
-    if(direction == 'left' && this.currPos.x > this.destination.x){
-      requestAnimationFrame(step.bind(this))
-    }
-    if(direction == 'right' && this.currPos.x < this.destination.x){
+    else{
       requestAnimationFrame(step.bind(this))
     }
 

@@ -33,6 +33,21 @@ Linework.prototype.getDirection = function(angle){
 		return 'left';
 	}
 }
+Linework.prototype.hasReachedDestination = function(direction, currPos, dest){
+	if(direction == 'up' && this.currPos.y > this.destination.y){
+		return false;
+	}
+	if(direction == 'down' && this.currPos.y < this.destination.y){
+		return false;
+	}
+	if(direction == 'left' && this.currPos.x > this.destination.x){
+		return false;
+	}
+	if(direction == 'right' && this.currPos.x < this.destination.x){
+		return false;
+	}
+	return true;
+}
 
 
 
