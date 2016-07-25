@@ -16,6 +16,9 @@ Linework.prototype.drawTo = function (x, y){
   this.currPos =  $.extend({}, this.origin);
   var angle = this.findDegrees(this.currPos, this.destination);
   this.nextPos = this.getNextPos(angle);
+  var direction = this.getDirection(angle);
+  console.log(angle);
+  console.log(direction);
 
   //move one step forward
   function step(){
@@ -30,8 +33,20 @@ Linework.prototype.drawTo = function (x, y){
     this.currPos =  $.extend({}, this.nextPos);
     this.nextPos = this.getNextPos(angle);
 
-    //
-    requestAnimationFrame(step.bind(this))
+    // check if the current pos hasnt reached destination
+    if(direction == 'up' && this.currPos.y > this.destination.y){
+      requestAnimationFrame(step.bind(this))
+    }
+    if(direction == 'down' && this.currPos.y < this.destination.y){
+      requestAnimationFrame(step.bind(this))
+    }
+    if(direction == 'left' && this.currPos.x > this.destination.x){
+      requestAnimationFrame(step.bind(this))
+    }
+    if(direction == 'right' && this.currPos.x < this.destination.x){
+      requestAnimationFrame(step.bind(this))
+    }
+
   }
   // step();
   requestAnimationFrame(step.bind(this))

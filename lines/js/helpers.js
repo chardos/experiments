@@ -7,15 +7,31 @@ Linework.prototype.setPosition = function (x, y){
   this.origin = {x: x, y: y};
 }
 Linework.prototype.findDegrees = function(p1, p2){
-  return Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Math.PI;
+  var deg = Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Math.PI;
+	if(deg < 0) deg += 360;
+	return deg;
 }
 Linework.prototype.getNextPos = function(angle){
 	angle = toRadians(angle)
-		return {
-			x: this.currPos.x + (Math.cos(angle) * this.speed),
-			y: this.currPos.y + (Math.sin(angle) * this.speed)
-		}
-
+	return {
+		x: this.currPos.x + (Math.cos(angle) * this.speed),
+		y: this.currPos.y + (Math.sin(angle) * this.speed)
+	}
+}
+Linework.prototype.getDirection = function(angle){
+	// Get the direction the line is travelling in
+	if(angle >= 225 && angle < 315){
+		return 'up';
+	}
+	else if(angle >= 315 || angle < 45){
+		return 'right';
+	}
+	else if(angle >= 45 && angle < 135){
+		return 'down';
+	}
+	else if(angle >= 135 && angle < 225){
+		return 'left';
+	}
 }
 
 

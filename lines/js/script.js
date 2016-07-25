@@ -14,11 +14,15 @@ var lines = [];
 Linework.setContext(ctx);
 var line1 = new Linework();
 line1.setPosition(100,100);
-line1.drawTo(100,200);
+line1.drawTo(200,100);
 
 var line2 = new Linework();
 line2.setPosition(200,100);
-line2.drawTo(150,150);
+line2.drawTo(155,150);
+
+var line3 = new Linework();
+line3.setPosition(200,200);
+line3.drawTo(200,100);
 
 
 
