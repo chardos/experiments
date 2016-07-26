@@ -5,6 +5,16 @@ Linework.setContext = function (ctx){
 }
 Linework.prototype.setPosition = function (x, y){
   this.origin = {x: x, y: y};
+	this.queue = [];
+}
+Linework.prototype.pushToQueue = function (type, x, y){
+  this.queue.push({
+		type: type,
+		position: {
+			x: x,
+			y: y
+		}
+	})
 }
 Linework.prototype.findDegrees = function(p1, p2){
   var deg = Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Math.PI;
@@ -17,6 +27,19 @@ Linework.prototype.getNextPos = function(angle){
 		x: this.currPos.x + (Math.cos(angle) * this.speed),
 		y: this.currPos.y + (Math.sin(angle) * this.speed)
 	}
+}
+Linework.prototype.setup = function(origin, nextPos){
+	this.currPos =  $.extend({}, this.origin);
+  this.angle = this.findDegrees(this.currPos, this.destination);
+  this.nextPos = this.getNextPos(this.angle);
+  this.direction = this.getDirection(this.angle);
+}
+Linework.prototype.drawLineSegment = function(ctx, currPos, nextPos){
+	ctx.beginPath();
+	ctx.moveTo(currPos.x, currPos.y);
+	ctx.lineTo(nextPos.x, nextPos.y);
+	ctx.stroke();
+	ctx.closePath();
 }
 Linework.prototype.getDirection = function(angle){
 	// Get the direction the line is travelling in

@@ -1,41 +1,37 @@
 function Linework(){
   this.lineWidth = random(1,10);
-	this.direction = getRandomDirection( random(0,3) );
+	// this.direction = getRandomDirection( random(0,3) );
 	// var direction = getRandomDirection( random(0,3) );
 	this.secondsTilChange = randomFloat(1,4) * 60;
-  this.speed = 1;
+  this.speed = 2.2;
 }
 
 
 Linework.prototype.drawTo = function (x, y){
-  var _this = this;
   var ctx = this.ctx;
-  this.destination = {x: x, y: y};
-
-  //setup
-  this.currPos =  $.extend({}, this.origin);
-  var angle = this.findDegrees(this.currPos, this.destination);
-  this.nextPos = this.getNextPos(angle);
-  var direction = this.getDirection(angle);
-  console.log(angle);
-  console.log(direction);
+  this.pushToQueue('drawTo', x,y)
+  this.destination = this.queue[0].position;
+  this.setup();
 
   //move one step forward
   function step(){
-    //draw the line
-    ctx.beginPath();
-    ctx.moveTo(this.currPos.x, this.currPos.y);
-    ctx.lineTo(this.nextPos.x, this.nextPos.y);
-    ctx.stroke();
-    ctx.closePath();
+    //draw the line segment
+    this.drawLineSegment(ctx, this.currPos, this.nextPos);
 
     //set next coordinates
     this.currPos =  $.extend({}, this.nextPos);
-    this.nextPos = this.getNextPos(angle);
+    this.nextPos = this.getNextPos(this.angle);
 
-    // check if the current pos hasnt reached destination
-    if(this.hasReachedDestination(direction, this.currPos, this.destination)){
+    // check if the current pos has reached destination
+    if(this.hasReachedDestination(this.direction, this.currPos, this.destination)){
       console.log('reached');
+      //pop 1 off the queue, set the next destination
+      this.queue.shift(1);
+      if(this.queue.length){
+        this.origin = this.destination;
+        this.destination = this.queue[0].position;
+        this.setup();
+      }
     }
     else{
       requestAnimationFrame(step.bind(this))
@@ -44,8 +40,17 @@ Linework.prototype.drawTo = function (x, y){
   }
   // step();
   requestAnimationFrame(step.bind(this))
+
+  return this;
 }
 
+// [{
+//   type: 'drawTo',
+//   position: {
+//     x: 10,
+//     y: 20
+//   }
+// }]
 
 //Desired API
 // var line = new Linework()

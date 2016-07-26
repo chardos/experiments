@@ -8,21 +8,22 @@ var ctx = canvas.getContext('2d');
 var fps = 60;
 var lines = [];
 
-// add chaining
+//sort out the inconsistent speed
+//chop off the extra edges
 // add curves
 
 Linework.setContext(ctx);
 var line1 = new Linework();
 line1.setPosition(100,100);
-line1.drawTo(200,100);
+line1.drawTo(200,400).drawTo(350,250).drawTo(400,400).drawTo(50,200);
 
-var line2 = new Linework();
-line2.setPosition(200,100);
-line2.drawTo(155,150);
-
-var line3 = new Linework();
-line3.setPosition(200,200);
-line3.drawTo(200,100);
+// var line2 = new Linework();
+// line2.setPosition(200,100);
+// line2.drawTo(155,150);
+//
+// var line3 = new Linework();
+// line3.setPosition(200,200);
+// line3.drawTo(200,100);
 
 
 
