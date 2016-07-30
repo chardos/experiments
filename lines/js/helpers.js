@@ -23,10 +23,12 @@ Linework.prototype.findDegrees = function(p1, p2){
 }
 Linework.prototype.getNextPos = function(angle){
 	angle = toRadians(angle)
-	return {
+	var a = {
 		x: this.currPos.x + (Math.cos(angle) * this.speed),
 		y: this.currPos.y + (Math.sin(angle) * this.speed)
 	}
+	// console.log(a);
+	return a
 }
 Linework.prototype.setup = function(origin, nextPos){
 	this.currPos =  $.extend({}, this.origin);
@@ -43,6 +45,7 @@ Linework.prototype.drawLineSegment = function(ctx, currPos, nextPos){
 }
 Linework.prototype.getDirection = function(angle){
 	// Get the direction the line is travelling in
+	// console.log(angle);
 	if(angle >= 225 && angle < 315){
 		return 'up';
 	}
@@ -53,6 +56,7 @@ Linework.prototype.getDirection = function(angle){
 		return 'down';
 	}
 	else if(angle >= 135 && angle < 225){
+		// console.log('left');
 		return 'left';
 	}
 }

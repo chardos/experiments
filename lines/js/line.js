@@ -3,43 +3,46 @@ function Linework(){
 	// this.direction = getRandomDirection( random(0,3) );
 	// var direction = getRandomDirection( random(0,3) );
 	this.secondsTilChange = randomFloat(1,4) * 60;
-  this.speed = 2.2;
+  this.speed = 1;
+  this.isAnimating = false;
 }
-
 
 Linework.prototype.drawTo = function (x, y){
   var ctx = this.ctx;
   this.pushToQueue('drawTo', x,y)
   this.destination = this.queue[0].position;
   this.setup();
+  var self = this;
 
   //move one step forward
   function step(){
     //draw the line segment
-    this.drawLineSegment(ctx, this.currPos, this.nextPos);
+    self.drawLineSegment(ctx, self.currPos, self.nextPos);
 
     //set next coordinates
-    this.currPos =  $.extend({}, this.nextPos);
-    this.nextPos = this.getNextPos(this.angle);
+    self.currPos =  $.extend({}, self.nextPos);
+    self.nextPos = self.getNextPos(self.angle);
 
     // check if the current pos has reached destination
-    if(this.hasReachedDestination(this.direction, this.currPos, this.destination)){
+    if(self.hasReachedDestination(self.direction, self.currPos, self.destination)){
       console.log('reached');
-      //pop 1 off the queue, set the next destination
-      this.queue.shift(1);
-      if(this.queue.length){
-        this.origin = this.destination;
-        this.destination = this.queue[0].position;
-        this.setup();
+      self.queue.shift(1);
+      if(self.queue.length){
+        self.origin = self.destination;
+        self.destination = self.queue[0].position;
+        self.setup();
+        requestAnimationFrame(step)
       }
     }
     else{
-      requestAnimationFrame(step.bind(this))
+      requestAnimationFrame(step)
     }
 
   }
-  // step();
-  requestAnimationFrame(step.bind(this))
+  if(!this.isAnimating){
+    step()
+    this.isAnimating = true;
+  }
 
   return this;
 }

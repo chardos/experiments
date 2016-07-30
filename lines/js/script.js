@@ -8,14 +8,19 @@ var ctx = canvas.getContext('2d');
 var fps = 60;
 var lines = [];
 
-//sort out the inconsistent speed
 //chop off the extra edges
+//set speed functions for the class, and instances
 // add curves
+
+//Only happening to last drawn.
 
 Linework.setContext(ctx);
 var line1 = new Linework();
 line1.setPosition(100,100);
-line1.drawTo(200,400).drawTo(350,250).drawTo(400,400).drawTo(50,200);
+line1.drawTo(200,100)
+  .drawTo(200,350)
+  .drawTo(100,200)
+  .drawTo(500,200)
 
 // var line2 = new Linework();
 // line2.setPosition(200,100);
