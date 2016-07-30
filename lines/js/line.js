@@ -64,6 +64,7 @@ Linework.prototype.drawTo = function (x, y){
 // var line = new Linework()
 // line.setPosition(x,y)
 // line.drawTo(x, y, speed(optional), callback(optional))
+// line.drawTo('30deg', distance, callback)
 // line.CurveTo(centerPointX, centerPointY, degrees, callback(optional))
 // must be chainable
 
