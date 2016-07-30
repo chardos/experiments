@@ -2,28 +2,25 @@ Linework.setContext = function (ctx){
 	this.prototype.ctx = ctx;
 }
 
-Linework.prototype.pushToQueue = function (type, x, y){
-  this.queue.push({
-		type: type,
-		position: {
-			x: x,
-			y: y
-		}
-	})
-}
+
 Linework.prototype.findDegrees = function(p1, p2){
   var deg = Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Math.PI;
 	if(deg < 0) deg += 360;
 	return deg;
 }
+Linework.prototype.getAngledPosition = function(pos, angle, distance){
+	angle = toRadians(angle)
+	return {
+		x: pos.x + (Math.cos(angle) * distance),
+		y: pos.y + (Math.sin(angle) * distance)
+	}
+}
 Linework.prototype.getNextPos = function(angle){
 	angle = toRadians(angle)
-	var a = {
+	return {
 		x: this.currPos.x + (Math.cos(angle) * this.speed),
 		y: this.currPos.y + (Math.sin(angle) * this.speed)
 	}
-	// console.log(a);
-	return a
 }
 Linework.prototype.setup = function(){
 	this.currPos =  $.extend({}, this.origin);
