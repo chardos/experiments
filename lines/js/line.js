@@ -3,57 +3,62 @@ function Linework(){
 	// this.direction = getRandomDirection( random(0,3) );
 	// var direction = getRandomDirection( random(0,3) );
 	this.secondsTilChange = randomFloat(1,4) * 60;
-  this.speed = 1;
+  this.speed = 5;
   this.isAnimating = false;
+  this.requiresSetup = true; //Only want to allow setup to happen once.
 }
 
 Linework.prototype.drawTo = function (x, y){
   var ctx = this.ctx;
   this.pushToQueue('drawTo', x,y)
   this.destination = this.queue[0].position;
-  this.setup();
+  if(this.requiresSetup){
+    this.setup();
+    this.requiresSetup = false;
+  }
   var self = this;
 
   //move one step forward
   function step(){
-    //draw the line segment
-    self.drawLineSegment(ctx, self.currPos, self.nextPos);
+    // check if the current pos has reached (or gone past) the destination
+    if(self.hasReachedDestination(self.direction, self.nextPos, self.destination)){
 
-    //set next coordinates
-    self.currPos =  $.extend({}, self.nextPos);
-    self.nextPos = self.getNextPos(self.angle);
+      //draw the line segment to the destination (instead of the nextPos,
+      //so it doesn't go past the destination).
+      self.drawLineSegment(ctx, self.currPos, self.destination);
 
-    // check if the current pos has reached destination
-    if(self.hasReachedDestination(self.direction, self.currPos, self.destination)){
-      console.log('reached');
       self.queue.shift(1);
       if(self.queue.length){
         self.origin = self.destination;
         self.destination = self.queue[0].position;
         self.setup();
-        requestAnimationFrame(step)
+      }
+      else{
+        //Queue has been completed.
+        self.origin = self.destination;
+        self.isAnimating = false;
+        self.requiresSetup = true;
+        return;
       }
     }
     else{
-      requestAnimationFrame(step)
+      self.drawLineSegment(ctx, self.currPos, self.nextPos);
+      //set next coordinates
+      self.currPos =  $.extend({}, self.nextPos);
+      self.nextPos = self.getNextPos(self.angle);
     }
+
+    requestAnimationFrame(step)
 
   }
   if(!this.isAnimating){
+    // setInterval(step, 700)
     step()
     this.isAnimating = true;
   }
 
   return this;
 }
-
-// [{
-//   type: 'drawTo',
-//   position: {
-//     x: 10,
-//     y: 20
-//   }
-// }]
 
 //Desired API
 // var line = new Linework()

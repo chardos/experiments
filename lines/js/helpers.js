@@ -30,7 +30,7 @@ Linework.prototype.getNextPos = function(angle){
 	// console.log(a);
 	return a
 }
-Linework.prototype.setup = function(origin, nextPos){
+Linework.prototype.setup = function(){
 	this.currPos =  $.extend({}, this.origin);
   this.angle = this.findDegrees(this.currPos, this.destination);
   this.nextPos = this.getNextPos(this.angle);
@@ -60,17 +60,17 @@ Linework.prototype.getDirection = function(angle){
 		return 'left';
 	}
 }
-Linework.prototype.hasReachedDestination = function(direction, currPos, dest){
-	if(direction == 'up' && this.currPos.y > this.destination.y){
+Linework.prototype.hasReachedDestination = function(direction, nextPos, dest){
+	if(direction == 'up' && this.nextPos.y > this.destination.y){
 		return false;
 	}
-	if(direction == 'down' && this.currPos.y < this.destination.y){
+	if(direction == 'down' && this.nextPos.y < this.destination.y){
 		return false;
 	}
-	if(direction == 'left' && this.currPos.x > this.destination.x){
+	if(direction == 'left' && this.nextPos.x > this.destination.x){
 		return false;
 	}
-	if(direction == 'right' && this.currPos.x < this.destination.x){
+	if(direction == 'right' && this.nextPos.x < this.destination.x){
 		return false;
 	}
 	return true;
