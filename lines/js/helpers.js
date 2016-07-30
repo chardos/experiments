@@ -138,6 +138,6 @@ function random(a, b){
 	return Math.floor(Math.random()*range) + a;
 }
 function randomFloat(a, b){
-	var range = b - a + 1;
+	var range = b - a;
 	return Math.random()*range + a;
 }
