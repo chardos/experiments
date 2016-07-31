@@ -21,7 +21,10 @@ Linework.setContext(ctx);
 
 var line = new Linework();
 line.setPosition(100, 100);
-line.drawLineTo(45,100).drawLineTo(150,200);
+line.drawLineTo(45,100)
+    .drawLineTo(150,200)
+    .drawLineTo(500,200)
+    .drawLineTo(150,300)
 
 // for(var i = 0; i<10; i++){
 // 	lines.push( new Linework() );
