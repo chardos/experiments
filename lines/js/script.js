@@ -19,12 +19,22 @@ var lines = [];
 
 Linework.setContext(ctx);
 
+// var line = new Linework();
+// line.setPosition(100, 100);
+// line.drawLineTo(45,100)
+//     .drawLineTo(150,200)
+//     .drawLineTo(500,200)
+//     .drawLineTo(150,300)
 var line = new Linework();
 line.setPosition(100, 100);
-line.drawLineTo(45,100)
-    .drawLineTo(150,200)
-    .drawLineTo(500,200)
-    .drawLineTo(150,300)
+line.drawLine(45,100)
+    .drawLine(0,150)
+    .drawLine(-30,150)
+    .drawLine(0,10)
+    .drawLine(10,10)
+    .drawLine(0,50)
+    .drawLine(10,50)
+
 
 // for(var i = 0; i<10; i++){
 // 	lines.push( new Linework() );
