@@ -11,7 +11,6 @@ Linework.prototype.drawLineTo = function (x, y){
   return this;
 }
 Linework.prototype.drawLineToFunc = function(x, y){
-  debugger
   this.destination = {x:x, y:y};
   var self = this;
   self.setup();
@@ -24,7 +23,8 @@ Linework.prototype.drawLineToFunc = function(x, y){
       console.log('reached');
       self.queue.shift(1);
       self.origin = self.destination;
-      self.queue[0]();
+      if(self.queue.length) self.queue[0]();
+
     }
     else{
       self.drawLineSegment(ctx, self.currPos, self.nextPos);
