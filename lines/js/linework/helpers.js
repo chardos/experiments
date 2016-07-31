@@ -3,7 +3,7 @@ Linework.setContext = function (ctx){
 }
 
 
-Linework.prototype.findDegrees = function(p1, p2){
+Linework.prototype.findAngle = function(p1, p2){
   var deg = Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Math.PI;
 	if(deg < 0) deg += 360;
 	return deg;
@@ -24,7 +24,7 @@ Linework.prototype.getNextPos = function(angle){
 }
 Linework.prototype.setup = function(){
 	this.currPos =  $.extend({}, this.origin);
-  this.angle = this.findDegrees(this.currPos, this.destination);
+  this.angle = this.findAngle(this.currPos, this.destination);
   this.nextPos = this.getNextPos(this.angle);
   this.direction = this.getDirection(this.angle);
 }
@@ -67,7 +67,9 @@ Linework.prototype.hasReachedDestination = function(direction, nextPos, dest){
 	}
 	return true;
 }
-
+Linework.prototype.kickStart = function(){
+	this.queue[0]()
+}
 
 //move one step forward
 Linework.prototype.step = function(self){
