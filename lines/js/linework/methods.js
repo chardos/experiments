@@ -12,6 +12,31 @@ Linework.prototype.drawLineTo = function (x, y){
 }
 Linework.prototype.drawLineToFunc = function(x, y){
   this.destination = {x:x, y:y};
+  var self = this;
+  self.setup();
+  function step(){
+    console.log('==========');
+    console.log('dir', self.direction);
+    console.log('nextpos',self.nextPos);
+    console.log('dest', self.destination);
+    if(self.hasReachedDestination(self.direction, self.nextPos, self.destination)){
+      console.log('reached');
+      debugger
+      self.queue.shift(1);
+      //go the next one
+      console.log(self.queue);
+      // this.queue.push(this.drawLineToFunc.bind(this, x, y))
+    }
+    else{
+      self.drawLineSegment(ctx, self.currPos, self.nextPos);
+      self.currPos =  $.extend({}, self.nextPos);
+      self.nextPos = self.getNextPos(self.angle);
+      console.log('nextPos',self.nextPos);
+      requestAnimationFrame( step )
+    }
+  }
+  requestAnimationFrame( step )
+
   console.log('origin', this.origin);
   console.log('destination', this.destination);
   return this;
