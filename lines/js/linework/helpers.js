@@ -67,7 +67,18 @@ Linework.prototype.hasReachedDestination = function(direction, nextPos, dest){
 	}
 	return true;
 }
+Linework.prototype.kickStart = function(){
+	this.queue[0]()
 
+  // if(this.requiresSetup){
+  //   this.setup();
+  //   this.requiresSetup = false;
+  // }
+  // if(!this.isAnimating){
+  //   this.step(this)
+  //   this.isAnimating = true;
+  // }
+}
 
 //move one step forward
 Linework.prototype.step = function(self){

@@ -5,32 +5,26 @@ Linework.prototype.setPosition = function (x, y){
 }
 
 Linework.prototype.drawLineTo = function (x, y){
-  var ctx = this.ctx;
-  this.queue.push({
-    type: 'drawLineTo',
-    position:{
-      x: x,
-      y: y
-    }
-  })
-  this.destination = this.queue[0].position;
-  if(this.requiresSetup){
-    this.setup();
-    this.requiresSetup = false;
-  }
+  this.queue.push(this.drawLineToFunc.bind(this, x, y))
+  this.kickStart();
+  //in kickstart, run thru the array
+  return this;
+}
+Linework.prototype.drawLineToFunc = function(x, y){
+  this.destination = {x:x, y:y};
+  console.log('origin', this.origin);
+  console.log('destination', this.destination);
+  return this;
+}
 
-  if(!this.isAnimating){
-    this.step(this)
-    this.isAnimating = true;
-  }
-  return this;
-}
-Linework.prototype.drawLine = function (deg, distance){
-  console.log('currpos', this.currPos);
-  var coords = this.getAngledPosition(this.currPos, deg, distance);
-  this.drawLineTo(coords.x, coords.y);
-  return this;
-}
+// Linework.prototype.drawLine = function (deg, distance){
+//   console.log('currpos', this.currPos);
+//   var coords = this.getAngledPosition(this.currPos, deg, distance);
+//   this.drawLineTo(coords.x, coords.y);
+//   return this;
+// }
+
+
 
 //Desired API
 // var line = new Linework()

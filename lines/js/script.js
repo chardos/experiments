@@ -7,6 +7,9 @@ document.body.appendChild(canvas);
 var ctx = canvas.getContext('2d');
 var lines = [];
 
+
+// drawLine() isn't working because it needs to value of the previous drawLine
+// can definitely fix this by storing a queue of functions rather than objects
 // try storing functions in the queue, instead of coordinates and types
 //set speed functions for the class, and instances
 // add curves
@@ -18,9 +21,9 @@ Linework.setContext(ctx);
 
 var line = new Linework();
 line.setPosition(100, 100);
-line.drawLine(45,100)
+line.drawLineTo(45,100).drawLineTo(150,200);
 
-// for(var i = 0; i<150; i++){
+// for(var i = 0; i<10; i++){
 // 	lines.push( new Linework() );
 // }
 //
